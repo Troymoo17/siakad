@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>SIAKAD Institut Widya Pratama Pekalongan</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap');
+
+    body {
+      font-family: 'Inter', sans-serif;
+    }
+
+    /* Custom styles for the message box */
+    .message-box {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background-color: #fff;
+      border-radius: 8px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+      padding: 24px;
+      z-index: 50;
+      width: 90%;
+      max-width: 400px;
+      text-align: center;
+      display: none;
+      /* Hidden by default */
+    }
+
+    .message-box.show {
+      display: block;
+    }
+
+    .message-box h3 {
+      font-size: 1.25rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .message-box p {
+      color: #4a5568;
+      margin-bottom: 16px;
+    }
+
+    .message-box button {
+      background-color: #4299e1;
+      color: #fff;
+      font-weight: 600;
+      padding: 8px 16px;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+
+    .message-box button:hover {
+      background-color: #3182ce;
+    }
+  </style>
+</head>
+
+<body class="min-h-screen bg-blue-500 overflow-x-hidden flex flex-col items-center justify-start md:justify-center relative">
+
+  <div class="absolute bottom-0 left-0 w-full h-[30vh] bg-white z-0"></div>
+
+  <!-- Container utama layout responsif -->
+  <div class="w-full flex flex-col items-center md:flex-row md:items-stretch md:justify-center relative z-10">
+
+    <!-- Motivasi & Logo -->
+    <div class="relative w-full md:w-2/5 flex flex-col items-center md:items-start md:justify-center pt-6 md:pt-0 z-0">
+      <div class="relative w-full max-w-xs sm:max-w-md mx-auto md:-translate-x-48 md:-translate-y-28">
+        <img src="assets/logo_only.png" alt="Logo Widya Pratama" class="block md:hidden absolute left-1/2 top-1/2 w-40 sm:w-56 -translate-x-1/2 -translate-y-1/2 opacity-30 pointer-events-none select-none z-0" />
+        <img src="assets/logo_only.png" alt="Logo Widya Pratama" class="hidden md:block absolute top-1/2 left-0 -translate-y-1/2 w-[451px] select-none pointer-events-none z-0" />
+
+        <div class="relative z-10 bg-transparent p-4 md:p-0 rounded-lg md:rounded-none w-full text-white md:text-left text-center">
+          <h1 class="font-extrabold text-xl sm:text-3xl md:text-5xl leading-tight drop-shadow max-w-full md:max-w-[260px]">
+            SISTEM INFORMASI<br />
+            <span class="text-orange-400">AKADEMIK</span>.
+          </h1>
+          <br>
+          <P class="text-lg sm:text-2xl font-bold">
+            INSTITUT WIDYA PRATAMA PEKALONGAN
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Form Login Card -->
+    <div class="w-full md:w-[540px] flex justify-center mt-6 md:mt-0 z-10">
+      <div class="relative w-[98%] sm:w-[510px] max-w-lg bg-white shadow-xl rounded-xl p-6 sm:p-12 mx-auto">
+        <div class="flex flex-col items-center mb-6">
+          <img src="assets/logo.png" alt="Logo IWP" class="w-14 sm:w-20 mb-2" />
+        </div>
+        <form id="loginForm">
+          <div class="mb-4">
+            <label class="block text-gray-700 text-xs sm:text-sm font-semibold mb-1" for="userid">ID Pengguna</label>
+            <input id="userid" type="text" placeholder="Masukkan ID Pengguna" class="w-full px-3 py-2 sm:px-4 sm:py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-200 text-sm sm:text-base" />
+          </div>
+          <div class="mb-4">
+            <label class="block text-gray-700 text-xs sm:text-sm font-semibold mb-1" for="password">Kata Sandi</label>
+            <input id="password" type="password" placeholder="Masukkan Kata Sandi" class="w-full px-3 py-2 sm:px-4 sm:py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-200 text-sm sm:text-base" />
+          </div>
+          <div class="mb-6">
+            <label class="block text-gray-700 text-xs sm:text-sm font-semibold mb-1" for="role">Sebagai</label>
+            <select id="role" class="w-full px-3 py-2 sm:px-4 sm:py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-200 text-sm sm:text-base">
+              <option>Mahasiswa</option>
+              <option>Dosen</option>
+              <option>Admin</option>
+              <option>Pimpinan</option>
+            </select>
+          </div>
+          <button type="submit" class="w-full bg-blue-700 text-white font-semibold py-2 rounded-lg hover:bg-blue-800 transition text-sm sm:text-base mb-2">Masuk</button>
+          <div class="text-center">
+            <a href="/lupa_sandi.html" class="text-xs sm:text-sm text-blue-500 hover:underline">Lupa kata sandi?</a>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <div id="messageBox" class="message-box">
+    <h3 id="messageTitle" class="font-bold"></h3>
+    <p id="messageText"></p>
+    <button id="messageClose">Tutup</button>
+  </div>
+
+  <script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const loginForm = document.getElementById('loginForm');
+    const userIdInput = document.getElementById('userid');
+    const passwordInput = document.getElementById('password');
+    const roleSelect = document.getElementById('role');
+    const messageBox = document.getElementById('messageBox');
+    const messageTitle = document.getElementById('messageTitle');
+    const messageText = document.getElementById('messageText');
+    const messageCloseBtn = document.getElementById('messageClose');
+
+    function showMessage(title, message) {
+      messageTitle.textContent = title;
+      messageText.textContent = message;
+      messageBox.classList.add('show');
+    }
+
+    function hideMessage() {
+      messageBox.classList.remove('show');
+    }
+
+    messageCloseBtn.addEventListener('click', hideMessage);
+
+    loginForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const userId = userIdInput.value;
+      const password = passwordInput.value;
+      const role = roleSelect.value.toLowerCase();
+
+      if (role !== 'mahasiswa') {
+        showMessage('Login Gagal', 'Fitur login untuk peran ini belum tersedia.');
+        return;
+      }
+
+      try {
+        const response = await fetch('http://localhost/siakad_api/mahasiswa.php');
+        if (!response.ok) {
+          throw new Error('Gagal mengambil data dari API.');
+        }
+        const apiData = await response.json();
+
+        const userData = apiData.data.find(
+          (mhs) => mhs.nim === userId && mhs.password === password
+        );
+
+        if (userData) {
+          window.location.href = 'http://127.0.0.1:3000/dashboard/dashboard.html';
+        } else {
+          showMessage('Login Gagal', 'ID Pengguna atau Kata Sandi salah. Silakan coba lagi.');
+        }
+      } catch (error) {
+        console.error('Ada masalah dengan operasi fetch:', error);
+        showMessage('Error', 'Terjadi kesalahan saat mencoba terhubung ke server.');
+      }
+    });
+  });
+</script>
+</body>
+
+</html>

@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Profil - Institut Widya Pratama</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<main class="flex-1 flex flex-col p-4 md:p-6 lg:p-8">
+  <header class="flex justify-between items-center mb-6">
+    <h1 class="text-xl md:text-2xl font-bold text-gray-800">Profil</h1>
+    <div class="hidden md:flex items-center border border-gray-300 rounded-lg bg-white overflow-hidden w-64">
+      <input type="text" placeholder="Pencarian" class="py-2 px-3 text-sm flex-1 focus:outline-none"/>
+      <button class="p-2 text-gray-500 hover:text-blue-600 transition">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+      </button>
+    </div>
+  </header>
+  <div class="flex flex-col md:flex-row gap-6">
+    <div class="w-full md:w-1/3 p-6 bg-white rounded-lg shadow-md flex flex-col items-center">
+      <div class="mb-4">
+        <img src="/assets/22.240.0007.jpg" alt="Foto Profil" class="w-24 h-24 rounded-full border-4 border-white shadow-lg"/>
+      </div>
+      <h2 class="text-xl font-bold text-gray-800" id="profile-nama">Memuat...</h2>
+      <span class="text-sm text-gray-500 mb-6" id="profile-nim">Memuat...</span>
+
+      <div class="space-y-4 w-full">
+        <div class="flex flex-col space-y-1">
+          <label class="text-xs text-gray-500">Email</label>
+          <div class="flex items-center space-x-2">
+            <input type="email" value="daril.ramadhana@gmail.com" class="flex-1 text-sm text-gray-700 bg-gray-100 p-2 rounded-md border border-gray-200 focus:outline-none focus:ring focus:ring-blue-200" readonly />
+            <button class="p-2 text-blue-600 hover:text-blue-800 transition"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/></svg></button>
+          </div>
+        </div>
+        <div class="flex flex-col space-y-1">
+          <label class="text-xs text-gray-500">Telephone</label>
+          <div class="flex items-center space-x-2">
+            <input type="tel" value="089670399388" class="flex-1 text-sm text-gray-700 bg-gray-100 p-2 rounded-md border border-gray-200" readonly />
+            <button class="p-2 text-blue-600 hover:text-blue-800 transition"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/></svg></button>
+          </div>
+        </div>
+        <div class="flex flex-col space-y-1">
+          <label class="text-xs text-gray-500">Handphone</label>
+          <div class="flex items-center space-x-2">
+            <input type="tel" value="089670399388" class="flex-1 text-sm text-gray-700 bg-gray-100 p-2 rounded-md border border-gray-200" readonly />
+            <button class="p-2 text-blue-600 hover:text-blue-800 transition"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/></svg></button>
+          </div>
+        </div>
+      </div>
+
+      <div class="mt-8 w-full p-4 border border-gray-300 rounded-md bg-gray-50 flex items-center justify-center text-gray-400 text-sm">
+        Kosongkan kotak untuk menghapus
+      </div>
+    </div>
+
+    <div class="w-full md:w-2/3 p-6 bg-white rounded-lg shadow-md">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
+        <div class="flex flex-col space-y-1">
+          <label class="text-xs text-gray-500">Nama Lengkap</label>
+          <input type="text" id="input-nama-lengkap" value="" class="text-sm p-2 rounded-md bg-gray-100 border border-gray-200" readonly />
+        </div>
+        <div class="flex flex-col space-y-1">
+          <label class="text-xs text-gray-500">Nim</label>
+          <input type="text" id="input-nim" value="" class="text-sm p-2 rounded-md bg-gray-100 border border-gray-200" readonly />
+        </div>
+        <div class="flex flex-col space-y-1">
+          <label class="text-xs text-gray-500">No.KTP</label>
+          <div class="relative">
+            <input type="text" value="123456789011213" class="w-full text-sm p-2 pr-10 rounded-md bg-gray-100 border border-gray-200" readonly />
+            <button class="absolute right-2 top-1/2 -translate-y-1/2 p-1 text-gray-500 hover:text-blue-600 transition"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/></svg></button>
+          </div>
+        </div>
+        <div class="flex flex-col space-y-1">
+          <label class="text-xs text-gray-500">Program Studi</label>
+          <input type="text" id="input-prodi" value="" class="text-sm p-2 rounded-md bg-gray-100 border border-gray-200" readonly />
+        </div>
+        <div class="flex flex-col space-y-1">
+          <label class="text-xs text-gray-500">Program</label>
+          <input type="text" value="TEKNIK INFORMATIKA (26995)" class="text-sm p-2 rounded-md bg-gray-100 border border-gray-200" readonly />
+        </div>
+        <div class="flex flex-col space-y-1">
+          <label class="text-xs text-gray-500">Kelas</label>
+          <input type="text" value="P41" class="text-sm p-2 rounded-md bg-gray-100 border border-gray-200" readonly />
+        </div>
+        <div class="flex flex-col space-y-1">
+          <label class="text-xs text-gray-500">Angkatan</label>
+          <input type="text" value="2022" class="text-sm p-2 rounded-md bg-gray-100 border border-gray-200" readonly />
+        </div>
+        <div class="flex flex-col space-y-1">
+          <label class="text-xs text-gray-500">Dosen PA</label>
+          <input type="text" value="HERMANUS WIM HAPSORO, M.H." class="text-sm p-2 rounded-md bg-gray-100 border border-gray-200" readonly />
+        </div>
+        <div class="flex flex-col space-y-1 col-span-1 md:col-span-2">
+          <label class="text-xs text-gray-500">Alamat</label>
+          <input type="text" value="DESA AMBOKEMBANG RT 011/ RW 005 KEC. KEDUNGWUNI - AMBOKEMBANG GANG 7 NO 366 - RT/RW: 11/05" class="text-sm p-2 rounded-md bg-gray-100 border border-gray-200" readonly />
+        </div>
+        <div class="flex flex-col space-y-1">
+          <label class="text-xs text-gray-500">Kota</label>
+          <input type="text" value="Pekalongan" class="text-sm p-2 rounded-md bg-gray-100 border border-gray-200" readonly />
+        </div>
+        <div class="flex flex-col space-y-1">
+          <label class="text-xs text-gray-500">RT/RW</label>
+          <input type="text" value="011/005" class="text-sm p-2 rounded-md bg-gray-100 border border-gray-200" readonly />
+        </div>
+        <div class="flex flex-col space-y-1">
+          <label class="text-xs text-gray-500">Kodepos</label>
+          <input type="text" value="51176" class="text-sm p-2 rounded-md bg-gray-100 border border-gray-200" readonly />
+        </div>
+        <div class="flex flex-col space-y-1">
+          <label class="text-xs text-gray-500">Provinsi</label>
+          <input type="text" value="Jawa Tengah" class="text-sm p-2 rounded-md bg-gray-100 border border-gray-200" readonly />
+        </div>
+        <div class="flex flex-col space-y-1">
+          <label class="text-xs text-gray-500">Negara</label>
+          <input type="text" value="Indonesia" class="text-sm p-2 rounded-md bg-gray-100 border border-gray-200" readonly />
+        </div>
+        <div class="flex flex-col space-y-1">
+          <label class="text-xs text-gray-500">Jenis Kelamin</label>
+          <input type="text" value="Pria" class="text-sm p-2 rounded-md bg-gray-100 border border-gray-200" readonly />
+        </div>
+        <div class="flex flex-col space-y-1">
+          <label class="text-xs text-gray-500">Agama</label>
+          <input type="text" value="Islam" class="text-sm p-2 rounded-md bg-gray-100 border border-gray-200" readonly />
+        </div>
+        <div class="flex flex-col space-y-1">
+          <label class="text-xs text-gray-500">Status</label>
+          <input type="text" value="Belum Nikah" class="text-sm p-2 rounded-md bg-gray-100 border border-gray-200" readonly />
+        </div>
+        <div class="flex flex-col space-y-1">
+          <label class="text-xs text-gray-500">Tempat Lahir</label>
+          <input type="text" value="Pekalongan" class="text-sm p-2 rounded-md bg-gray-100 border border-gray-200" readonly />
+        </div>
+        <div class="flex flex-col space-y-1">
+          <label class="text-xs text-gray-500">Tanggal Lahir</label>
+          <input type="text" value="29 Oktober 2003" class="text-sm p-2 rounded-md bg-gray-100 border border-gray-200" readonly />
+        </div>
+        <div class="flex flex-col space-y-1">
+          <label class="text-xs text-gray-500">Kewarganegaraan</label>
+          <input type="text" value="WNI" class="text-sm p-2 rounded-md bg-gray-100 border border-gray-200" readonly />
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+<script>
+    // Fungsi untuk memuat data mahasiswa dan mengisi form
+async function fetchDataAndPopulateForm() {
+    const url = 'http://localhost/siakad_api/mahasiswa.php';
+
+    try {
+        const response = await fetch(url);
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const apiResponse = await response.json();
+        const data = apiResponse.data;
+
+        if (data && data.length > 0) {
+            const mahasiswa = data[0];
+            
+            // Update sidebar profile card
+            document.getElementById('profile-nama').textContent = mahasiswa.nama || 'Tidak tersedia';
+            document.getElementById('profile-nim').textContent = mahasiswa.nim || 'Tidak tersedia';
+
+            // Find elements within the main content
+            const mainProfileNama = document.querySelector('#main-content-container #profile-nama');
+            const mainProfileNim = document.querySelector('#main-content-container #profile-nim');
+            const inpuProdi = document.getElementById('input-prodi');
+            
+            // Update main profile card
+            if (mainProfileNama) {
+                mainProfileNama.textContent = mahasiswa.nama || 'Tidak tersedia';
+            }
+            if (mainProfileNim) {
+                mainProfileNim.textContent = mahasiswa.nim || 'Tidak tersedia';
+            }
+            
+            // Update input fields
+            const inputNamaLengkap = document.getElementById('input-nama-lengkap');
+            const inputNim = document.getElementById('input-nim');
+            
+            if (inputNamaLengkap) {
+                inputNamaLengkap.value = mahasiswa.nama || 'Tidak tersedia';
+            }
+            if (inputNim) {
+                inputNim.value = mahasiswa.nim || 'Tidak tersedia';
+            }
+            if (inpuProdi) {
+                inpuProdi.value = mahasiswa.prodi || 'Tidak tersedia';
+            }
+
+        } else {
+            // Handle no data case for both side and main profile
+            document.getElementById('profile-nama').textContent = 'Data tidak ditemukan';
+            document.getElementById('profile-nim').textContent = 'Data tidak ditemukan';
+            const mainProfileNama = document.querySelector('#main-content-container #profile-nama');
+            const mainProfileNim = document.querySelector('#main-content-container #profile-nim');
+            if (mainProfileNama) mainProfileNama.textContent = 'Data tidak ditemukan';
+            if (mainProfileNim) mainProfileNim.textContent = 'Data tidak ditemukan';
+            console.warn("API returned no data.");
+        }
+    } catch (error) {
+        console.error('Terjadi masalah saat mengambil data:', error);
+        // Handle error case for both side and main profile
+        document.getElementById('profile-nama').textContent = 'Gagal memuat data';
+        document.getElementById('profile-nim').textContent = 'Gagal memuat data';
+        const mainProfileNama = document.querySelector('#main-content-container #profile-nama');
+        const mainProfileNim = document.querySelector('#main-content-container #profile-nim');
+        if (mainProfileNama) mainProfileNama.textContent = 'Gagal memuat data';
+        if (mainProfileNim) mainProfileNim.textContent = 'Gagal memuat data';
+    }
+}
+    // Panggil fungsi segera setelah skrip dimuat dan elemen-elemen ada
+    fetchDataAndPopulateForm();
+</script>
+</body>
+</html>

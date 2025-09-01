@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Lupa Kata Sandi - SIAKAD Institut Widya Pratama Pekalongan</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="min-h-screen bg-blue-500 flex items-center justify-center">
+
+  <div class="w-full max-w-sm sm:max-w-md md:max-w-xl bg-white/80 rounded-xl shadow-xl p-4 sm:p-8 z-10 mt-6 sm:mt-8 mx-2">
+    <!-- Logo dan Heading -->
+    <div class="flex flex-col items-center mb-6">
+      <img src="assets/logo.png" alt="Logo IWMP" class="w-12 sm:w-16 md:w-20 mb-2" />
+    </div>
+    <!-- Instruksi -->
+    <p class="text-gray-900 mb-6 font-medium text-xs sm:text-sm text-center">
+      Password baru akan dikirim ke email Anda.<br>
+      Masukkan <span class="font-semibold">ID</span> dan <span class="font-semibold">Tanggal Lahir</span> Anda.
+    </p>
+    <!-- Form -->
+    <form>
+      <div class="mb-5">
+        <label for="userid" class="block text-gray-700 font-semibold text-xs sm:text-sm mb-1">ID Pengguna</label>
+        <input type="text" id="userid" placeholder="Masukkan ID Pengguna"
+          class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-200 text-xs sm:text-base" required>
+      </div>
+      <div class="mb-5">
+        <label class="block text-gray-700 font-semibold text-xs sm:text-sm mb-1">Tanggal Lahir</label>
+        <div class="flex gap-2">
+          <select class="px-2 py-1 border border-gray-300 rounded-lg text-xs sm:text-sm focus:ring-blue-200" required>
+            <option value="">Tanggal</option>
+            <!-- Tanggal -->
+            <script>
+              for(let i=1;i<=31;i++){document.write('<option>'+i+'</option>')}
+            </script>
+          </select>
+          <select class="px-2 py-1 border border-gray-300 rounded-lg text-xs sm:text-sm focus:ring-blue-200" required>
+            <option value="">Bulan</option>
+            <option>Januari</option>
+            <option>Februari</option>
+            <option>Maret</option>
+            <option>April</option>
+            <option>Mei</option>
+            <option>Juni</option>
+            <option>Juli</option>
+            <option>Agustus</option>
+            <option>September</option>
+            <option>Oktober</option>
+            <option>November</option>
+            <option>Desember</option>
+          </select>
+          <select class="px-2 py-1 border border-gray-300 rounded-lg text-xs sm:text-sm focus:ring-blue-200" required>
+            <option value="">Tahun</option>
+            <script>
+              for(let i=1970;i<=2025;i++){document.write('<option>'+i+'</option>')}
+            </script>
+          </select>
+        </div>
+      </div>
+      <div class="mb-5">
+        <label class="block text-gray-700 font-semibold text-xs sm:text-sm mb-1" for="role">Sebagai</label>
+        <select id="role" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-200 text-xs sm:text-base" required>
+          <option>Mahasiswa</option>
+          <option>Dosen</option>
+          <option>Admin</option>
+          <option>Pimpinan</option>
+        </select>
+      </div>
+      <div class="flex flex-col sm:flex-row items-center gap-3 sm:gap-4">
+        <button type="submit" class="bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg hover:bg-blue-800 transition text-xs sm:text-base w-full sm:w-auto">
+          Minta Password Baru
+        </button>
+        <a href="index.html" class="text-xs sm:text-sm text-yellow-500 font-semibold hover:underline w-full sm:w-auto text-center sm:text-left">
+          Kembali ke halaman login
+        </a>
+      </div>
+    </form>
+  </div>
+</body>
+</html>

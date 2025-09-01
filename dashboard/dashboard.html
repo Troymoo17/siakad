@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Dashboard - Institut Widya Pratama</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    .donut-chart {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      background: conic-gradient(#0b66a5 0% 70%, #f0b341 70% 100%);
+      mask: radial-gradient(farthest-side, transparent 60%, white 60%);
+      -webkit-mask: radial-gradient(farthest-side, transparent 60%, white 60%);
+    }
+  </style>
+</head>
+<body class="bg-gray-50 min-h-screen flex flex-col font-sans">
+
+  <button
+    id="toggleSidebar"
+    class="md:hidden block fixed top-3 left-3 z-50 p-2 bg-white rounded shadow-lg border border-gray-100"
+    aria-label="Buka Menu"
+  >
+    <svg class="w-6 h-6 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+    </svg>
+  </button>
+  <div id="sidebarOverlay" class="fixed inset-0 z-40 bg-black bg-opacity-40 hidden md:hidden"></div>
+
+  <div class="flex flex-1 min-h-0 flex-col md:flex-row">
+    <aside
+      id="sidebar"
+      class="bg-white w-64 min-h-screen py-4 px-2 shadow-xl border-r border-gray-100 flex flex-col transition-all duration-300 fixed z-50 inset-y-0 left-0 md:static md:translate-x-0 -translate-x-full md:flex md:w-64"
+    >
+      <div class="flex items-center space-x-2 px-2 pb-4 border-b border-gray-200 mb-4">
+        <img src="/assets/logo.png" alt="Logo Institut Widya Pratama" class="w-16 h-14"/>
+        <span class="font-bold text-lg text-blue-900">INSTITUT WIDYA PRATAMA</span>
+      </div>
+
+      <a href="#" class="nav-link bg-white border border-gray-200 rounded-xl shadow-sm mb-5 px-3 pt-3 pb-2 flex flex-col items-center" data-content="profile.html">
+        <img src="/assets/22.240.0007.jpg" alt="Foto Pengguna" class="w-16 h-13 mb-1 rounded" />
+        <div id="profile-nama" class="text-xs text-gray-500 mb-1 mt-1">Nama Pengguna</div>
+        <div id="profile-nim" class="font-semibold text-blue-900 text-base mb-1">Nim/Nipy</div>
+      </a>
+
+      <nav class="flex-1 space-y-1 text-sm px-1">
+        <a href="#" id="beranda-link" class="nav-link flex items-center space-x-2 py-2 px-3 rounded-lg text-gray-700 hover:bg-gray-100 transition duration-150" data-content="mainpage.html">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0h6"/></svg>
+          <span>Beranda</span>
+        </a>
+        <a href="#" class="nav-link flex items-center space-x-2 py-2 px-3 rounded-lg text-gray-700 hover:bg-gray-100 transition duration-150" data-content="registrasi.html">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
+          <span>Registrasi</span>
+        </a>
+        <a href="#" class="sidebar-dropdown-toggle flex items-center justify-between py-2 px-3 rounded-lg text-gray-700 hover:bg-gray-100 transition duration-150">
+  <div class="flex items-center space-x-2">
+    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6 4h6" />
+    </svg>
+    <span>Ujian dan Nilai</span>
+  </div>
+  <svg class="w-4 h-4 ml-auto transform transition-transform duration-200 rotate-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+  </svg>
+</a>
+  
+  <div class="submenu hidden space-y-1 pl-6 pt-1">
+    <a href="#" class="nav-link flex items-center space-x-2 py-2 px-3 rounded-lg text-gray-700 hover:bg-gray-100 transition duration-150" data-content="/dashboard/Ujian dan Nilai/jadwalUjian.html">
+      <span>Jadwal Ujian</span>
+    </a>
+    <a href="#" class="nav-link flex items-center space-x-2 py-2 px-3 rounded-lg text-gray-700 hover:bg-gray-100 transition duration-150" data-content="kartu_hasil_studi.html">
+      <span>Kartu Hasil Studi</span>
+    </a>
+    <a href="#" class="nav-link flex items-center space-x-2 py-2 px-3 rounded-lg text-gray-700 hover:bg-gray-100 transition duration-150" data-content="daftar_nilai_kumulatif.html">
+      <span>Daftar Nilai Kumulatif</span>
+    </a>
+        </nav>
+      <div class="space-y-2 text-sm px-2 mt-auto border-t border-gray-200 pt-4">
+        <a href="#" id="logout-link" class="flex items-center space-x-2 py-2 px-3 rounded-lg text-red-600 hover:bg-red-50 font-semibold transition duration-150">
+    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3v-5m0-4v-2a3 3 0 013-3h4"/></svg>
+    <span>Keluar</span>
+</a>
+      </div>
+    </aside>
+
+    <div id="main-content-container" class="flex-1">
+      </div>
+  </div>
+
+  <script>
+    // Fungsi untuk memuat data mahasiswa dan mengisi form
+async function fetchDataAndPopulateForm() {
+    const url = 'http://localhost/siakad_api/mahasiswa.php';
+
+    try {
+        const response = await fetch(url);
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const apiResponse = await response.json();
+        const data = apiResponse.data;
+
+        if (data && data.length > 0) {
+            const mahasiswa = data[0];
+
+            // Mengisi elemen HTML di sidebar (sudah benar)
+            document.getElementById('profile-nama').textContent = mahasiswa.nama || 'Tidak tersedia';
+            document.getElementById('profile-nim').textContent = mahasiswa.nim || 'Tidak tersedia';
+
+            // Mengisi elemen HTML di bagian utama profil (ini yang perlu ditambahkan)
+            const mainProfileNama = document.querySelector('#main-content-container #profile-nama');
+            const mainProfileNim = document.querySelector('#main-content-container #profile-nim');
+            
+            if (mainProfileNama) {
+                mainProfileNama.textContent = mahasiswa.nama || 'Tidak tersedia';
+            }
+            if (mainProfileNim) {
+                mainProfileNim.textContent = mahasiswa.nim || 'Tidak tersedia';
+            }
+
+            // Mengisi input di bagian detail
+            const inputNamaLengkap = document.getElementById('input-nama-lengkap');
+            const inputNim = document.getElementById('input-nim');
+            const inpuProdi = document.getElementById('input-prodi');
+
+            if (inputNamaLengkap) {
+                inputNamaLengkap.value = mahasiswa.nama || 'Tidak tersedia';
+            }
+            if (inputNim) {
+                inputNim.value = mahasiswa.nim || 'Tidak tersedia';
+            }
+            if (inpuProdi) {
+                inpuProdi.value = mahasiswa.prodi || 'Tidak tersedia';
+            }
+
+        } else {
+            console.warn("API returned no data.");
+            // Tangani kasus data tidak ditemukan di sidebar
+            document.getElementById('profile-nama').textContent = 'Data tidak ditemukan';
+            document.getElementById('profile-nim').textContent = 'Data tidak ditemukan';
+            // Tangani kasus data tidak ditemukan di bagian utama profil
+            const mainProfileNama = document.querySelector('#main-content-container #profile-nama');
+            const mainProfileNim = document.querySelector('#main-content-container #profile-nim');
+            if (mainProfileNama) mainProfileNama.textContent = 'Data tidak ditemukan';
+            if (mainProfileNim) mainProfileNim.textContent = 'Data tidak ditemukan';
+        }
+    } catch (error) {
+        console.error('Terjadi masalah saat mengambil data:', error);
+        // Tangani kasus error di sidebar
+        document.getElementById('profile-nama').textContent = 'Gagal memuat data';
+        document.getElementById('profile-nim').textContent = 'Gagal memuat data';
+        // Tangani kasus error di bagian utama profil
+        const mainProfileNama = document.querySelector('#main-content-container #profile-nama');
+        const mainProfileNim = document.querySelector('#main-content-container #profile-nim');
+        if (mainProfileNama) mainProfileNama.textContent = 'Gagal memuat data';
+        if (mainProfileNim) mainProfileNim.textContent = 'Gagal memuat data';
+    }
+}
+
+// Fungsi utama untuk memuat konten
+function loadContent(url) {
+    const container = document.getElementById('main-content-container');
+    fetch(url)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return response.text();
+        })
+        .then(data => {
+            container.innerHTML = data;
+            // Panggil fetchDataAndPopulateForm() hanya untuk halaman yang relevan
+            if (url.includes('mainpage.html') || url.includes('profile.html') || url.includes('jadwalUjian.html')) {
+                fetchDataAndPopulateForm();
+            }
+        })
+        .catch(error => console.error(`Error loading content from ${url}:`, error));
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+    // Otomatis memuat konten beranda (mainpage.html) saat dashboard terbuka
+    loadContent('mainpage.html');
+
+    // Memberi highlight pada link "Beranda" secara default
+    const berandaLink = document.getElementById('beranda-link');
+    berandaLink.classList.add('bg-blue-50', 'text-blue-900', 'font-semibold');
+    berandaLink.classList.remove('text-gray-700', 'hover:bg-gray-100');
+});
+
+// Event listener untuk navigasi
+document.querySelectorAll('.nav-link').forEach(link => {
+    link.addEventListener('click', (e) => {
+        e.preventDefault();
+        const url = link.dataset.content;
+        loadContent(url);
+
+        document.querySelectorAll('.nav-link').forEach(nav => {
+            nav.classList.remove('bg-blue-50', 'text-blue-900', 'font-semibold');
+            nav.classList.add('text-gray-700', 'hover:bg-gray-100');
+        });
+        link.classList.add('bg-blue-50', 'text-blue-900', 'font-semibold');
+        link.classList.remove('text-gray-700', 'hover:bg-gray-100');
+    });
+});
+
+// Skrip untuk fungsionalitas sidebar (sama seperti sebelumnya)
+document.querySelectorAll('.sidebar-dropdown-toggle').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+        e.preventDefault();
+        const submenu = btn.nextElementSibling;
+        const arrow = btn.querySelector('svg:last-child');
+        submenu.classList.toggle('hidden');
+        arrow.classList.toggle('rotate-90');
+    });
+});
+
+const sidebar = document.getElementById('sidebar');
+const sidebarOverlay = document.getElementById('sidebarOverlay');
+const toggleBtn = document.getElementById('toggleSidebar');
+
+function openSidebar() {
+    sidebar.classList.remove('-translate-x-full');
+    sidebarOverlay.classList.remove('hidden');
+}
+
+function closeSidebar() {
+    sidebar.classList.add('-translate-x-full');
+    sidebarOverlay.classList.add('hidden');
+}
+
+toggleBtn?.addEventListener('click', openSidebar);
+sidebarOverlay?.addEventListener('click', closeSidebar);
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && !sidebar.classList.contains('-translate-x-full')) {
+        closeSidebar();
+    }
+});
+
+window.addEventListener('resize', () => {
+    if (window.innerWidth >= 768) {
+        sidebar.classList.remove('-translate-x-full');
+        sidebarOverlay.classList.add('hidden');
+    } else {
+        if (!sidebar.classList.contains('-translate-x-full')) {
+            sidebar.classList.add('-translate-x-full');
+        }
+    }
+});
+
+document.querySelectorAll('#sidebar a:not(#sidebar > .space-y-2 > a)').forEach(link => {
+    link.addEventListener('click', () => {
+        if (window.innerWidth < 768) {
+            closeSidebar();
+        }
+    });
+});
+const logoutLink = document.getElementById('logout-link');
+
+if (logoutLink) {
+    logoutLink.addEventListener('click', (e) => {
+        e.preventDefault(); // Mencegah navigasi default
+
+        localStorage.removeItem('user_token');
+        localStorage.removeItem('user_data');
+
+        alert('Anda telah berhasil keluar.');
+
+        window.location.href = '/index.html';
+    });
+}
+</script>
+</body>
+</html>
