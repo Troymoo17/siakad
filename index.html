@@ -66,10 +66,8 @@
 
   <div class="absolute bottom-0 left-0 w-full h-[30vh] bg-white z-0"></div>
 
-  <!-- Container utama layout responsif -->
   <div class="w-full flex flex-col items-center md:flex-row md:items-stretch md:justify-center relative z-10">
 
-    <!-- Motivasi & Logo -->
     <div class="relative w-full md:w-2/5 flex flex-col items-center md:items-start md:justify-center pt-6 md:pt-0 z-0">
       <div class="relative w-full max-w-xs sm:max-w-md mx-auto md:-translate-x-48 md:-translate-y-28">
         <img src="assets/logo_only.png" alt="Logo Widya Pratama" class="block md:hidden absolute left-1/2 top-1/2 w-40 sm:w-56 -translate-x-1/2 -translate-y-1/2 opacity-30 pointer-events-none select-none z-0" />
@@ -88,7 +86,6 @@
       </div>
     </div>
 
-    <!-- Form Login Card -->
     <div class="w-full md:w-[540px] flex justify-center mt-6 md:mt-0 z-10">
       <div class="relative w-[98%] sm:w-[510px] max-w-lg bg-white shadow-xl rounded-xl p-6 sm:p-12 mx-auto">
         <div class="flex flex-col items-center mb-6">
@@ -128,63 +125,70 @@
   </div>
 
   <script>
-  document.addEventListener('DOMContentLoaded', () => {
-    const loginForm = document.getElementById('loginForm');
-    const userIdInput = document.getElementById('userid');
-    const passwordInput = document.getElementById('password');
-    const roleSelect = document.getElementById('role');
-    const messageBox = document.getElementById('messageBox');
-    const messageTitle = document.getElementById('messageTitle');
-    const messageText = document.getElementById('messageText');
-    const messageCloseBtn = document.getElementById('messageClose');
+    document.addEventListener('DOMContentLoaded', () => {
+      const loginForm = document.getElementById('loginForm');
+      const userIdInput = document.getElementById('userid');
+      const passwordInput = document.getElementById('password');
+      const roleSelect = document.getElementById('role');
+      const messageBox = document.getElementById('messageBox');
+      const messageTitle = document.getElementById('messageTitle');
+      const messageText = document.getElementById('messageText');
+      const messageCloseBtn = document.getElementById('messageClose');
 
-    function showMessage(title, message) {
-      messageTitle.textContent = title;
-      messageText.textContent = message;
-      messageBox.classList.add('show');
-    }
-
-    function hideMessage() {
-      messageBox.classList.remove('show');
-    }
-
-    messageCloseBtn.addEventListener('click', hideMessage);
-
-    loginForm.addEventListener('submit', async (e) => {
-      e.preventDefault();
-
-      const userId = userIdInput.value;
-      const password = passwordInput.value;
-      const role = roleSelect.value.toLowerCase();
-
-      if (role !== 'mahasiswa') {
-        showMessage('Login Gagal', 'Fitur login untuk peran ini belum tersedia.');
-        return;
+      function showMessage(title, message) {
+        messageTitle.textContent = title;
+        messageText.textContent = message;
+        messageBox.classList.add('show');
       }
 
-      try {
-        const response = await fetch('http://localhost/siakad_api/mahasiswa.php');
-        if (!response.ok) {
-          throw new Error('Gagal mengambil data dari API.');
-        }
-        const apiData = await response.json();
-
-        const userData = apiData.data.find(
-          (mhs) => mhs.nim === userId && mhs.password === password
-        );
-
-        if (userData) {
-          window.location.href = 'http://127.0.0.1:3000/dashboard/dashboard.html';
-        } else {
-          showMessage('Login Gagal', 'ID Pengguna atau Kata Sandi salah. Silakan coba lagi.');
-        }
-      } catch (error) {
-        console.error('Ada masalah dengan operasi fetch:', error);
-        showMessage('Error', 'Terjadi kesalahan saat mencoba terhubung ke server.');
+      function hideMessage() {
+        messageBox.classList.remove('show');
       }
+
+      messageCloseBtn.addEventListener('click', hideMessage);
+
+      loginForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        const nim = userIdInput.value;
+        const password = passwordInput.value;
+        const role = roleSelect.value.toLowerCase();
+
+        if (role !== 'mahasiswa') {
+          showMessage('Login Gagal', 'Fitur login untuk peran ini belum tersedia.');
+          return;
+        }
+
+        const formData = new FormData();
+        formData.append('nim', nim);
+        formData.append('password', password);
+
+        try {
+          const response = await fetch('http://localhost/siakad_api/login.php', {
+            method: 'POST',
+            body: formData
+          });
+
+          if (!response.ok) {
+            throw new Error('Gagal terhubung ke server.');
+          }
+
+          const apiResponse = await response.json();
+
+          if (apiResponse.status === 'success') {
+  showMessage('Login Berhasil', apiResponse.message);
+  localStorage.setItem('loggedInUserNim', apiResponse.data.nim);
+  window.location.href = '/dashboard/dashboard.html';
+} else {
+            showMessage('Login Gagal', apiResponse.message);
+          }
+        } catch (error) {
+          console.error('Ada masalah dengan operasi fetch:', error);
+          showMessage('Error', 'Terjadi kesalahan saat mencoba terhubung ke server.');
+        }
+      });
     });
-  });
-</script>
+  </script>
 </body>
 
 </html>
