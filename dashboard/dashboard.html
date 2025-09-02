@@ -70,7 +70,7 @@
     <a href="#" class="nav-link flex items-center space-x-2 py-2 px-3 rounded-lg text-gray-700 hover:bg-gray-100 transition duration-150" data-content="/dashboard/Ujian dan Nilai/jadwalUjian.html">
       <span>Jadwal Ujian</span>
     </a>
-    <a href="#" class="nav-link flex items-center space-x-2 py-2 px-3 rounded-lg text-gray-700 hover:bg-gray-100 transition duration-150" data-content="kartu_hasil_studi.html">
+    <a href="#" class="nav-link flex items-center space-x-2 py-2 px-3 rounded-lg text-gray-700 hover:bg-gray-100 transition duration-150" data-content="/dashboard/Ujian dan Nilai/kartu_hasil_studi.html">
       <span>Kartu Hasil Studi</span>
     </a>
     <a href="#" class="nav-link flex items-center space-x-2 py-2 px-3 rounded-lg text-gray-700 hover:bg-gray-100 transition duration-150" data-content="/dashboard/Ujian dan Nilai/daftar_nilai_kumulatif.html">
@@ -89,338 +89,383 @@
       </div>
   </div>
 <script>
+    // Helper function untuk mengisi textContent pada elemen
+    const setText = (selector, value) => {
+        const element = document.querySelector(selector);
+        if (element) element.textContent = value || 'Tidak tersedia';
+    };
+
+    // Helper function untuk mengisi value pada elemen input
+    const setValue = (selector, value) => {
+        const element = document.querySelector(selector);
+        if (element) element.value = value || '';
+    };
+
     // Fungsi untuk memuat data mahasiswa dan mengisi form
-async function fetchDataAndPopulateForm() {
-    const nim = localStorage.getItem('loggedInUserNim');
-    if (!nim) {
-        console.error("NIM tidak ditemukan di localStorage. Pengguna tidak login.");
-        document.getElementById('profile-nama').textContent = 'Gagal memuat data';
-        document.getElementById('profile-nim').textContent = 'Gagal memuat data';
-        return;
-    }
-
-    const url = `http://localhost/siakad_api/mahasiswa.php?nim=${nim}`;
-
-    try {
-        const response = await fetch(url);
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
+    async function fetchDataAndPopulateForm() {
+        const nim = localStorage.getItem('loggedInUserNim');
+        if (!nim) {
+            console.error("NIM tidak ditemukan di localStorage. Pengguna tidak login.");
+            setText('#profile-nama', 'Gagal memuat data');
+            setText('#profile-nim', 'Gagal memuat data');
+            return;
         }
-        const apiResponse = await response.json();
-        const data = apiResponse.data;
 
-        if (data && data.length > 0) {
-            const mahasiswa = data[0];
+        const url = `http://localhost/siakad_api/mahasiswa.php?nim=${nim}`;
 
-            // Mengisi elemen HTML di sidebar
-            document.getElementById('profile-nama').textContent = mahasiswa.nama || 'Tidak tersedia';
-            document.getElementById('profile-nim').textContent = mahasiswa.nim || 'Tidak tersedia';
+        try {
+            const response = await fetch(url);
+            if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+            const apiResponse = await response.json();
+            const mahasiswa = apiResponse.data[0];
 
-            // Mengisi elemen HTML di bagian utama profil
-            const mainProfileNama = document.querySelector('#main-content-container #profile-nama-main');
-            const mainProfileNim = document.querySelector('#main-content-container #profile-nim-main');
-            
-            if (mainProfileNama) {
-                mainProfileNama.textContent = mahasiswa.nama || 'Tidak tersedia';
-            }
-            if (mainProfileNim) {
-                mainProfileNim.textContent = mahasiswa.nim || 'Tidak tersedia';
-            }
-            
-            // Mengisi semua input di bagian detail
-            const imgElement = document.getElementById('profile-img');
-            if (imgElement) {
-              imgElement.src = `/assets/${mahasiswa.nim}.jpg`; 
-            }
-            
-            const inputNamaLengkap = document.getElementById('input-nama-lengkap');
-            if (inputNamaLengkap) inputNamaLengkap.value = mahasiswa.nama || '';
-            
-            const inputNim = document.getElementById('input-nim');
-            if (inputNim) inputNim.value = mahasiswa.nim || '';
-            
-            const inputNik = document.getElementById('input-nik');
-            if (inputNik) inputNik.value = mahasiswa.nik || '';
+            if (mahasiswa) {
+                // Mengisi elemen di sidebar dan main profile
+                setText('#profile-nama', mahasiswa.nama);
+                setText('#profile-nim', mahasiswa.nim);
+                setText('#main-content-container #profile-nama-main', mahasiswa.nama);
+                setText('#main-content-container #profile-nim-main', mahasiswa.nim);
 
-            const inpuProdi = document.getElementById('input-prodi');
-            if (inpuProdi) inpuProdi.value = mahasiswa.prodi || '';
-            
-            const inputProgram = document.getElementById('input-program');
-            if (inputProgram) inputProgram.value = mahasiswa.program || '';
+                // Mengisi semua input di bagian detail
+                const imgElement = document.getElementById('profile-img');
+                if (imgElement) imgElement.src = `/assets/${mahasiswa.nim}.jpg`;
 
-            const inputKelas = document.getElementById('input-kelas');
-            if (inputKelas) inputKelas.value = mahasiswa.kelas || '';
-            
-            const inputAngkatan = document.getElementById('input-angkatan');
-            if (inputAngkatan) inputAngkatan.value = mahasiswa.angkatan || '';
+                setValue('#input-nama-lengkap', mahasiswa.nama);
+                setValue('#input-nim', mahasiswa.nim);
+                setValue('#input-nik', mahasiswa.nik);
+                setValue('#input-prodi', mahasiswa.prodi);
+                setValue('#input-program', mahasiswa.program);
+                setValue('#input-kelas', mahasiswa.kelas);
+                setValue('#input-angkatan', mahasiswa.angkatan);
+                setValue('#input-dosen-pa', mahasiswa.dosen_pa);
+                setValue('#input-alamat', mahasiswa.alamat);
+                setValue('#input-kota', mahasiswa.kota);
+                setValue('#input-rtrw', mahasiswa.rtrw);
+                setValue('#input-kodepos', mahasiswa.kodepos);
+                setValue('#input-provinsi', mahasiswa.provinsi);
+                setValue('#input-negara', mahasiswa.kewarganegaraan);
+                setValue('#input-jenis-kelamin', mahasiswa.jenis_kelamin);
+                setValue('input-agama', mahasiswa.agama);
+                setValue('input-status', mahasiswa.status_pernikahan);
+                setValue('input-tempat-lahir', mahasiswa.tempat_lahir);
+                setValue('input-tanggal-lahir', mahasiswa.tanggal_lahir);
+                setValue('input-kewarganegaraan', mahasiswa.kewarganegaraan);
+                setValue('input-email', mahasiswa.email);
+                setValue('input-telp', mahasiswa.telp);
+                setValue('input-hp', mahasiswa.handphone);
 
-            const inputDosenPa = document.getElementById('input-dosen-pa');
-            if (inputDosenPa) inputDosenPa.value = mahasiswa.dosen_pa || '';
-
-            const inputAlamat = document.getElementById('input-alamat');
-            if (inputAlamat) inputAlamat.value = mahasiswa.alamat || '';
-            
-            const inputKota = document.getElementById('input-kota');
-            if (inputKota) inputKota.value = mahasiswa.kota || '';
-
-            const inputRtrw = document.getElementById('input-rtrw');
-            if (inputRtrw) inputRtrw.value = mahasiswa.rtrw || '';
-            
-            const inputKodepos = document.getElementById('input-kodepos');
-            if (inputKodepos) inputKodepos.value = mahasiswa.kodepos || '';
-            
-            const inputProvinsi = document.getElementById('input-provinsi');
-            if (inputProvinsi) inputProvinsi.value = mahasiswa.provinsi || '';
-            
-            const inputNegara = document.getElementById('input-negara');
-            if (inputNegara) inputNegara.value = mahasiswa.kewarganegaraan || '';
-            
-            const inputJenisKelamin = document.getElementById('input-jenis-kelamin');
-            if (inputJenisKelamin) inputJenisKelamin.value = mahasiswa.jenis_kelamin || '';
-            
-            const inputAgama = document.getElementById('input-agama');
-            if (inputAgama) inputAgama.value = mahasiswa.agama || '';
-            
-            const inputStatus = document.getElementById('input-status');
-            if (inputStatus) inputStatus.value = mahasiswa.status_pernikahan || '';
-            
-            const inputTempatLahir = document.getElementById('input-tempat-lahir');
-            if (inputTempatLahir) inputTempatLahir.value = mahasiswa.tempat_lahir || '';
-            
-            const inputTanggalLahir = document.getElementById('input-tanggal-lahir');
-            if (inputTanggalLahir) inputTanggalLahir.value = mahasiswa.tanggal_lahir || '';
-            
-            const inputKewarganegaraan = document.getElementById('input-kewarganegaraan');
-            if (inputKewarganegaraan) inputKewarganegaraan.value = mahasiswa.kewarganegaraan || '';
-        }
-    } catch (error) {
-        console.error('Terjadi masalah saat mengambil data:', error);
-        document.getElementById('profile-nama').textContent = 'Gagal memuat data';
-        document.getElementById('profile-nim').textContent = 'Gagal memuat data';
-        const mainProfileNama = document.querySelector('#main-content-container #profile-nama-main');
-        const mainProfileNim = document.querySelector('#main-content-container #profile-nim-main');
-        if (mainProfileNama) mainProfileNama.textContent = 'Gagal memuat data';
-        if (mainProfileNim) mainProfileNim.textContent = 'Gagal memuat data';
-    }
-}
-
-// Fungsi untuk memuat data IPS dan IPK
-async function fetchIpkIpsData() {
-    const nim = localStorage.getItem('loggedInUserNim');
-    if (!nim) {
-        console.error("NIM tidak ditemukan di localStorage. Pengguna tidak login.");
-        return;
-    }
-
-    const url = `http://localhost/siakad_api/ipk_ips.php?nim=${nim}`;
-
-    try {
-        const response = await fetch(url);
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        const apiResponse = await response.json();
-        const data = apiResponse.data;
-
-        if (data) {
-            // Mengisi nilai IPK dan memperbarui donut chart
-            const ipkValueElement = document.getElementById('main-page-ipk-value');
-            const ipkDonutElement = document.getElementById('ipk-donut');
-            if (ipkValueElement) {
-                ipkValueElement.textContent = data.ipk;
-            }
-            if (ipkDonutElement) {
-                // Rumus konversi nilai IPK (0.00 - 4.00) menjadi persentase (0% - 100%)
-                const percentage = (parseFloat(data.ipk) / 4.00) * 100;
-                
-                // Mengatur background conic-gradient
-                ipkDonutElement.style.background = `conic-gradient(#0b66a5 0% ${percentage}%, #f0b341 ${percentage}% 100%)`;
-            }
-
-            // Mengisi total SKS kumulatif
-            const totalSks = data.ips_per_semester.reduce((sum, semester) => sum + semester.total_sks, 0);
-            const sksElement = document.getElementById('main-page-sks');
-            if(sksElement) {
-                sksElement.textContent = totalSks;
-            }
-            
-            // Mengisi semester dan tahun akademik
-            const semesterElement = document.getElementById('main-page-semester');
-            const tahunAkademikElement = document.getElementById('main-page-tahun-akademik');
-            if (data.ips_per_semester.length > 0) {
-                const lastSemester = data.ips_per_semester[data.ips_per_semester.length - 1];
-                if(semesterElement) semesterElement.textContent = data.ips_per_semester.length;
-                if(tahunAkademikElement) tahunAkademikElement.textContent = lastSemester.tahun_akademik;
             } else {
-                if(semesterElement) semesterElement.textContent = '0';
-                if(tahunAkademikElement) tahunAkademikElement.textContent = '-';
+                console.warn("API returned no data.");
+                setText('#profile-nama', 'Data tidak ditemukan');
+                setText('#profile-nim', 'Data tidak ditemukan');
             }
-        }
-    } catch (error) {
-        console.error('Terjadi masalah saat mengambil data IPS/IPK:', error);
-        const ipkValueElement = document.getElementById('main-page-ipk-value');
-        if(ipkValueElement) ipkValueElement.textContent = 'Error';
-        const sksElement = document.getElementById('main-page-sks');
-        if(sksElement) sksElement.textContent = 'Error';
-        const semesterElement = document.getElementById('main-page-semester');
-        if(semesterElement) semesterElement.textContent = 'Error';
-        const tahunAkademikElement = document.getElementById('main-page-tahun-akademik');
-        if(tahunAkademikElement) tahunAkademikElement.textContent = 'Error';
-    }
-}
-
-// Fungsi untuk memuat data mata kuliah
-async function fetchMataKuliahData() {
-    const nim = localStorage.getItem('loggedInUserNim');
-    if (!nim) {
-        console.error("NIM tidak ditemukan di localStorage.");
-        return;
-    }
-
-    const url = `http://localhost/siakad_api/nilai.php?nim=${nim}`;
-
-    try {
-        const response = await fetch(url);
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        const apiResponse = await response.json();
-        const data = apiResponse.data;
-
-        const mataKuliahTableBody = document.getElementById('mata-kuliah-table-body');
-        if (mataKuliahTableBody) {
-            mataKuliahTableBody.innerHTML = ''; // Bersihkan isi tabel
-
-            data.forEach(mk => {
-                const row = document.createElement('tr');
-                row.className = 'bg-white border-b hover:bg-gray-50';
-                row.innerHTML = `
-                    <td class="py-3 px-4 whitespace-nowrap">${mk.tahun_akademik}</td>
-                    <td class="py-3 px-4">${mk.nama_mk}</td>
-                    <td class="py-3 px-4">${mk.sks}</td>
-                    <td class="py-3 px-4">${mk.nilai_angka}</td>
-                    <td class="py-3 px-4">${mk.nilai_huruf}</td>
-                `;
-                mataKuliahTableBody.appendChild(row);
-            });
-        }
-    } catch (error) {
-        console.error('Terjadi masalah saat mengambil data mata kuliah:', error);
-        const mataKuliahTableBody = document.getElementById('mata-kuliah-table-body');
-        if (mataKuliahTableBody) {
-            mataKuliahTableBody.innerHTML = '<tr><td colspan="5" class="text-center py-4">Gagal memuat data.</td></tr>';
+        } catch (error) {
+            console.error('Terjadi masalah saat mengambil data:', error);
+            setText('#profile-nama', 'Gagal memuat data');
+            setText('#profile-nim', 'Gagal memuat data');
         }
     }
-}
 
-// Fungsi utama untuk memuat konten
-function loadContent(url) {
-    const container = document.getElementById('main-content-container');
-    fetch(url)
-        .then(response => {
+    // Fungsi untuk memuat data IPS dan IPK
+    async function fetchIpkIpsData() {
+        const nim = localStorage.getItem('loggedInUserNim');
+        if (!nim) {
+            console.error("NIM tidak ditemukan di localStorage. Pengguna tidak login.");
+            return;
+        }
+
+        const url = `http://localhost/siakad_api/ipk_ips.php?nim=${nim}`;
+
+        try {
+            const response = await fetch(url);
+            if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+            const apiResponse = await response.json();
+            const data = apiResponse.data;
+
+            if (data) {
+                const ipkValueElement = document.getElementById('main-page-ipk-value');
+                const ipkDonutElement = document.getElementById('ipk-donut');
+                if (ipkValueElement) ipkValueElement.textContent = data.ipk;
+                if (ipkDonutElement) {
+                    const percentage = (parseFloat(data.ipk) / 4.00) * 100;
+                    ipkDonutElement.style.background = `conic-gradient(#0b66a5 0% ${percentage}%, #f0b341 ${percentage}% 100%)`;
+                }
+
+                const totalSks = data.ips_per_semester.reduce((sum, semester) => sum + semester.total_sks, 0);
+                const sksElement = document.getElementById('main-page-sks');
+                if(sksElement) sksElement.textContent = totalSks;
+
+                const semesterElement = document.getElementById('main-page-semester');
+                const tahunAkademikElement = document.getElementById('main-page-tahun-akademik');
+                if (data.ips_per_semester.length > 0) {
+                    const lastSemester = data.ips_per_semester[data.ips_per_semester.length - 1];
+                    if(semesterElement) semesterElement.textContent = data.ips_per_semester.length;
+                    if(tahunAkademikElement) tahunAkademikElement.textContent = lastSemester.tahun_akademik;
+                } else {
+                    if(semesterElement) semesterElement.textContent = '0';
+                    if(tahunAkademikElement) tahunAkademikElement.textContent = '-';
+                }
+            }
+        } catch (error) {
+            console.error('Terjadi masalah saat mengambil data IPS/IPK:', error);
+            setText('#main-page-ipk-value', 'Error');
+            setText('#main-page-sks', 'Error');
+            setText('#main-page-semester', 'Error');
+            setText('#main-page-tahun-akademik', 'Error');
+        }
+    }
+
+     // Fungsi untuk memuat data mata kuliah
+    async function fetchMataKuliahData() {
+        const nim = localStorage.getItem('loggedInUserNim');
+        if (!nim) {
+            console.error("NIM tidak ditemukan di localStorage.");
+            return;
+        }
+
+        const url = `http://localhost/siakad_api/nilai.php?nim=${nim}`;
+
+        try {
+            const response = await fetch(url);
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
-            return response.text();
-        })
-        .then(data => {
-            container.innerHTML = data;
-            if (url.includes('mainpage.html')) {
-                fetchDataAndPopulateForm();
-                fetchIpkIpsData();
-            } else if (url.includes('profile.html')) {
-                fetchDataAndPopulateForm();
-            } else if (url.includes('daftar_nilai_kumulatif.html')) {
-                fetchMataKuliahData(); 
+            const apiResponse = await response.json();
+            const data = apiResponse.data;
+
+            const mataKuliahTableBody = document.getElementById('mata-kuliah-table-body');
+            const totalSksElement = document.getElementById('total-sks');
+            const totalBobotSksElement = document.getElementById('total-bobot-sks');
+            const totalIpkElement = document.getElementById('total-ipk');
+
+            if (mataKuliahTableBody) {
+                mataKuliahTableBody.innerHTML = ''; // Bersihkan isi tabel
+
+                let totalSks = 0;
+                let totalBobotSks = 0;
+
+                data.forEach(mk => {
+                    const row = document.createElement('tr');
+                    row.className = 'bg-white border-b hover:bg-gray-50';
+                    row.innerHTML = `
+                        <td class="py-3 px-6 whitespace-nowrap">${mk.kode_mk}</td>
+                        <td class="py-3 px-6">${mk.nama_mk}</td>
+                        <td class="py-3 px-6 text-center">${mk.grade}</td>
+                        <td class="py-3 px-6 text-center">${mk.bobot}</td>
+                        <td class="py-3 px-6 text-center">${mk.sks}</td>
+                        <td class="py-3 px-6 text-center">${mk.bobot_sks}</td>
+                    `;
+                    mataKuliahTableBody.appendChild(row);
+                    
+                    totalSks += parseInt(mk.sks);
+                    totalBobotSks += parseFloat(mk.bobot_sks);
+                });
+
+                if (totalSksElement) totalSksElement.textContent = totalSks;
+                if (totalBobotSksElement) totalBobotSksElement.textContent = Math.round(totalBobotSks);
+                
+                const ipk = totalSks > 0 ? (totalBobotSks / totalSks).toFixed(2) : '0.00';
+                if (totalIpkElement) totalIpkElement.textContent = ipk;
             }
-        })
-        .catch(error => console.error(`Error loading content from ${url}:`, error));
-}
-
-document.addEventListener("DOMContentLoaded", () => {
-    loadContent('mainpage.html');
-    const berandaLink = document.getElementById('beranda-link');
-    berandaLink.classList.add('bg-blue-50', 'text-blue-900', 'font-semibold');
-    berandaLink.classList.remove('text-gray-700', 'hover:bg-gray-100');
-});
-
-// Event listener untuk navigasi
-document.querySelectorAll('.nav-link').forEach(link => {
-    link.addEventListener('click', (e) => {
-        e.preventDefault();
-        const url = link.dataset.content;
-        loadContent(url);
-
-        document.querySelectorAll('.nav-link').forEach(nav => {
-            nav.classList.remove('bg-blue-50', 'text-blue-900', 'font-semibold');
-            nav.classList.add('text-gray-700', 'hover:bg-gray-100');
-        });
-        link.classList.add('bg-blue-50', 'text-blue-900', 'font-semibold');
-        link.classList.remove('text-gray-700', 'hover:bg-gray-100');
-    });
-});
-
-// Skrip untuk fungsionalitas sidebar
-document.querySelectorAll('.sidebar-dropdown-toggle').forEach(btn => {
-    btn.addEventListener('click', (e) => {
-        e.preventDefault();
-        const submenu = btn.nextElementSibling;
-        const arrow = btn.querySelector('svg:last-child');
-        submenu.classList.toggle('hidden');
-        arrow.classList.toggle('rotate-90');
-    });
-});
-
-const sidebar = document.getElementById('sidebar');
-const sidebarOverlay = document.getElementById('sidebarOverlay');
-const toggleBtn = document.getElementById('toggleSidebar');
-
-function openSidebar() {
-    sidebar.classList.remove('-translate-x-full');
-    sidebarOverlay.classList.remove('hidden');
-}
-
-function closeSidebar() {
-    sidebar.classList.add('-translate-x-full');
-    sidebarOverlay.classList.add('hidden');
-}
-
-toggleBtn?.addEventListener('click', openSidebar);
-sidebarOverlay?.addEventListener('click', closeSidebar);
-document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && !sidebar.classList.contains('-translate-x-full')) {
-        closeSidebar();
-    }
-});
-
-window.addEventListener('resize', () => {
-    if (window.innerWidth >= 768) {
-        sidebar.classList.remove('-translate-x-full');
-        sidebarOverlay.classList.add('hidden');
-    } else {
-        if (!sidebar.classList.contains('-translate-x-full')) {
-            sidebar.classList.add('-translate-x-full');
+        } catch (error) {
+            console.error('Terjadi masalah saat mengambil data mata kuliah:', error);
+            const mataKuliahTableBody = document.getElementById('mata-kuliah-table-body');
+            if (mataKuliahTableBody) {
+                mataKuliahTableBody.innerHTML = '<tr><td colspan="6" class="text-center py-4">Gagal memuat data.</td></tr>';
+            }
+            if (totalSksElement) totalSksElement.textContent = 'Error';
+            if (totalBobotSksElement) totalBobotSksElement.textContent = 'Error';
+            if (totalIpkElement) totalIpkElement.textContent = 'Error';
         }
     }
-});
 
-document.querySelectorAll('#sidebar a:not(#sidebar > .space-y-2 > a)').forEach(link => {
-    link.addEventListener('click', () => {
-        if (window.innerWidth < 768) {
+    // Fungsi untuk memuat data KHS
+    async function fetchKHSData() {
+        const nim = localStorage.getItem('loggedInUserNim');
+        if (!nim) {
+            console.error("NIM tidak ditemukan di localStorage.");
+            return;
+        }
+
+        const url = `http://localhost/siakad_api/khs.php?nim=${nim}`;
+
+        try {
+            const response = await fetch(url);
+            if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+            const apiResponse = await response.json();
+            const data = apiResponse.data;
+
+            if (apiResponse.status === 'success') {
+                const semesterContainer = document.getElementById('semester-container');
+                if (semesterContainer) semesterContainer.innerHTML = ''; else return;
+
+                setText('#program-studi-khs', apiResponse.program_studi);
+                setText('#jenjang-studi-khs', apiResponse.jenjang_studi);
+
+                data.forEach((semester, index) => {
+                    const semesterDiv = document.createElement('div');
+                    semesterDiv.className = 'bg-gray-50 p-6 rounded-lg shadow-inner';
+
+                    let tableRows = '';
+                    semester.mata_kuliah.forEach(mk => {
+                        tableRows += `
+                            <tr class="bg-white border-b hover:bg-gray-50">
+                                <td class="py-3 px-4">${mk.kode_mk}</td>
+                                <td class="py-3 px-4">${mk.nama_mk}</td>
+                                <td class="py-3 px-4 text-center font-semibold">${mk.grade}</td>
+                                <td class="py-3 px-4 text-center">${mk.bobot}</td>
+                                <td class="py-3 px-4 text-center">${mk.sks}</td>
+                                <td class="py-3 px-4 text-center">${mk.bobot_sks}</td>
+                            </tr>
+                        `;
+                    });
+
+                    semesterDiv.innerHTML = `
+                        <h3 class="text-md font-semibold mb-4">Semester: ${index + 1}</h3>
+                        <div class="overflow-x-auto mb-4">
+                            <table class="w-full text-sm text-left text-gray-500">
+                                <thead class="text-xs text-white uppercase bg-blue-600 rounded-t-lg">
+                                    <tr>
+                                        <th scope="col" class="py-3 px-4 rounded-tl-lg">Kode MK</th>
+                                        <th scope="col" class="py-3 px-4">Mata Kuliah</th>
+                                        <th scope="col" class="py-3 px-4 text-center">Grade</th>
+                                        <th scope="col" class="py-3 px-4 text-center">Bobot</th>
+                                        <th scope="col" class="py-3 px-4 text-center">SKS</th>
+                                        <th scope="col" class="py-3 px-4 text-center rounded-tr-lg">Bobot x SKS</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    ${tableRows}
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="flex justify-end text-sm">
+                            <div class="text-right">
+                                <p class="font-bold">JUMLAH: ${semester.total_sks}</p>
+                                <p class="font-bold">IP SEMESTER: ${semester.ips}</p>
+                            </div>
+                        </div>
+                    `;
+                    semesterContainer.appendChild(semesterDiv);
+                });
+            }
+        } catch (error) {
+            console.error('Terjadi masalah saat mengambil data KHS:', error);
+            const semesterContainer = document.getElementById('semester-container');
+            if (semesterContainer) {
+                semesterContainer.innerHTML = '<p class="text-center text-red-500">Gagal memuat data KHS. Silakan coba lagi.</p>';
+            }
+        }
+    }
+
+    // Fungsi utama untuk memuat konten
+    function loadContent(url) {
+        const container = document.getElementById('main-content-container');
+        fetch(url)
+            .then(response => {
+                if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+                return response.text();
+            })
+            .then(data => {
+                container.innerHTML = data;
+                if (url.includes('mainpage.html')) {
+                    fetchDataAndPopulateForm();
+                    fetchIpkIpsData();
+                } else if (url.includes('profile.html')) {
+                    fetchDataAndPopulateForm();
+                } else if (url.includes('daftar_nilai_kumulatif.html')) {
+                    fetchMataKuliahData();
+                } else if (url.includes('kartu_hasil_studi.html')) {
+                    fetchKHSData();
+                }
+            })
+            .catch(error => console.error(`Error loading content from ${url}:`, error));
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+        loadContent('mainpage.html');
+        const berandaLink = document.getElementById('beranda-link');
+        berandaLink.classList.add('bg-blue-50', 'text-blue-900', 'font-semibold');
+        berandaLink.classList.remove('text-gray-700', 'hover:bg-gray-100');
+    });
+
+    // Event listener untuk navigasi
+    document.querySelectorAll('.nav-link').forEach(link => {
+        link.addEventListener('click', (e) => {
+            e.preventDefault();
+            const url = link.dataset.content;
+            loadContent(url);
+
+            document.querySelectorAll('.nav-link').forEach(nav => {
+                nav.classList.remove('bg-blue-50', 'text-blue-900', 'font-semibold');
+                nav.classList.add('text-gray-700', 'hover:bg-gray-100');
+            });
+            link.classList.add('bg-blue-50', 'text-blue-900', 'font-semibold');
+            link.classList.remove('text-gray-700', 'hover:bg-gray-100');
+        });
+    });
+
+    // Skrip untuk fungsionalitas sidebar
+    document.querySelectorAll('.sidebar-dropdown-toggle').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.preventDefault();
+            const submenu = btn.nextElementSibling;
+            const arrow = btn.querySelector('svg:last-child');
+            submenu.classList.toggle('hidden');
+            arrow.classList.toggle('rotate-90');
+        });
+    });
+
+    const sidebar = document.getElementById('sidebar');
+    const sidebarOverlay = document.getElementById('sidebarOverlay');
+    const toggleBtn = document.getElementById('toggleSidebar');
+
+    function openSidebar() {
+        sidebar.classList.remove('-translate-x-full');
+        sidebarOverlay.classList.remove('hidden');
+    }
+
+    function closeSidebar() {
+        sidebar.classList.add('-translate-x-full');
+        sidebarOverlay.classList.add('hidden');
+    }
+
+    toggleBtn?.addEventListener('click', openSidebar);
+    sidebarOverlay?.addEventListener('click', closeSidebar);
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && !sidebar.classList.contains('-translate-x-full')) {
             closeSidebar();
         }
     });
-});
-const logoutLink = document.getElementById('logout-link');
 
-if (logoutLink) {
-    logoutLink.addEventListener('click', (e) => {
-        e.preventDefault(); 
-        localStorage.removeItem('loggedInUserNim');
-        alert('Anda telah berhasil keluar.');
-        window.location.href = '/index.html';
+    window.addEventListener('resize', () => {
+        if (window.innerWidth >= 768) {
+            sidebar.classList.remove('-translate-x-full');
+            sidebarOverlay.classList.add('hidden');
+        } else {
+            if (!sidebar.classList.contains('-translate-x-full')) {
+                sidebar.classList.add('-translate-x-full');
+            }
+        }
     });
-}
+
+    document.querySelectorAll('#sidebar a:not(#sidebar > .space-y-2 > a)').forEach(link => {
+        link.addEventListener('click', () => {
+            if (window.innerWidth < 768) {
+                closeSidebar();
+            }
+        });
+    });
+    const logoutLink = document.getElementById('logout-link');
+
+    if (logoutLink) {
+        logoutLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            localStorage.removeItem('loggedInUserNim');
+            alert('Anda telah berhasil keluar.');
+            window.location.href = '/index.html';
+        });
+    }
 </script>
 </body>
 </html>

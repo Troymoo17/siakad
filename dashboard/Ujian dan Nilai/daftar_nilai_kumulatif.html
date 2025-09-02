@@ -19,15 +19,27 @@
             <table class="w-full text-left text-sm text-gray-500">
                 <thead class="text-xs text-white uppercase bg-blue-600 rounded-t-lg">
                     <tr>
-                        <th scope="col" class="py-3 px-6 rounded-tl-lg">Tahun Akademik</th>
+                        <th scope="col" class="py-3 px-6 rounded-tl-lg">Kode Mata Kuliah</th>
                         <th scope="col" class="py-3 px-6">Mata Kuliah</th>
-                        <th scope="col" class="py-3 px-6">SKS</th>
-                        <th scope="col" class="py-3 px-6">Nilai Angka</th>
-                        <th scope="col" class="py-3 px-6 rounded-tr-lg">Nilai Huruf</th>
+                        <th scope="col" class="py-3 px-6 text-center">Grade</th>
+                        <th scope="col" class="py-3 px-6 text-center">Bobot</th>
+                        <th scope="col" class="py-3 px-6 text-center">SKS</th>
+                        <th scope="col" class="py-3 px-6 text-center rounded-tr-lg">Bobot x SKS</th>
                     </tr>
                 </thead>
                 <tbody id="mata-kuliah-table-body">
                     </tbody>
+                <tfoot class="text-xs text-white uppercase bg-blue-600">
+                    <tr class="font-bold">
+                        <td colspan="4" class="py-3 px-6 text-right">JUMLAH</td>
+                        <td class="py-3 px-6 text-center" id="total-sks">0</td>
+                        <td class="py-3 px-6 text-center" id="total-bobot-sks">0</td>
+                    </tr>
+                    <tr class="font-bold">
+                        <td colspan="5" class="py-3 px-6 text-right">IPK TOTAL</td>
+                        <td class="py-3 px-6 text-center" id="total-ipk">0.00</td>
+                    </tr>
+                </tfoot>
             </table>
         </div>
     </div>
