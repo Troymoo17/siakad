@@ -145,14 +145,14 @@
                 setValue('#input-provinsi', mahasiswa.provinsi);
                 setValue('#input-negara', mahasiswa.kewarganegaraan);
                 setValue('#input-jenis-kelamin', mahasiswa.jenis_kelamin);
-                setValue('input-agama', mahasiswa.agama);
-                setValue('input-status', mahasiswa.status_pernikahan);
-                setValue('input-tempat-lahir', mahasiswa.tempat_lahir);
-                setValue('input-tanggal-lahir', mahasiswa.tanggal_lahir);
-                setValue('input-kewarganegaraan', mahasiswa.kewarganegaraan);
-                setValue('input-email', mahasiswa.email);
-                setValue('input-telp', mahasiswa.telp);
-                setValue('input-hp', mahasiswa.handphone);
+                setValue('#input-agama', mahasiswa.agama);
+                setValue('#input-status', mahasiswa.status_pernikahan);
+                setValue('#input-tempat-lahir', mahasiswa.tempat_lahir);
+                setValue('#input-tanggal-lahir', mahasiswa.tanggal_lahir);
+                setValue('#input-kewarganegaraan', mahasiswa.kewarganegaraan);
+                setValue('#input-email', mahasiswa.email);
+                setValue('#input-telp', mahasiswa.telp);
+                setValue('#input-hp', mahasiswa.handphone);
 
             } else {
                 console.warn("API returned no data.");
@@ -215,7 +215,7 @@
         }
     }
 
-     // Fungsi untuk memuat data mata kuliah
+    // Fungsi untuk memuat data mata kuliah
     async function fetchMataKuliahData() {
         const nim = localStorage.getItem('loggedInUserNim');
         if (!nim) {
@@ -227,9 +227,7 @@
 
         try {
             const response = await fetch(url);
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
+            if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
             const apiResponse = await response.json();
             const data = apiResponse.data;
 
@@ -239,8 +237,7 @@
             const totalIpkElement = document.getElementById('total-ipk');
 
             if (mataKuliahTableBody) {
-                mataKuliahTableBody.innerHTML = ''; // Bersihkan isi tabel
-
+                mataKuliahTableBody.innerHTML = '';
                 let totalSks = 0;
                 let totalBobotSks = 0;
 
@@ -279,6 +276,10 @@
         }
     }
 
+    
+    // Variabel global untuk menyimpan data KHS
+    let khsDataGlobal = [];
+
     // Fungsi untuk memuat data KHS
     async function fetchKHSData() {
         const nim = localStorage.getItem('loggedInUserNim');
@@ -291,71 +292,100 @@
 
         try {
             const response = await fetch(url);
-            if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
             const apiResponse = await response.json();
-            const data = apiResponse.data;
+            
+            if (apiResponse.status === 'success' && apiResponse.data.length > 0) {
+                khsDataGlobal = apiResponse.data; // Simpan data ke variabel global
 
-            if (apiResponse.status === 'success') {
-                const semesterContainer = document.getElementById('semester-container');
-                if (semesterContainer) semesterContainer.innerHTML = ''; else return;
-
-                setText('#program-studi-khs', apiResponse.program_studi);
-                setText('#jenjang-studi-khs', apiResponse.jenjang_studi);
-
-                data.forEach((semester, index) => {
-                    const semesterDiv = document.createElement('div');
-                    semesterDiv.className = 'bg-gray-50 p-6 rounded-lg shadow-inner';
-
-                    let tableRows = '';
-                    semester.mata_kuliah.forEach(mk => {
-                        tableRows += `
-                            <tr class="bg-white border-b hover:bg-gray-50">
-                                <td class="py-3 px-4">${mk.kode_mk}</td>
-                                <td class="py-3 px-4">${mk.nama_mk}</td>
-                                <td class="py-3 px-4 text-center font-semibold">${mk.grade}</td>
-                                <td class="py-3 px-4 text-center">${mk.bobot}</td>
-                                <td class="py-3 px-4 text-center">${mk.sks}</td>
-                                <td class="py-3 px-4 text-center">${mk.bobot_sks}</td>
-                            </tr>
-                        `;
+                document.getElementById('program-studi-khs').textContent = apiResponse.program_studi || 'Tidak tersedia';
+                document.getElementById('jenjang-studi-khs').textContent = apiResponse.jenjang_studi || 'Tidak tersedia';
+                
+                const semesterSelect = document.getElementById('semester-select');
+                if (semesterSelect) {
+                    semesterSelect.innerHTML = '';
+                    khsDataGlobal.forEach((semester, index) => {
+                        const option = document.createElement('option');
+                        option.value = index;
+                        option.textContent = `Semester ${index + 1}`;
+                        semesterSelect.appendChild(option);
                     });
 
-                    semesterDiv.innerHTML = `
-                        <h3 class="text-md font-semibold mb-4">Semester: ${index + 1}</h3>
-                        <div class="overflow-x-auto mb-4">
-                            <table class="w-full text-sm text-left text-gray-500">
-                                <thead class="text-xs text-white uppercase bg-blue-600 rounded-t-lg">
-                                    <tr>
-                                        <th scope="col" class="py-3 px-4 rounded-tl-lg">Kode MK</th>
-                                        <th scope="col" class="py-3 px-4">Mata Kuliah</th>
-                                        <th scope="col" class="py-3 px-4 text-center">Grade</th>
-                                        <th scope="col" class="py-3 px-4 text-center">Bobot</th>
-                                        <th scope="col" class="py-3 px-4 text-center">SKS</th>
-                                        <th scope="col" class="py-3 px-4 text-center rounded-tr-lg">Bobot x SKS</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    ${tableRows}
-                                </tbody>
-                            </table>
-                        </div>
-                        <div class="flex justify-end text-sm">
-                            <div class="text-right">
-                                <p class="font-bold">JUMLAH: ${semester.total_sks}</p>
-                                <p class="font-bold">IP SEMESTER: ${semester.ips}</p>
-                            </div>
-                        </div>
-                    `;
-                    semesterContainer.appendChild(semesterDiv);
-                });
+                    renderKHSData(0);
+
+                    semesterSelect.addEventListener('change', (e) => {
+                        renderKHSData(e.target.value);
+                    });
+                }
+            } else {
+                console.warn("API returned no data or an error.");
+                const container = document.getElementById('semester-card-container');
+                if(container) container.innerHTML = '<p class="text-center text-red-500">Tidak ada data KHS yang ditemukan.</p>';
             }
         } catch (error) {
             console.error('Terjadi masalah saat mengambil data KHS:', error);
-            const semesterContainer = document.getElementById('semester-container');
-            if (semesterContainer) {
-                semesterContainer.innerHTML = '<p class="text-center text-red-500">Gagal memuat data KHS. Silakan coba lagi.</p>';
-            }
+            const container = document.getElementById('semester-card-container');
+            if(container) container.innerHTML = '<p class="text-center text-red-500">Gagal memuat data KHS. Silakan coba lagi.</p>';
         }
+    }
+
+    // Fungsi untuk merender data KHS berdasarkan semester yang dipilih
+    function renderKHSData(semesterIndex) {
+        if (!khsDataGlobal || !khsDataGlobal[semesterIndex]) {
+            console.warn("Data KHS untuk semester ini tidak ditemukan.");
+            return;
+        }
+
+        const semester = khsDataGlobal[semesterIndex];
+        const container = document.getElementById('semester-card-container');
+        if (!container) return;
+        
+        container.innerHTML = '';
+
+        let tableRows = '';
+        semester.mata_kuliah.forEach(mk => {
+            tableRows += `
+                <tr class="bg-white border-b hover:bg-gray-50">
+                    <td class="py-3 px-4">${mk.kode_mk}</td>
+                    <td class="py-3 px-4">${mk.nama_mk}</td>
+                    <td class="py-3 px-4 text-center font-semibold">${mk.grade}</td>
+                    <td class="py-3 px-4 text-center">${mk.bobot}</td>
+                    <td class="py-3 px-4 text-center">${mk.sks}</td>
+                    <td class="py-3 px-4 text-center">${mk.bobot_sks}</td>
+                </tr>
+            `;
+        });
+
+        const semesterDiv = document.createElement('div');
+        semesterDiv.className = 'bg-gray-50 p-6 rounded-lg shadow-inner';
+        semesterDiv.innerHTML = `
+            <div class="overflow-x-auto mb-4">
+                <table class="w-full text-sm text-left text-gray-500">
+                    <thead class="text-xs text-white uppercase bg-blue-600 rounded-t-lg">
+                        <tr>
+                            <th scope="col" class="py-3 px-4 rounded-tl-lg">Kode MK</th>
+                            <th scope="col" class="py-3 px-4">Mata Kuliah</th>
+                            <th scope="col" class="py-3 px-4 text-center">Grade</th>
+                            <th scope="col" class="py-3 px-4 text-center">Bobot</th>
+                            <th scope="col" class="py-3 px-4 text-center">SKS</th>
+                            <th scope="col" class="py-3 px-4 text-center rounded-tr-lg">Bobot x SKS</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${tableRows}
+                    </tbody>
+                </table>
+            </div>
+            <div class="flex justify-end text-sm">
+                <div class="text-right">
+                    <p class="font-bold">JUMLAH: ${semester.total_sks}</p>
+                    <p class="font-bold">IP SEMESTER: ${semester.ips}</p>
+                </div>
+            </div>
+        `;
+        container.appendChild(semesterDiv);
     }
 
     // Fungsi utama untuk memuat konten
