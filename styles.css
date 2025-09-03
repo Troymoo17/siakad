@@ -1,0 +1,62 @@
+@import url('https://fonts.googleapis.com/css2?family=Fira+Sans:wght@400;600;700;800;900&display=swap');
+
+/* font global */
+body {
+    font-family: 'Fira Sans', sans-serif;
+}
+
+/* donut chart styles */
+.donut-chart {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background: conic-gradient(#0b66a5 0% 70%, #f0b341 70% 100%);
+    mask: radial-gradient(farthest-side, transparent 60%, white 60%);
+    -webkit-mask: radial-gradient(farthest-side, transparent 60%, white 60%);
+}
+
+/* message box styles */
+.message-box {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    padding: 24px;
+    z-index: 50;
+    width: 90%;
+    max-width: 400px;
+    text-align: center;
+    display: none;
+}
+
+.message-box.show {
+    display: block;
+}
+
+.message-box h3 {
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin-bottom: 8px;
+}
+
+.message-box p {
+    color: #4a5568;
+    margin-bottom: 16px;
+}
+
+.message-box button {
+    background-color: #4299e1;
+    color: #fff;
+    font-weight: 600;
+    padding: 8px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.message-box button:hover {
+    background-color: #3182ce;
+}

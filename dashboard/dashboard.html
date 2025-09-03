@@ -5,19 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Dashboard - Institut Widya Pratama</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <style>
-    .donut-chart {
-      width: 100%;
-      height: 100%;
-      border-radius: 50%;
-      background: conic-gradient(#0b66a5 0% 70%, #f0b341 70% 100%);
-      mask: radial-gradient(farthest-side, transparent 60%, white 60%);
-      -webkit-mask: radial-gradient(farthest-side, transparent 60%, white 60%);
-    }
-  </style>
+  <link rel="stylesheet" href="/styles.css">
 </head>
 <body class="bg-gray-50 min-h-screen flex flex-col font-sans">
-
   <button
     id="toggleSidebar"
     class="md:hidden block fixed top-3 left-3 z-50 p-2 bg-white rounded shadow-lg border border-gray-100"
@@ -28,7 +18,6 @@
     </svg>
   </button>
   <div id="sidebarOverlay" class="fixed inset-0 z-40 bg-black bg-opacity-40 hidden md:hidden"></div>
-
   <div class="flex flex-1 min-h-0 flex-col md:flex-row">
     <aside
       id="sidebar"
@@ -38,13 +27,11 @@
         <img src="/assets/logo.png" alt="Logo Institut Widya Pratama" class="w-16 h-14"/>
         <span class="font-bold text-lg text-blue-900">INSTITUT WIDYA PRATAMA</span>
       </div>
-
       <a href="#" class="nav-link bg-white border border-gray-200 rounded-xl shadow-sm mb-5 px-3 pt-3 pb-2 flex flex-col items-center" data-content="profile.html">
         <img src="/assets/22.240.0007.jpg" alt="Foto Pengguna" class="w-16 h-13 mb-1 rounded" />
         <div id="profile-nama" class="text-xs text-gray-500 mb-1 mt-1">Nama Pengguna</div>
         <div id="profile-nim" class="font-semibold text-blue-900 text-base mb-1">Nim/Nipy</div>
       </a>
-
       <nav class="flex-1 space-y-1 text-sm px-1">
         <a href="#" id="beranda-link" class="nav-link flex items-center space-x-2 py-2 px-3 rounded-lg text-gray-700 hover:bg-gray-100 transition duration-150" data-content="mainpage.html">
           <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0h6"/></svg>
@@ -84,7 +71,6 @@
 </a>
       </div>
     </aside>
-
     <div id="main-content-container" class="flex-1">
       </div>
   </div>
@@ -94,13 +80,11 @@
         const element = document.querySelector(selector);
         if (element) element.textContent = value || 'Tidak tersedia';
     };
-
     // Helper function untuk mengisi value pada elemen input
     const setValue = (selector, value) => {
         const element = document.querySelector(selector);
         if (element) element.value = value || '';
     };
-
     // Fungsi untuk memuat data mahasiswa dan mengisi form
     async function fetchDataAndPopulateForm() {
         const nim = localStorage.getItem('loggedInUserNim');
@@ -110,26 +94,21 @@
             setText('#profile-nim', 'Gagal memuat data');
             return;
         }
-
         const url = `http://localhost/siakad_api/mahasiswa.php?nim=${nim}`;
-
         try {
             const response = await fetch(url);
             if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
             const apiResponse = await response.json();
             const mahasiswa = apiResponse.data[0];
-
             if (mahasiswa) {
                 // Mengisi elemen di sidebar dan main profile
                 setText('#profile-nama', mahasiswa.nama);
                 setText('#profile-nim', mahasiswa.nim);
                 setText('#main-content-container #profile-nama-main', mahasiswa.nama);
                 setText('#main-content-container #profile-nim-main', mahasiswa.nim);
-
                 // Mengisi semua input di bagian detail
                 const imgElement = document.getElementById('profile-img');
                 if (imgElement) imgElement.src = `/assets/${mahasiswa.nim}.jpg`;
-
                 setValue('#input-nama-lengkap', mahasiswa.nama);
                 setValue('#input-nim', mahasiswa.nim);
                 setValue('#input-nik', mahasiswa.nik);
@@ -153,7 +132,6 @@
                 setValue('#input-email', mahasiswa.email);
                 setValue('#input-telp', mahasiswa.telp);
                 setValue('#input-hp', mahasiswa.handphone);
-
             } else {
                 console.warn("API returned no data.");
                 setText('#profile-nama', 'Data tidak ditemukan');
@@ -165,7 +143,6 @@
             setText('#profile-nim', 'Gagal memuat data');
         }
     }
-
     // Fungsi untuk memuat data IPS dan IPK
     async function fetchIpkIpsData() {
         const nim = localStorage.getItem('loggedInUserNim');
@@ -173,15 +150,12 @@
             console.error("NIM tidak ditemukan di localStorage. Pengguna tidak login.");
             return;
         }
-
         const url = `http://localhost/siakad_api/ipk_ips.php?nim=${nim}`;
-
         try {
             const response = await fetch(url);
             if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
             const apiResponse = await response.json();
             const data = apiResponse.data;
-
             if (data) {
                 const ipkValueElement = document.getElementById('main-page-ipk-value');
                 const ipkDonutElement = document.getElementById('ipk-donut');
@@ -190,11 +164,9 @@
                     const percentage = (parseFloat(data.ipk) / 4.00) * 100;
                     ipkDonutElement.style.background = `conic-gradient(#0b66a5 0% ${percentage}%, #f0b341 ${percentage}% 100%)`;
                 }
-
                 const totalSks = data.ips_per_semester.reduce((sum, semester) => sum + semester.total_sks, 0);
                 const sksElement = document.getElementById('main-page-sks');
                 if(sksElement) sksElement.textContent = totalSks;
-
                 const semesterElement = document.getElementById('main-page-semester');
                 const tahunAkademikElement = document.getElementById('main-page-tahun-akademik');
                 if (data.ips_per_semester.length > 0) {
@@ -214,7 +186,6 @@
             setText('#main-page-tahun-akademik', 'Error');
         }
     }
-
     // Fungsi untuk memuat data mata kuliah
     async function fetchMataKuliahData() {
         const nim = localStorage.getItem('loggedInUserNim');
@@ -222,25 +193,20 @@
             console.error("NIM tidak ditemukan di localStorage.");
             return;
         }
-
         const url = `http://localhost/siakad_api/nilai.php?nim=${nim}`;
-
         try {
             const response = await fetch(url);
             if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
             const apiResponse = await response.json();
             const data = apiResponse.data;
-
             const mataKuliahTableBody = document.getElementById('mata-kuliah-table-body');
             const totalSksElement = document.getElementById('total-sks');
             const totalBobotSksElement = document.getElementById('total-bobot-sks');
             const totalIpkElement = document.getElementById('total-ipk');
-
             if (mataKuliahTableBody) {
                 mataKuliahTableBody.innerHTML = '';
                 let totalSks = 0;
                 let totalBobotSks = 0;
-
                 data.forEach(mk => {
                     const row = document.createElement('tr');
                     row.className = 'bg-white border-b hover:bg-gray-50';
@@ -253,14 +219,11 @@
                         <td class="py-3 px-6 text-center">${mk.bobot_sks}</td>
                     `;
                     mataKuliahTableBody.appendChild(row);
-                    
                     totalSks += parseInt(mk.sks);
                     totalBobotSks += parseFloat(mk.bobot_sks);
                 });
-
                 if (totalSksElement) totalSksElement.textContent = totalSks;
                 if (totalBobotSksElement) totalBobotSksElement.textContent = Math.round(totalBobotSks);
-                
                 const ipk = totalSks > 0 ? (totalBobotSks / totalSks).toFixed(2) : '0.00';
                 if (totalIpkElement) totalIpkElement.textContent = ipk;
             }
@@ -275,11 +238,8 @@
             if (totalIpkElement) totalIpkElement.textContent = 'Error';
         }
     }
-
-    
     // Variabel global untuk menyimpan data KHS
     let khsDataGlobal = [];
-
     // Fungsi untuk memuat data KHS
     async function fetchKHSData() {
         const nim = localStorage.getItem('loggedInUserNim');
@@ -287,22 +247,17 @@
             console.error("NIM tidak ditemukan di localStorage.");
             return;
         }
-
         const url = `http://localhost/siakad_api/khs.php?nim=${nim}`;
-
         try {
             const response = await fetch(url);
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
             const apiResponse = await response.json();
-            
             if (apiResponse.status === 'success' && apiResponse.data.length > 0) {
                 khsDataGlobal = apiResponse.data; // Simpan data ke variabel global
-
                 document.getElementById('program-studi-khs').textContent = apiResponse.program_studi || 'Tidak tersedia';
                 document.getElementById('jenjang-studi-khs').textContent = apiResponse.jenjang_studi || 'Tidak tersedia';
-                
                 const semesterSelect = document.getElementById('semester-select');
                 if (semesterSelect) {
                     semesterSelect.innerHTML = '';
@@ -312,9 +267,7 @@
                         option.textContent = `Semester ${index + 1}`;
                         semesterSelect.appendChild(option);
                     });
-
                     renderKHSData(0);
-
                     semesterSelect.addEventListener('change', (e) => {
                         renderKHSData(e.target.value);
                     });
@@ -330,20 +283,16 @@
             if(container) container.innerHTML = '<p class="text-center text-red-500">Gagal memuat data KHS. Silakan coba lagi.</p>';
         }
     }
-
     // Fungsi untuk merender data KHS berdasarkan semester yang dipilih
     function renderKHSData(semesterIndex) {
         if (!khsDataGlobal || !khsDataGlobal[semesterIndex]) {
             console.warn("Data KHS untuk semester ini tidak ditemukan.");
             return;
         }
-
         const semester = khsDataGlobal[semesterIndex];
         const container = document.getElementById('semester-card-container');
         if (!container) return;
-        
         container.innerHTML = '';
-
         let tableRows = '';
         semester.mata_kuliah.forEach(mk => {
             tableRows += `
@@ -357,7 +306,6 @@
                 </tr>
             `;
         });
-
         const semesterDiv = document.createElement('div');
         semesterDiv.className = 'bg-gray-50 p-6 rounded-lg shadow-inner';
         semesterDiv.innerHTML = `
@@ -387,7 +335,6 @@
         `;
         container.appendChild(semesterDiv);
     }
-
     // Fungsi utama untuk memuat konten
     function loadContent(url) {
         const container = document.getElementById('main-content-container');
@@ -411,21 +358,18 @@
             })
             .catch(error => console.error(`Error loading content from ${url}:`, error));
     }
-
     document.addEventListener("DOMContentLoaded", () => {
         loadContent('mainpage.html');
         const berandaLink = document.getElementById('beranda-link');
         berandaLink.classList.add('bg-blue-50', 'text-blue-900', 'font-semibold');
         berandaLink.classList.remove('text-gray-700', 'hover:bg-gray-100');
     });
-
     // Event listener untuk navigasi
     document.querySelectorAll('.nav-link').forEach(link => {
         link.addEventListener('click', (e) => {
             e.preventDefault();
             const url = link.dataset.content;
             loadContent(url);
-
             document.querySelectorAll('.nav-link').forEach(nav => {
                 nav.classList.remove('bg-blue-50', 'text-blue-900', 'font-semibold');
                 nav.classList.add('text-gray-700', 'hover:bg-gray-100');
@@ -434,7 +378,6 @@
             link.classList.remove('text-gray-700', 'hover:bg-gray-100');
         });
     });
-
     // Skrip untuk fungsionalitas sidebar
     document.querySelectorAll('.sidebar-dropdown-toggle').forEach(btn => {
         btn.addEventListener('click', (e) => {
@@ -445,21 +388,17 @@
             arrow.classList.toggle('rotate-90');
         });
     });
-
     const sidebar = document.getElementById('sidebar');
     const sidebarOverlay = document.getElementById('sidebarOverlay');
     const toggleBtn = document.getElementById('toggleSidebar');
-
     function openSidebar() {
         sidebar.classList.remove('-translate-x-full');
         sidebarOverlay.classList.remove('hidden');
     }
-
     function closeSidebar() {
         sidebar.classList.add('-translate-x-full');
         sidebarOverlay.classList.add('hidden');
     }
-
     toggleBtn?.addEventListener('click', openSidebar);
     sidebarOverlay?.addEventListener('click', closeSidebar);
     document.addEventListener('keydown', (e) => {
@@ -467,7 +406,6 @@
             closeSidebar();
         }
     });
-
     window.addEventListener('resize', () => {
         if (window.innerWidth >= 768) {
             sidebar.classList.remove('-translate-x-full');
@@ -478,7 +416,6 @@
             }
         }
     });
-
     document.querySelectorAll('#sidebar a:not(#sidebar > .space-y-2 > a)').forEach(link => {
         link.addEventListener('click', () => {
             if (window.innerWidth < 768) {
@@ -487,7 +424,6 @@
         });
     });
     const logoutLink = document.getElementById('logout-link');
-
     if (logoutLink) {
         logoutLink.addEventListener('click', (e) => {
             e.preventDefault();

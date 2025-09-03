@@ -1,78 +1,19 @@
 <!DOCTYPE html>
 <html lang="id">
-
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>SIAKAD Institut Widya Pratama Pekalongan</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap');
-
-    body {
-      font-family: 'Inter', sans-serif;
-    }
-
-    /* Custom styles for the message box */
-    .message-box {
-      position: fixed;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      background-color: #fff;
-      border-radius: 8px;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-      padding: 24px;
-      z-index: 50;
-      width: 90%;
-      max-width: 400px;
-      text-align: center;
-      display: none;
-      /* Hidden by default */
-    }
-
-    .message-box.show {
-      display: block;
-    }
-
-    .message-box h3 {
-      font-size: 1.25rem;
-      font-weight: 700;
-      margin-bottom: 8px;
-    }
-
-    .message-box p {
-      color: #4a5568;
-      margin-bottom: 16px;
-    }
-
-    .message-box button {
-      background-color: #4299e1;
-      color: #fff;
-      font-weight: 600;
-      padding: 8px 16px;
-      border-radius: 6px;
-      cursor: pointer;
-      transition: background-color 0.2s;
-    }
-
-    .message-box button:hover {
-      background-color: #3182ce;
-    }
-  </style>
+  <link rel="stylesheet" href="/styles.css">
 </head>
-
 <body class="min-h-screen bg-blue-500 overflow-x-hidden flex flex-col items-center justify-start md:justify-center relative">
-
   <div class="absolute bottom-0 left-0 w-full h-[30vh] bg-white z-0"></div>
-
   <div class="w-full flex flex-col items-center md:flex-row md:items-stretch md:justify-center relative z-10">
-
     <div class="relative w-full md:w-2/5 flex flex-col items-center md:items-start md:justify-center pt-6 md:pt-0 z-0">
       <div class="relative w-full max-w-xs sm:max-w-md mx-auto md:-translate-x-48 md:-translate-y-28">
         <img src="assets/logo_only.png" alt="Logo Widya Pratama" class="block md:hidden absolute left-1/2 top-1/2 w-40 sm:w-56 -translate-x-1/2 -translate-y-1/2 opacity-30 pointer-events-none select-none z-0" />
         <img src="assets/logo_only.png" alt="Logo Widya Pratama" class="hidden md:block absolute top-1/2 left-0 -translate-y-1/2 w-[451px] select-none pointer-events-none z-0" />
-
         <div class="relative z-10 bg-transparent p-4 md:p-0 rounded-lg md:rounded-none w-full text-white md:text-left text-center">
           <h1 class="font-extrabold text-xl sm:text-3xl md:text-5xl leading-tight drop-shadow max-w-full md:max-w-[260px]">
             SISTEM INFORMASI<br />
@@ -85,7 +26,6 @@
         </div>
       </div>
     </div>
-
     <div class="w-full md:w-[540px] flex justify-center mt-6 md:mt-0 z-10">
       <div class="relative w-[98%] sm:w-[510px] max-w-lg bg-white shadow-xl rounded-xl p-6 sm:p-12 mx-auto">
         <div class="flex flex-col items-center mb-6">
@@ -117,13 +57,11 @@
       </div>
     </div>
   </div>
-
   <div id="messageBox" class="message-box">
     <h3 id="messageTitle" class="font-bold"></h3>
     <p id="messageText"></p>
     <button id="messageClose">Tutup</button>
   </div>
-
   <script>
     document.addEventListener('DOMContentLoaded', () => {
       const loginForm = document.getElementById('loginForm');
@@ -134,47 +72,36 @@
       const messageTitle = document.getElementById('messageTitle');
       const messageText = document.getElementById('messageText');
       const messageCloseBtn = document.getElementById('messageClose');
-
       function showMessage(title, message) {
         messageTitle.textContent = title;
         messageText.textContent = message;
         messageBox.classList.add('show');
       }
-
       function hideMessage() {
         messageBox.classList.remove('show');
       }
-
       messageCloseBtn.addEventListener('click', hideMessage);
-
       loginForm.addEventListener('submit', async (e) => {
         e.preventDefault();
-
         const nim = userIdInput.value;
         const password = passwordInput.value;
         const role = roleSelect.value.toLowerCase();
-
         if (role !== 'mahasiswa') {
           showMessage('Login Gagal', 'Fitur login untuk peran ini belum tersedia.');
           return;
         }
-
         const formData = new FormData();
         formData.append('nim', nim);
         formData.append('password', password);
-
         try {
           const response = await fetch('http://localhost/siakad_api/login.php', {
             method: 'POST',
             body: formData
           });
-
           if (!response.ok) {
             throw new Error('Gagal terhubung ke server.');
           }
-
           const apiResponse = await response.json();
-
           if (apiResponse.status === 'success') {
   showMessage('Login Berhasil', apiResponse.message);
   localStorage.setItem('loggedInUserNim', apiResponse.data.nim);
@@ -190,5 +117,4 @@
     });
   </script>
 </body>
-
 </html>
