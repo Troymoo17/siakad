@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jadwal Kuliah</title>
+</head>
+<body>
+    <main class="flex-1 p-4 md:p-6 lg:p-8">
+    <div class="flex flex-col md:flex-row md:items-center justify-between mb-6 space-y-2 md:space-y-0">
+        <div>
+            <h1 id="jadwal-kuliah-header" class="text-xl md:text-2xl font-bold text-gray-800">Jadwal Kuliah</h1>
+            <p id="jadwal-kuliah-meta" class="text-xs text-gray-500 mt-1"></p>
+        </div>
+        <div class="text-sm text-gray-600 space-y-1 md:text-right">
+            <p id="program-studi-meta"></p>
+            <p id="jenjang-studi-meta"></p>
+        </div>
+    </div>
+    
+    <div class="bg-white p-6 md:p-8 rounded-xl shadow-lg">
+        <div class="overflow-x-auto">
+            <table class="w-full text-sm text-left text-gray-700">
+                <thead class="text-xs text-white uppercase bg-blue-600">
+                    <tr>
+                        <th scope="col" class="py-3 px-4 rounded-tl-lg whitespace-nowrap">Hari</th>
+                        <th scope="col" class="py-3 px-4 whitespace-nowrap">Jam Mulai</th>
+                        <th scope="col" class="py-3 px-4 whitespace-nowrap">Jam Selesai</th>
+                        <th scope="col" class="py-3 px-4 whitespace-nowrap">Ruang</th>
+                        <th scope="col" class="py-3 px-4 whitespace-nowrap">Kode Matkul</th>
+                        <th scope="col" class="py-3 px-4 whitespace-nowrap">Matkul</th>
+                        <th scope="col" class="py-3 px-4 whitespace-nowrap">Dosen</th>
+                        <th scope="col" class="py-3 px-4 whitespace-nowrap">Jenis</th>
+                        <th scope="col" class="py-3 px-4 whitespace-nowrap">Kelas</th>
+                        <th scope="col" class="py-3 px-4 rounded-tr-lg whitespace-nowrap">Goggle Classroom ID</th>
+                    </tr>
+                </thead>
+                <tbody id="jadwal-kuliah-table-body">
+                    <tr><td colspan="10" class="text-center py-4 text-gray-500">Memuat jadwal...</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</main>
+</body>
+</html>
