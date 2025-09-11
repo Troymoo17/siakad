@@ -37,10 +37,20 @@
           <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0h6"/></svg>
           <span>Beranda</span>
         </a>
-        <a href="#" class="nav-link flex items-center space-x-2 py-2 px-3 rounded-lg text-gray-700 hover:bg-gray-100 transition duration-150" data-content="registrasi.html">
-          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
-          <span>Registrasi</span>
+        <a href="#" class="sidebar-dropdown-toggle flex items-center justify-between py-2 px-3 rounded-lg text-gray-700 hover:bg-gray-100 transition duration-150">
+          <div class="flex items-center space-x-2">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.484 9.352 5 7.636 5H4.25c-1.243 0-2.25 1.007-2.25 2.25v10.5c0 1.243 1.007 2.25 2.25 2.25h3.386c1.716 0 3.196.484 4.364 1.253m0-13C13.168 5.484 14.648 5 16.364 5h3.386c1.243 0 2.25 1.007 2.25 2.25v10.5c0 1.243-1.007 2.25-2.25 2.25h-3.386c-1.716 0-3.196-.484-4.364-1.253" /></svg>
+            <span>Registrasi</span>
+          </div>
+          <svg class="w-4 h-4 ml-auto transform transition-transform duration-200 rotate-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+          </svg>
         </a>
+        <div class="submenu hidden space-y-1 pl-6 pt-1">
+          <a href="#" class="nav-link flex items-center space-x-2 py-2 px-3 rounded-lg text-gray-700 hover:bg-gray-100 transition duration-150" data-content="/dashboard/Registrasi/krs.html">
+            <span>Kartu Rencana Studi</span>
+          </a>
+        </div>
 
         <a href="#" class="sidebar-dropdown-toggle flex items-center justify-between py-2 px-3 rounded-lg text-gray-700 hover:bg-gray-100 transition duration-150">
           <div class="flex items-center space-x-2">
@@ -484,7 +494,163 @@
             tableBody.appendChild(row);
         });
     }
-    // Fungsi utama untuk memuat konten
+    // Fungsi untuk memuat data kehadiran
+    async function fetchKehadiranSummaryData() {
+        const nim = localStorage.getItem('loggedInUserNim');
+        if (!nim) {
+            console.error("NIM tidak ditemukan.");
+            document.getElementById('kehadiran-table-body').innerHTML = '<tr><td colspan="5" class="text-center py-4 text-gray-500">Data mahasiswa tidak tersedia.</td></tr>';
+            return;
+        }
+
+        const url = `http://localhost/siakad_api/kehadiran.php?nim=${nim}`;
+        try {
+            const response = await fetch(url);
+            if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+            const apiResponse = await response.json();
+            
+            const tableBody = document.getElementById('kehadiran-table-body');
+            tableBody.innerHTML = '';
+            if (apiResponse.status === 'success' && apiResponse.data.length > 0) {
+                apiResponse.data.forEach(item => {
+                    const row = document.createElement('tr');
+                    row.className = 'bg-white border-b hover:bg-gray-50';
+                    row.innerHTML = `
+                        <td class="py-3 px-6">${item.mata_kuliah}</td>
+                        <td class="py-3 px-6 text-center font-semibold text-green-600">${item.hadir}</td>
+                        <td class="py-3 px-6 text-center font-semibold text-yellow-600">${item.izin}</td>
+                        <td class="py-3 px-6 text-center font-semibold text-red-600">${item.sakit}</td>
+                        <td class="py-3 px-6 text-center">
+                            <button onclick="showKehadiranDetail('${item.kode_mk}', '${item.mata_kuliah}')" class="text-blue-600 hover:underline">Detail</button>
+                        </td>
+                    `;
+                    tableBody.appendChild(row);
+                });
+            } else {
+                tableBody.innerHTML = '<tr><td colspan="5" class="text-center py-4 text-gray-500">Tidak ada data kehadiran yang ditemukan.</td></tr>';
+            }
+        } catch (error) {
+            console.error('Terjadi masalah saat mengambil data kehadiran:', error);
+            document.getElementById('kehadiran-table-body').innerHTML = '<tr><td colspan="5" class="text-center py-4 text-gray-500">Gagal memuat data kehadiran.</td></tr>';
+        }
+    }
+    
+    // Fungsi untuk memuat data detail kehadiran
+    async function showKehadiranDetail(kode_mk, mata_kuliah) {
+        const nim = localStorage.getItem('loggedInUserNim');
+        if (!nim) return;
+
+        const container = document.getElementById('main-content-container');
+        await fetch('/dashboard/Perkuliahan/detailKehadiran.html')
+            .then(response => response.text())
+            .then(data => {
+                container.innerHTML = data;
+                document.getElementById('detail-mk-name').textContent = `Mata Kuliah: ${mata_kuliah}`;
+
+                const url = `http://localhost/siakad_api/kehadiran_detail.php?nim=${nim}&kode_mk=${kode_mk}`;
+                fetch(url)
+                    .then(response => response.json())
+                    .then(apiResponse => {
+                        const tableBody = document.getElementById('kehadiran-detail-table-body');
+                        tableBody.innerHTML = '';
+                        if (apiResponse.status === 'success' && apiResponse.data.length > 0) {
+                            apiResponse.data.forEach(item => {
+                                const row = document.createElement('tr');
+                                row.className = 'bg-white border-b hover:bg-gray-50';
+                                row.innerHTML = `
+                                    <td class="py-3 px-6 whitespace-nowrap">${item.pertemuan}</td>
+                                    <td class="py-3 px-6 whitespace-nowrap">${item.tanggal}</td>
+                                    <td class="py-3 px-6">${item.dosen}</td>
+                                    <td class="py-3 px-6 text-center">${item.status}</td>
+                                `;
+                                tableBody.appendChild(row);
+                            });
+                        } else {
+                            tableBody.innerHTML = '<tr><td colspan="4" class="text-center py-4 text-gray-500">Tidak ada detail kehadiran yang ditemukan.</td></tr>';
+                        }
+                    });
+            });
+    }
+    // Fungsi untuk memuat data KRS
+    async function fetchKRSData() {
+        if (!globalMahasiswaData) {
+            await fetchDataAndPopulateForm();
+        }
+        
+        const nim = globalMahasiswaData?.nim;
+        const semester = globalMahasiswaData?.semester_sekarang;
+        if (!nim || !semester) {
+            console.error("NIM atau semester tidak ditemukan.");
+            document.getElementById('krs-table-body').innerHTML = '<tr><td colspan="5" class="text-center py-4 text-gray-500">Data mahasiswa tidak tersedia.</td></tr>';
+            return;
+        }
+
+        document.getElementById('krs-semester').textContent = semester;
+        const url = `http://localhost/siakad_api/krs.php?nim=${nim}&semester=${semester}`;
+        
+        try {
+            const response = await fetch(url);
+            if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+            const apiResponse = await response.json();
+            
+            const tableBody = document.getElementById('krs-table-body');
+            tableBody.innerHTML = '';
+            if (apiResponse.status === 'success' && apiResponse.mata_kuliah_tersedia.length > 0) {
+                apiResponse.mata_kuliah_tersedia.forEach(mk => {
+                    const isChecked = apiResponse.krs_terisi.includes(mk.kode_mk) ? 'checked' : '';
+                    const row = document.createElement('tr');
+                    row.className = 'bg-white border-b hover:bg-gray-50';
+                    row.innerHTML = `
+                        <td class="py-3 px-6 text-center">
+                            <input type="checkbox" name="mata_kuliah[]" value="${mk.kode_mk}" ${isChecked}>
+                        </td>
+                        <td class="py-3 px-6">${mk.kode_mk}</td>
+                        <td class="py-3 px-6">${mk.nama_mk}</td>
+                        <td class="py-3 px-6 text-center">${mk.sks}</td>
+                        <td class="py-3 px-6 text-center">${semester}</td>
+                    `;
+                    tableBody.appendChild(row);
+                });
+
+                document.getElementById('krsForm').addEventListener('submit', async (e) => {
+                    e.preventDefault();
+                    const formData = new FormData(e.target);
+                    const selectedCourses = formData.getAll('mata_kuliah[]');
+                    
+                    const postPromises = selectedCourses.map(kode_mk => {
+                        const postData = new FormData();
+                        postData.append('nim', nim);
+                        postData.append('semester', semester);
+                        postData.append('kode_mk', kode_mk);
+                        return fetch('http://localhost/siakad_api/krs.php', {
+                            method: 'POST',
+                            body: postData
+                        });
+                    });
+                    
+                    try {
+                        const responses = await Promise.all(postPromises);
+                        const allSuccess = responses.every(res => res.ok);
+                        if (allSuccess) {
+                            alert('KRS berhasil disimpan!');
+                        } else {
+                            alert('Gagal menyimpan KRS. Silakan coba lagi.');
+                        }
+                    } catch (error) {
+                        alert('Terjadi kesalahan saat menyimpan KRS.');
+                        console.error('Error saving KRS:', error);
+                    }
+                });
+            } else {
+                tableBody.innerHTML = '<tr><td colspan="5" class="text-center py-4 text-gray-500">Tidak ada mata kuliah yang tersedia.</td></tr>';
+            }
+        } catch (error) {
+            console.error('Terjadi masalah saat mengambil data KRS:', error);
+            document.getElementById('krs-table-body').innerHTML = '<tr><td colspan="5" class="text-center py-4 text-gray-500">Gagal memuat data mata kuliah.</td></tr>';
+        }
+    }
+
+    // loadContent
     function loadContent(url) {
         const container = document.getElementById('main-content-container');
         fetch(url)
@@ -503,10 +669,15 @@
                     fetchMataKuliahData();
                 } else if (url.includes('kartu_hasil_studi.html')) {
                     fetchKHSData();
-                } else if (url.includes('jadwalUjian.html')) { 
+                } else if (url.includes('jadwalUjian.html')) {
                     fetchJadwalUjian();
                 } else if (url.includes('jadwalKuliah.html')) {
                     fetchJadwalKuliah();
+                } else if (url.includes('kehadiran.html')) {
+                    fetchKehadiranSummaryData(); 
+                } else if (url.includes('krs.html')) {
+                    fetchDataAndPopulateForm();
+                    fetchKRSData();
                 }
             })
             .catch(error => console.error(`Error loading content from ${url}:`, error));
