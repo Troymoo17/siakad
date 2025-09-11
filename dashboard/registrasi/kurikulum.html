@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Kurikulum</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Fira+Sans:wght@400;600;700;800;900&display=swap');
+        body { font-family: 'Fira Sans', sans-serif; }
+    </style>
+</head>
+<body>
+    <main class="flex-1 p-4 md:p-6 lg:p-8">
+    <header class="flex justify-between items-center mb-6">
+        <h1 class="text-xl md:text-2xl font-bold text-gray-800">Registrasi</h1>
+    </header>
+    <div class="bg-white rounded-lg shadow-md overflow-hidden">
+        <div class="p-4 md:p-6 border-b border-gray-200">
+            <h2 class="font-bold text-lg">Daftar Kurikulum</h2>
+            <p id="semester-info" class="text-sm text-gray-500 mt-1"></p>
+        </div>
+        <div class="overflow-x-auto">
+            <table class="w-full text-left text-sm text-gray-500">
+                <thead class="text-xs text-white uppercase bg-blue-600 rounded-t-lg">
+                    <tr>
+                        <th scope="col" class="py-3 px-6 rounded-tl-lg">Kode Matkul</th>
+                        <th scope="col" class="py-3 px-6">Mata Kuliah</th>
+                        <th scope="col" class="py-3 px-6 text-center">SKS</th>
+                        <th scope="col" class="py-3 px-6 text-center">Wajib/Pilihan</th>
+                        <th scope="col" class="py-3 px-6 text-center">IPK Min</th>
+                        <th scope="col" class="py-3 px-6 text-center">SKS Min</th>
+                        <th scope="col" class="py-3 px-6 text-center">Grade Min</th>
+                        <th scope="col" class="py-3 px-6 rounded-tr-lg">Matkul Prasyarat</th>
+                    </tr>
+                </thead>
+                <tbody id="kurikulum-table-body">
+                    <tr><td colspan="8" class="text-center py-4 text-gray-500">Memuat data...</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</main>     
+</body>
+</html>

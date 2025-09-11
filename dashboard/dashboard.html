@@ -47,8 +47,14 @@
           </svg>
         </a>
         <div class="submenu hidden space-y-1 pl-6 pt-1">
+            <a href="#" class="nav-link flex items-center space-x-2 py-2 px-3 rounded-lg text-gray-700 hover:bg-gray-100 transition duration-150" data-content="/dashboard/Registrasi/kurikulum.html">
+            <span>Kurikulum</span>
+          </a>
           <a href="#" class="nav-link flex items-center space-x-2 py-2 px-3 rounded-lg text-gray-700 hover:bg-gray-100 transition duration-150" data-content="/dashboard/Registrasi/krs.html">
             <span>Kartu Rencana Studi</span>
+          </a>
+          <a href="#" class="nav-link flex items-center space-x-2 py-2 px-3 rounded-lg text-gray-700 hover:bg-gray-100 transition duration-150" data-content="/dashboard/Registrasi/kmk.html">
+            <span>Kartu Mata Kuliah</span>
           </a>
         </div>
 
@@ -186,7 +192,6 @@
         }
 
         const url = `http://localhost/siakad_api/ipk_ips.php?nim=${nim}`;
-
         try {
             const response = await fetch(url);
             if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
@@ -650,7 +655,121 @@
         }
     }
 
-    // loadContent
+    // Fungsi untuk memuat data kurikulum
+    async function fetchKurikulumData() {
+        const nim = localStorage.getItem('loggedInUserNim');
+        const tableBody = document.getElementById('kurikulum-table-body');
+        
+        if (!globalMahasiswaData) {
+            await fetchDataAndPopulateForm();
+        }
+        const semesterSekarang = globalMahasiswaData?.semester_sekarang;
+
+        if (!nim) {
+            const tableBody = document.getElementById('kurikulum-table-body');
+            if (tableBody) {
+                tableBody.innerHTML = '<tr><td colspan="8" class="text-center py-4">NIM tidak ditemukan. Silakan login terlebih dahulu.</td></tr>';
+            }
+            return;
+        }
+        const semesterText = semesterSekarang ? `Semester ${semesterSekarang}` : `semester saat ini`;
+        const semesterInfoElement = document.getElementById('semester-info');
+        if(semesterInfoElement) {
+             semesterInfoElement.textContent = `Menampilkan mata kuliah kurikulum yang tersedia untuk ${semesterText}.`;
+        }
+        
+        const url = `http://localhost/siakad_api/kurikulum.php?nim=${nim}`;
+        try {
+            const response = await fetch(url);
+            if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+            const apiResponse = await response.json();
+            
+            if (apiResponse.status === 'success' && apiResponse.data.length > 0) {
+                tableBody.innerHTML = '';
+                apiResponse.data.forEach(item => {
+                    const row = document.createElement('tr');
+                    row.className = 'bg-white border-b hover:bg-gray-50';
+                    row.innerHTML = `
+                        <td class="py-3 px-6 whitespace-nowrap">${item.kode_mk}</td>
+                        <td class="py-3 px-6">${item.nama_mk}</td>
+                        <td class="py-3 px-6 text-center">${item.sks}</td>
+                        <td class="py-3 px-6 text-center">${item.status}</td>
+                        <td class="py-3 px-6 text-center">${item.ipk_min}</td>
+                        <td class="py-3 px-6 text-center">${item.sks_min}</td>
+                        <td class="py-3 px-6 text-center">${item.grade_min}</td>
+                        <td class="py-3 px-6">${item.mk_persyaratan || '-'}</td>
+                    `;
+                    tableBody.appendChild(row);
+                });
+            } else {
+                tableBody.innerHTML = '<tr><td colspan="8" class="text-center py-4">Tidak ada data kurikulum untuk semester ini.</td></tr>';
+            }
+        } catch (error) {
+            console.error('Terjadi masalah saat mengambil data kurikulum:', error);
+            tableBody.innerHTML = '<tr><td colspan="8" class="text-center py-4">Gagal memuat data. Silakan coba lagi.</td></tr>';
+        }
+    }
+
+    // Fungsi untuk memuat dan merender kartu mata kuliah
+    async function fetchAndRenderKartuMataKuliah() {
+        const nim = localStorage.getItem('loggedInUserNim');
+        if (!nim) {
+            console.error("NIM tidak ditemukan di localStorage.");
+            return;
+        }
+
+        // Ambil data mahasiswa
+        const urlMahasiswa = `http://localhost/siakad_api/mahasiswa.php?nim=${nim}`;
+        let semesterSekarang = null;
+        try {
+            const response = await fetch(urlMahasiswa);
+            if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+            const apiResponse = await response.json();
+            if (apiResponse.status === 'success' && apiResponse.data.length > 0) {
+                const mhs = apiResponse.data[0];
+                document.getElementById('mahasiswa-nim').textContent = mhs.nim;
+                document.getElementById('mahasiswa-nama').textContent = mhs.nama;
+                document.getElementById('mahasiswa-prodi').textContent = mhs.prodi;
+                document.getElementById('mahasiswa-jenjang').textContent = mhs.program;
+                document.getElementById('semester-sekarang').textContent = mhs.semester_sekarang;
+            }
+        } catch (error) {
+            console.error('Gagal mengambil data mahasiswa:', error);
+            return;
+        }
+
+        // Ambil data mata kuliah
+        const urlMatakuliah = `http://localhost/siakad_api/matakuliah.php?nim=${nim}`;
+        try {
+            const response = await fetch(urlMatakuliah);
+            if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+            const apiResponse = await response.json();
+            const tableBody = document.getElementById('mata-kuliah-table-body');
+            
+            document.getElementById('semester-sekarang').textContent = apiResponse.semester || 'Tidak tersedia';
+            tableBody.innerHTML = '';
+            if (apiResponse.status === 'success' && apiResponse.data.length > 0) {
+                apiResponse.data.forEach(mk => {
+                    const row = document.createElement('tr');
+                    row.className = 'bg-white border-b hover:bg-gray-50';
+                    row.innerHTML = `
+                        <td class="py-3 px-4 whitespace-nowrap">${mk.kode_mk}</td>
+                        <td class="py-3 px-4">${mk.nama_mk}</td>
+                        <td class="py-3 px-4 text-center">${mk.sks}</td>
+                    `;
+                    tableBody.appendChild(row);
+                });
+            } else {
+                tableBody.innerHTML = '<tr><td colspan="3" class="text-center py-4">Tidak ada mata kuliah untuk semester ini.</td></tr>';
+            }
+        } catch (error) {
+            console.error('Gagal mengambil data mata kuliah:', error);
+            document.getElementById('mata-kuliah-table-body').innerHTML = '<tr><td colspan="3" class="text-center py-4">Gagal memuat data.</td></tr>';
+        }
+    }
+
+
+    // Fungsi utama untuk memuat konten
     function loadContent(url) {
         const container = document.getElementById('main-content-container');
         fetch(url)
@@ -669,7 +788,7 @@
                     fetchMataKuliahData();
                 } else if (url.includes('kartu_hasil_studi.html')) {
                     fetchKHSData();
-                } else if (url.includes('jadwalUjian.html')) {
+                } else if (url.includes('jadwalUjian.html')) { 
                     fetchJadwalUjian();
                 } else if (url.includes('jadwalKuliah.html')) {
                     fetchJadwalKuliah();
@@ -678,10 +797,15 @@
                 } else if (url.includes('krs.html')) {
                     fetchDataAndPopulateForm();
                     fetchKRSData();
+                } else if (url.includes('kurikulum.html')) {
+                    fetchKurikulumData();
+                } else if (url.includes('kmk.html')) {
+                    fetchAndRenderKartuMataKuliah();
                 }
             })
             .catch(error => console.error(`Error loading content from ${url}:`, error));
     }
+    
     document.addEventListener("DOMContentLoaded", () => {
         loadContent('mainpage.html');
         const berandaLink = document.getElementById('beranda-link');
@@ -756,6 +880,6 @@
             window.location.href = '/index.html';
         });
     }
-</script>a
+</script>
 </body>
-<html>
+</html>
