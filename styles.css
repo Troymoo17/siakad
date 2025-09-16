@@ -60,3 +60,68 @@ body {
 .message-box button:hover {
     background-color: #3182ce;
 }
+
+/* Gaya Khusus Mobile untuk Halaman Dashboard */
+
+@media (max-width: 767px) {
+    /* Kelas untuk kontainer kartu mata kuliah */
+    .khs-card-container {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    /* Gaya dasar untuk setiap kartu mata kuliah */
+    .khs-card {
+        background-color: white;
+        border: 1px solid #e2e8f0;
+        border-radius: 0.75rem;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        padding: 1.5rem;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        transition: transform 0.2s ease-in-out;
+    }
+
+    .khs-card:hover {
+        transform: translateY(-2px);
+    }
+
+    /* Gaya untuk badge grade */
+    .grade-badge {
+        width: 3rem;
+        height: 3rem;
+        border-radius: 0.5rem;
+        color: white;
+        font-weight: 600;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-shrink: 0;
+    }
+
+    /* Warna untuk setiap grade */
+    .grade-A { background-color: #0d9488; }
+    .grade-B { background-color: #0b66a5; }
+    .grade-C { background-color: #f0b341; }
+    .grade-D { background-color: #fca5a5; }
+    .grade-E { background-color: #dc2626; }
+    
+    /* Warna untuk status kehadiran */
+    .status-Hadir { background-color: #0d9488; }
+    .status-Izin { background-color: #f0b341; }
+    .status-Sakit { background-color: #dc2626; }
+
+    /* Mengubah posisi elemen pada tampilan mobile */
+    .khs-info-mobile {
+        text-align: center;
+        margin-bottom: 1.5rem;
+    }
+
+    /* Menyembunyikan informasi program studi pada mobile */
+    .khs-info-desktop {
+        display: none;
+    }
+}

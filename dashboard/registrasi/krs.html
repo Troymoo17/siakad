@@ -7,37 +7,13 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="/styles.css">
 </head>
+<body>
 <main class="flex-1 p-4 md:p-6 lg:p-8">
     <header class="flex justify-between items-center mb-6">
         <h1 class="text-xl md:text-2xl font-bold text-gray-800">Kartu Rencana Studi</h1>
     </header>
-    
-    <div class="bg-white rounded-lg shadow-md overflow-hidden">
-        <div class="p-4 md:p-6 border-b border-gray-200">
-            <h2 class="font-bold text-lg">Pilih Mata Kuliah</h2>
-            <p id="krs-info" class="text-sm text-gray-500 mt-1">Semester: <span id="krs-semester">Memuat...</span></p>
-        </div>
-        <form id="krsForm">
-            <div class="overflow-x-auto">
-                <table class="w-full text-left text-sm text-gray-500">
-                    <thead class="text-xs text-white uppercase bg-blue-600 rounded-t-lg">
-                        <tr>
-                            <th scope="col" class="py-3 px-6 rounded-tl-lg">Pilih</th>
-                            <th scope="col" class="py-3 px-6">Kode Mata Kuliah</th>
-                            <th scope="col" class="py-3 px-6">Mata Kuliah</th>
-                            <th scope="col" class="py-3 px-6 text-center">SKS</th>
-                            <th scope="col" class="py-3 px-6 rounded-tr-lg">Semester</th>
-                        </tr>
-                    </thead>
-                    <tbody id="krs-table-body">
-                        <tr><td colspan="5" class="text-center py-4 text-gray-500">Memuat daftar mata kuliah...</td></tr>
-                    </tbody>
-                </table>
-            </div>
-            <div class="p-4 md:p-6 border-t border-gray-200 flex justify-end">
-                <button type="submit" class="bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg hover:bg-blue-800 transition">Simpan KRS</button>
-            </div>
-        </form>
+    <div id="krs-content-container" class="bg-white rounded-lg shadow-md overflow-hidden">
+        <div class="text-center py-4 text-gray-500">Memuat daftar mata kuliah...</div>
     </div>
 </main>
 </body>

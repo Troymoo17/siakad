@@ -4,62 +4,23 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Jadwal Ujian</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="/styles.css">
 </head>
 <body>
     <main class="flex-1 p-4 md:p-6 lg:p-8">
-    <h1 class="text-xl md:text-2xl font-bold mb-6 text-gray-900">Jadwal Ujian</h1>
-    
-    <div class="space-y-8">
-        <div class="bg-white p-6 md:p-8 rounded-xl shadow-lg">
-            <h2 class="text-lg md:text-xl font-semibold mb-4 border-b pb-2">Ujian Tengah Semester (UTS)</h2>
-            <div class="overflow-x-auto">
-                <table class="w-full text-sm text-left text-gray-700">
-                    <thead class="text-xs text-white uppercase bg-blue-600">
-                        <tr>
-                            <th scope="col" class="py-3 px-4 rounded-tl-lg whitespace-nowrap">Tanggal</th>
-                            <th scope="col" class="py-3 px-4 whitespace-nowrap">Hari</th>
-                            <th scope="col" class="py-3 px-4 whitespace-nowrap">Mulai</th>
-                            <th scope="col" class="py-3 px-4 whitespace-nowrap">Selesai</th>
-                            <th scope="col" class="py-3 px-4 whitespace-nowrap">Ruangan</th>
-                            <th scope="col" class="py-3 px-4 whitespace-nowrap">Mata Kuliah</th>
-                            <th scope="col" class="py-3 px-4 whitespace-nowrap">Kelas</th>
-                            <th scope="col" class="py-3 px-4 whitespace-nowrap">Dosen</th>
-                            <th scope="col" class="py-3 px-4 whitespace-nowrap">No. Kursi</th>
-                            <th scope="col" class="py-3 px-4 rounded-tr-lg whitespace-nowrap">Soal</th>
-                        </tr>
-                    </thead>
-                    <tbody id="uts-table-body">
-                        <tr><td colspan="10" class="text-center py-4 text-gray-500">Memuat jadwal...</td></tr>
-                    </tbody>
-                </table>
+        <h1 class="text-xl md:text-2xl font-bold mb-6 text-gray-900">Jadwal Ujian</h1>
+        <div class="space-y-8">
+            <div id="uts-container" class="bg-white p-6 md:p-8 rounded-xl shadow-lg">
+                <h2 class="text-lg md:text-xl font-semibold mb-4 border-b pb-2">Ujian Tengah Semester (UTS)</h2>
+                <div class="text-center py-4 text-gray-500">Memuat jadwal...</div>
+            </div>
+            
+            <div id="uas-container" class="bg-white p-6 md:p-8 rounded-xl shadow-lg">
+                <h2 class="text-lg md:text-xl font-semibold mb-4 border-b pb-2">Ujian Akhir Semester (UAS)</h2>
+                <div class="text-center py-4 text-gray-500">Memuat jadwal...</div>
             </div>
         </div>
-        
-        <div class="bg-white p-6 md:p-8 rounded-xl shadow-lg">
-            <h2 class="text-lg md:text-xl font-semibold mb-4 border-b pb-2">Ujian Akhir Semester (UAS)</h2>
-            <div class="overflow-x-auto">
-                <table class="w-full text-sm text-left text-gray-700">
-                    <thead class="text-xs text-white uppercase bg-blue-600">
-                        <tr>
-                            <th scope="col" class="py-3 px-4 rounded-tl-lg whitespace-nowrap">Tanggal</th>
-                            <th scope="col" class="py-3 px-4 whitespace-nowrap">Hari</th>
-                            <th scope="col" class="py-3 px-4 whitespace-nowrap">Mulai</th>
-                            <th scope="col" class="py-3 px-4 whitespace-nowrap">Selesai</th>
-                            <th scope="col" class="py-3 px-4 whitespace-nowrap">Ruangan</th>
-                            <th scope="col" class="py-3 px-4 whitespace-nowrap">Mata Kuliah</th>
-                            <th scope="col" class="py-3 px-4 whitespace-nowrap">Kelas</th>
-                            <th scope="col" class="py-3 px-4 whitespace-nowrap">Dosen</th>
-                            <th scope="col" class="py-3 px-4 whitespace-nowrap">No. Kursi</th>
-                            <th scope="col" class="py-3 px-4 rounded-tr-lg whitespace-nowrap">Soal</th>
-                        </tr>
-                    </thead>
-                    <tbody id="uas-table-body">
-                        <tr><td colspan="10" class="text-center py-4 text-gray-500">Memuat jadwal...</td></tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
-</main>
+    </main>
 </body>
 </html>

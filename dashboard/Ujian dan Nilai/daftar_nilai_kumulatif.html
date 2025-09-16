@@ -5,42 +5,34 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Daftar Nilai Kumulatif</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="/styles.css">
 </head>
 <main class="flex-1 p-4 md:p-6 lg:p-8">
     <header class="flex justify-between items-center mb-6">
         <h1 class="text-xl md:text-2xl font-bold text-gray-800">Daftar Nilai Kumulatif</h1>
     </header>
     
-    <div class="bg-white rounded-lg shadow-md overflow-hidden">
+    <div id="nilai-kumulatif-content-container" class="bg-white rounded-lg shadow-md overflow-hidden">
         <div class="p-4 md:p-6 border-b border-gray-200">
             <h2 class="font-bold text-lg">Daftar Mata Kuliah</h2>
         </div>
-        <div class="overflow-x-auto">
-            <table class="w-full text-left text-sm text-gray-500">
-                <thead class="text-xs text-white uppercase bg-blue-600 rounded-t-lg">
-                    <tr>
-                        <th scope="col" class="py-3 px-6 rounded-tl-lg">Kode Mata Kuliah</th>
-                        <th scope="col" class="py-3 px-6">Mata Kuliah</th>
-                        <th scope="col" class="py-3 px-6 text-center">Grade</th>
-                        <th scope="col" class="py-3 px-6 text-center">Bobot</th>
-                        <th scope="col" class="py-3 px-6 text-center">SKS</th>
-                        <th scope="col" class="py-3 px-6 text-center rounded-tr-lg">Bobot x SKS</th>
-                    </tr>
-                </thead>
-                <tbody id="mata-kuliah-table-body">
-                    </tbody>
-                <tfoot class="text-xs text-white uppercase bg-blue-600">
-                    <tr class="font-bold">
-                        <td colspan="4" class="py-3 px-6 text-right">JUMLAH</td>
-                        <td class="py-3 px-6 text-center" id="total-sks">0</td>
-                        <td class="py-3 px-6 text-center" id="total-bobot-sks">0</td>
-                    </tr>
-                    <tr class="font-bold">
-                        <td colspan="5" class="py-3 px-6 text-right">IPK TOTAL</td>
-                        <td class="py-3 px-6 text-center" id="total-ipk">0.00</td>
-                    </tr>
-                </tfoot>
-            </table>
+        <div id="mata-kuliah-list-container" class="text-center py-4 text-gray-500">Memuat data...</div>
+    </div>
+    
+    <div id="total-summary-mobile" class="mt-4 md:hidden bg-white rounded-lg shadow-md">
+         <div class="p-4">
+             <div class="flex justify-between items-center mb-1">
+                <span class="font-bold text-gray-700">Total SKS</span>
+                <span id="total-sks-value" class="font-semibold text-gray-900">Memuat...</span>
+            </div>
+            <div class="flex justify-between items-center pb-2 border-b border-gray-300">
+                <span class="font-bold text-gray-700">Total Bobot SKS</span>
+                <span id="total-bobot-sks-value" class="font-semibold text-gray-900">Memuat...</span>
+            </div>
+            <div class="flex justify-between items-center pt-2">
+                <span class="font-bold text-gray-700">IPK</span>
+                <span id="ipk-value" class="text-xl font-extrabold text-blue-900">Memuat...</span>
+            </div>
         </div>
     </div>
 </main>
