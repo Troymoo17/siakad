@@ -7,141 +7,204 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="/styles.css">
 </head>
-<main class="flex-1 flex flex-col p-4 md:p-6 lg:p-8">
-  <header class="flex justify-between items-center mb-6">
-    <h1 class="text-xl md:text-2xl font-bold text-gray-800">Profil</h1>
-    <div class="hidden md:flex items-center border border-gray-300 rounded-lg bg-white overflow-hidden w-64">
-      <input type="text" placeholder="Pencarian" class="py-2 px-3 text-sm flex-1 focus:outline-none"/>
-      <button class="p-2 text-gray-500 hover:text-blue-600 transition">
-        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
-      </button>
-    </div>
-  </header>
-  <div class="flex flex-col md:flex-row gap-6">
-    <div class="w-full md:w-1/3 p-6 bg-white rounded-lg shadow-md flex flex-col items-center">
-      <div class="mb-4">
-        <img src="/assets/22.240.0007.jpg" alt="Foto Profil" class="w-24 h-24 rounded-full border-4 border-white shadow-lg" id="profile-img"/>
-      </div>
-      <h2 class="text-xl font-bold text-gray-800" id="profile-nama-main">Memuat...</h2>
-      <span class="text-sm text-gray-500 mb-6" id="profile-nim-main">Memuat...</span>
+<body class="bg-gray-50 min-h-screen flex flex-col font-sans">
+    <main class="flex-1 flex flex-col p-4 md:p-6 lg:p-8">
+      <header class="flex justify-between items-center mb-6">
+        <h1 class="text-xl md:text-2xl font-bold text-gray-800">Profil</h1>
+        <div class="hidden md:flex items-center border border-gray-300 rounded-lg bg-white overflow-hidden w-64">
+          <input type="text" placeholder="Pencarian" class="py-2 px-3 text-sm flex-1 focus:outline-none"/>
+          <button class="p-2 text-gray-500 hover:text-blue-600 transition">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+          </button>
+        </div>
+      </header>
+      <div class="flex flex-col md:flex-row gap-6">
+        <div class="w-full md:w-1/3 p-6 bg-white rounded-lg shadow-md flex flex-col items-center">
+          <div class="mb-4">
+            <img src="/assets/22.240.0007.jpg" alt="Foto Profil" class="w-24 h-24 rounded-full border-4 border-white shadow-lg" id="profile-img"/>
+          </div>
+          <h2 class="text-xl font-bold text-gray-800" id="profile-nama-main">Memuat...</h2>
+          <span class="text-sm text-gray-500 mb-6" id="profile-nim-main">Memuat...</span>
 
-      <div class="space-y-4 w-full">
-        <div class="flex flex-col space-y-1">
-          <label class="text-xs text-gray-500">Email</label>
-          <div class="flex items-center space-x-2">
-            <input type="email" id="input-email" value="" class="flex-1 text-sm text-gray-700 bg-gray-100 p-2 rounded-md border border-gray-200 focus:outline-none focus:ring focus:ring-blue-200" readonly />
-            <button class="p-2 text-blue-600 hover:text-blue-800 transition"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/></svg></button>
+          <div class="space-y-4 w-full">
+            <div class="flex flex-col space-y-1">
+              <label class="text-xs text-gray-500">Email</label>
+              <div class="flex items-center space-x-2">
+                <input type="email" id="input-email" value="" class="flex-1 text-sm text-gray-700 bg-gray-100 p-2 rounded-md border border-gray-200 focus:outline-none focus:ring focus:ring-blue-200" readonly />
+                <button class="p-2 text-blue-600 hover:text-blue-800 transition"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/></svg></button>
+              </div>
+            </div>
+            <div class="flex flex-col space-y-1">
+              <label class="text-xs text-gray-500">Telephone</label>
+              <div class="flex items-center space-x-2">
+                <input type="tel" id="input-telp" value="" class="flex-1 text-sm text-gray-700 bg-gray-100 p-2 rounded-md border border-gray-200" readonly />
+                <button class="p-2 text-blue-600 hover:text-blue-800 transition"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/></svg></button>
+              </div>
+            </div>
+            <div class="flex flex-col space-y-1">
+              <label class="text-xs text-gray-500">Handphone</label>
+              <div class="flex items-center space-x-2">
+                <input type="tel" id="input-hp" value="" class="flex-1 text-sm text-gray-700 bg-gray-100 p-2 rounded-md border border-gray-200" readonly />
+                <button class="p-2 text-blue-600 hover:text-blue-800 transition"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/></svg></button>
+              </div>
+            </div>
           </div>
-        </div>
-        <div class="flex flex-col space-y-1">
-          <label class="text-xs text-gray-500">Telephone</label>
-          <div class="flex items-center space-x-2">
-            <input type="tel" id="input-telp" value="" class="flex-1 text-sm text-gray-700 bg-gray-100 p-2 rounded-md border border-gray-200" readonly />
-            <button class="p-2 text-blue-600 hover:text-blue-800 transition"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/></svg></button>
-          </div>
-        </div>
-        <div class="flex flex-col space-y-1">
-          <label class="text-xs text-gray-500">Handphone</label>
-          <div class="flex items-center space-x-2">
-            <input type="tel" id="input-hp" value="" class="flex-1 text-sm text-gray-700 bg-gray-100 p-2 rounded-md border border-gray-200" readonly />
-            <button class="p-2 text-blue-600 hover:text-blue-800 transition"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/></svg></button>
-          </div>
-        </div>
-      </div>
 
-      <div class="mt-8 w-full p-4 border border-gray-300 rounded-md bg-gray-50 flex items-center justify-center text-gray-400 text-sm">
-        Kosongkan kotak untuk menghapus
-      </div>
-    </div>
-
-    <div class="w-full md:w-2/3 p-6 bg-white rounded-lg shadow-md">
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
-        <div class="flex flex-col space-y-1">
-          <label class="text-xs text-gray-500">Nama Lengkap</label>
-          <input type="text" id="input-nama-lengkap" value="" class="text-sm p-2 rounded-md bg-gray-100 border border-gray-200" readonly />
-        </div>
-        <div class="flex flex-col space-y-1">
-          <label class="text-xs text-gray-500">Nim</label>
-          <input type="text" id="input-nim" value="" class="text-sm p-2 rounded-md bg-gray-100 border border-gray-200" readonly />
-        </div>
-        <div class="flex flex-col space-y-1">
-          <label class="text-xs text-gray-500">No.KTP</label>
-          <div class="relative">
-            <input type="text" id="input-nik" value="" class="w-full text-sm p-2 pr-10 rounded-md bg-gray-100 border border-gray-200" readonly />
-            <button class="absolute right-2 top-1/2 -translate-y-1/2 p-1 text-gray-500 hover:text-blue-600 transition"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/></svg></button>
+          <div class="mt-8 w-full p-4 border border-gray-300 rounded-md bg-gray-50 flex items-center justify-center text-gray-400 text-sm">
+            Kosongkan kotak untuk menghapus
           </div>
         </div>
-        <div class="flex flex-col space-y-1">
-          <label class="text-xs text-gray-500">Program Studi</label>
-          <input type="text" id="input-prodi" value="" class="text-sm p-2 rounded-md bg-gray-100 border border-gray-200" readonly />
-        </div>
-        <div class="flex flex-col space-y-1">
-          <label class="text-xs text-gray-500">Program</label>
-          <input type="text" id="input-program" value="" class="text-sm p-2 rounded-md bg-gray-100 border border-gray-200" readonly />
-        </div>
-        <div class="flex flex-col space-y-1">
-          <label class="text-xs text-gray-500">Kelas</label>
-          <input type="text" id="input-kelas" value="" class="text-sm p-2 rounded-md bg-gray-100 border border-gray-200" readonly />
-        </div>
-        <div class="flex flex-col space-y-1">
-          <label class="text-xs text-gray-500">Angkatan</label>
-          <input type="text" id="input-angkatan" value="" class="text-sm p-2 rounded-md bg-gray-100 border border-gray-200" readonly />
-        </div>
-        <div class="flex flex-col space-y-1">
-          <label class="text-xs text-gray-500">Dosen PA</label>
-          <input type="text" id="input-dosen-pa" value="" class="text-sm p-2 rounded-md bg-gray-100 border border-gray-200" readonly />
-        </div>
-        <div class="flex flex-col space-y-1 col-span-1 md:col-span-2">
-          <label class="text-xs text-gray-500">Alamat</label>
-          <input type="text" id="input-alamat" value="" class="text-sm p-2 rounded-md bg-gray-100 border border-gray-200" readonly />
-        </div>
-        <div class="flex flex-col space-y-1">
-          <label class="text-xs text-gray-500">Kota</label>
-          <input type="text" id="input-kota" value="" class="text-sm p-2 rounded-md bg-gray-100 border border-gray-200" readonly />
-        </div>
-        <div class="flex flex-col space-y-1">
-          <label class="text-xs text-gray-500">RT/RW</label>
-          <input type="text" id="input-rtrw" value="" class="text-sm p-2 rounded-md bg-gray-100 border border-gray-200" readonly />
-        </div>
-        <div class="flex flex-col space-y-1">
-          <label class="text-xs text-gray-500">Kodepos</label>
-          <input type="text" id="input-kodepos" value="" class="text-sm p-2 rounded-md bg-gray-100 border border-gray-200" readonly />
-        </div>
-        <div class="flex flex-col space-y-1">
-          <label class="text-xs text-gray-500">Provinsi</label>
-          <input type="text" id="input-provinsi" value="" class="text-sm p-2 rounded-md bg-gray-100 border border-gray-200" readonly />
-        </div>
-        <div class="flex flex-col space-y-1">
-          <label class="text-xs text-gray-500">Negara</label>
-          <input type="text" id="input-negara" value="" class="text-sm p-2 rounded-md bg-gray-100 border border-gray-200" readonly />
-        </div>
-        <div class="flex flex-col space-y-1">
-          <label class="text-xs text-gray-500">Jenis Kelamin</label>
-          <input type="text" id="input-jenis-kelamin" value="" class="text-sm p-2 rounded-md bg-gray-100 border border-gray-200" readonly />
-        </div>
-        <div class="flex flex-col space-y-1">
-          <label class="text-xs text-gray-500">Agama</label>
-          <input type="text" id="input-agama" value="" class="text-sm p-2 rounded-md bg-gray-100 border border-gray-200" readonly />
-        </div>
-        <div class="flex flex-col space-y-1">
-          <label class="text-xs text-gray-500">Status</label>
-          <input type="text" id="input-status" value="" class="text-sm p-2 rounded-md bg-gray-100 border border-gray-200" readonly />
-        </div>
-        <div class="flex flex-col space-y-1">
-          <label class="text-xs text-gray-500">Tempat Lahir</label>
-          <input type="text" id="input-tempat-lahir" value="" class="text-sm p-2 rounded-md bg-gray-100 border border-gray-200" readonly />
-        </div>
-        <div class="flex flex-col space-y-1">
-          <label class="text-xs text-gray-500">Tanggal Lahir</label>
-          <input type="text" id="input-tanggal-lahir" value="" class="text-sm p-2 rounded-md bg-gray-100 border border-gray-200" readonly />
-        </div>
-        <div class="flex flex-col space-y-1">
-          <label class="text-xs text-gray-500">Kewarganegaraan</label>
-          <input type="text" id="input-kewarganegaraan" value="" class="text-sm p-2 rounded-md bg-gray-100 border border-gray-200" readonly />
+
+        <div class="w-full md:w-2/3 p-6 bg-white rounded-lg shadow-md">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
+            <div class="flex flex-col space-y-1">
+              <label class="text-xs text-gray-500">Nama Lengkap</label>
+              <input type="text" id="input-nama-lengkap" value="" class="text-sm p-2 rounded-md bg-gray-100 border border-gray-200" readonly />
+            </div>
+            <div class="flex flex-col space-y-1">
+              <label class="text-xs text-gray-500">Nim</label>
+              <input type="text" id="input-nim" value="" class="text-sm p-2 rounded-md bg-gray-100 border border-gray-200" readonly />
+            </div>
+            <div class="flex flex-col space-y-1">
+              <label class="text-xs text-gray-500">No.KTP</label>
+              <div class="relative">
+                <input type="text" id="input-nik" value="" class="w-full text-sm p-2 pr-10 rounded-md bg-gray-100 border border-gray-200" readonly />
+                <button class="absolute right-2 top-1/2 -translate-y-1/2 p-1 text-gray-500 hover:text-blue-600 transition"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/></svg></button>
+              </div>
+            </div>
+            <div class="flex flex-col space-y-1">
+              <label class="text-xs text-gray-500">Program Studi</label>
+              <input type="text" id="input-prodi" value="" class="text-sm p-2 rounded-md bg-gray-100 border border-gray-200" readonly />
+            </div>
+            <div class="flex flex-col space-y-1">
+              <label class="text-xs text-gray-500">Program</label>
+              <input type="text" id="input-program" value="" class="text-sm p-2 rounded-md bg-gray-100 border border-gray-200" readonly />
+            </div>
+            <div class="flex flex-col space-y-1">
+              <label class="text-xs text-gray-500">Kelas</label>
+              <input type="text" id="input-kelas" value="" class="text-sm p-2 rounded-md bg-gray-100 border border-gray-200" readonly />
+            </div>
+            <div class="flex flex-col space-y-1">
+              <label class="text-xs text-gray-500">Angkatan</label>
+              <input type="text" id="input-angkatan" value="" class="text-sm p-2 rounded-md bg-gray-100 border border-gray-200" readonly />
+            </div>
+            <div class="flex flex-col space-y-1">
+              <label class="text-xs text-gray-500">Dosen PA</label>
+              <input type="text" id="input-dosen-pa" value="" class="text-sm p-2 rounded-md bg-gray-100 border border-gray-200" readonly />
+            </div>
+            <div class="flex flex-col space-y-1 col-span-1 md:col-span-2">
+              <label class="text-xs text-gray-500">Alamat</label>
+              <input type="text" id="input-alamat" value="" class="text-sm p-2 rounded-md bg-gray-100 border border-gray-200" readonly />
+            </div>
+            <div class="flex flex-col space-y-1">
+              <label class="text-xs text-gray-500">Kota</label>
+              <input type="text" id="input-kota" value="" class="text-sm p-2 rounded-md bg-gray-100 border border-gray-200" readonly />
+            </div>
+            <div class="flex flex-col space-y-1">
+              <label class="text-xs text-gray-500">RT/RW</label>
+              <input type="text" id="input-rtrw" value="" class="text-sm p-2 rounded-md bg-gray-100 border border-gray-200" readonly />
+            </div>
+            <div class="flex flex-col space-y-1">
+              <label class="text-xs text-gray-500">Kodepos</label>
+              <input type="text" id="input-kodepos" value="" class="text-sm p-2 rounded-md bg-gray-100 border border-gray-200" readonly />
+            </div>
+            <div class="flex flex-col space-y-1">
+              <label class="text-xs text-gray-500">Provinsi</label>
+              <input type="text" id="input-provinsi" value="" class="text-sm p-2 rounded-md bg-gray-100 border border-gray-200" readonly />
+            </div>
+            <div class="flex flex-col space-y-1">
+              <label class="text-xs text-gray-500">Negara</label>
+              <input type="text" id="input-negara" value="" class="text-sm p-2 rounded-md bg-gray-100 border border-gray-200" readonly />
+            </div>
+            <div class="flex flex-col space-y-1">
+              <label class="text-xs text-gray-500">Jenis Kelamin</label>
+              <input type="text" id="input-jenis-kelamin" value="" class="text-sm p-2 rounded-md bg-gray-100 border border-gray-200" readonly />
+            </div>
+            <div class="flex flex-col space-y-1">
+              <label class="text-xs text-gray-500">Agama</label>
+              <input type="text" id="input-agama" value="" class="text-sm p-2 rounded-md bg-gray-100 border border-gray-200" readonly />
+            </div>
+            <div class="flex flex-col space-y-1">
+              <label class="text-xs text-gray-500">Status</label>
+              <input type="text" id="input-status" value="" class="text-sm p-2 rounded-md bg-gray-100 border border-gray-200" readonly />
+            </div>
+            <div class="flex flex-col space-y-1">
+              <label class="text-xs text-gray-500">Tempat Lahir</label>
+              <input type="text" id="input-tempat-lahir" value="" class="text-sm p-2 rounded-md bg-gray-100 border border-gray-200" readonly />
+            </div>
+            <div class="flex flex-col space-y-1">
+              <label class="text-xs text-gray-500">Tanggal Lahir</label>
+              <input type="text" id="input-tanggal-lahir" value="" class="text-sm p-2 rounded-md bg-gray-100 border border-gray-200" readonly />
+            </div>
+            <div class="flex flex-col space-y-1">
+              <label class="text-xs text-gray-500">Kewarganegaraan</label>
+              <input type="text" id="input-kewarganegaraan" value="" class="text-sm p-2 rounded-md bg-gray-100 border border-gray-200" readonly />
+            </div>
+          </div>
         </div>
       </div>
-    </div>
-  </div>
-</main>
+    </main>
 </body>
 </html>
+<script>
+    let globalMahasiswaData = null;
+    const setText = (selector, value) => {
+        const element = document.querySelector(selector);
+        if (element) element.textContent = value || 'Tidak tersedia';
+    };
+    const setValue = (selector, value) => {
+        const element = document.querySelector(selector);
+        if (element) element.value = value || '';
+    };
+    async function fetchDataAndPopulatePage() {
+        const nim = localStorage.getItem('loggedInUserNim');
+        if (!nim) {
+            console.error("NIM tidak ditemukan di localStorage. Pengguna tidak login.");
+            return;
+        }
+        const url = `http://localhost/siakad_api/mahasiswa.php?nim=${nim}`;
+        try {
+            const response = await fetch(url);
+            if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+            const apiResponse = await response.json();
+            const mahasiswa = apiResponse.data[0];
+            if (mahasiswa) {
+                globalMahasiswaData = mahasiswa;
+                setText('#profile-nama', mahasiswa.nama);
+                setText('#profile-nim', mahasiswa.nim);
+                setText('#profile-nama-main', mahasiswa.nama);
+                setText('#profile-nim-main', mahasiswa.nim);
+                const imgElement = document.getElementById('profile-img');
+                if (imgElement) imgElement.src = `/assets/${mahasiswa.nim}.jpg`;
+                setValue('#input-nama-lengkap', mahasiswa.nama);
+                setValue('#input-nim', mahasiswa.nim);
+                setValue('#input-nik', mahasiswa.nik);
+                setValue('#input-prodi', mahasiswa.prodi);
+                setValue('#input-program', mahasiswa.program);
+                setValue('#input-kelas', mahasiswa.kelas);
+                setValue('#input-angkatan', mahasiswa.angkatan);
+                setValue('#input-dosen-pa', mahasiswa.dosen_pa);
+                setValue('#input-alamat', mahasiswa.alamat);
+                setValue('#input-kota', mahasiswa.kota);
+                setValue('#input-rtrw', mahasiswa.rtrw);
+                setValue('#input-kodepos', mahasiswa.kodepos);
+                setValue('#input-provinsi', mahasiswa.provinsi);
+                setValue('#input-negara', mahasiswa.kewarganegaraan);
+                setValue('#input-jenis-kelamin', mahasiswa.jenis_kelamin);
+                setValue('#input-agama', mahasiswa.agama);
+                setValue('#input-status', mahasiswa.status_pernikahan);
+                setValue('#input-tempat-lahir', mahasiswa.tempat_lahir);
+                setValue('#input-tanggal-lahir', mahasiswa.tanggal_lahir);
+                setValue('#input-kewarganegaraan', mahasiswa.kewarganegaraan);
+                setValue('#input-email', mahasiswa.email);
+                setValue('#input-telp', mahasiswa.telp);
+                setValue('#input-hp', mahasiswa.handphone);
+            }
+        } catch (error) {
+            console.error('Terjadi masalah saat mengambil data:', error);
+        }
+    }
+    document.addEventListener("DOMContentLoaded", () => {
+        fetchDataAndPopulatePage();
+    });
+</script>

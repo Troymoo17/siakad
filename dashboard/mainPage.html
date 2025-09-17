@@ -8,8 +8,7 @@
   <link rel="stylesheet" href="/styles.css">
 </head>
 <body class="bg-gray-50 min-h-screen flex flex-col font-sans">
-  <div class="flex flex-1 min-h-0 flex-col md:flex-row">
-    <main class="flex-1 flex flex-col p-4 md:p-6 lg:p-8">
+  <main class="flex-1 flex flex-col p-4 md:p-6 lg:p-8">
       <header class="flex justify-between items-center mb-6">
         <h1 class="text-xl md:text-1xl font-bold text-gray-800">Selamat Datang Di Sistem Informasi Akademik Institut Widya Pratama Pekalongan</h1>
         <div class="hidden md:flex items-center border border-gray-300 rounded-lg bg-white overflow-hidden w-64">
@@ -93,3 +92,116 @@
   </div>
 </body>
 </html>
+<script>
+    let globalMahasiswaData = null;
+    const setText = (selector, value) => {
+        const element = document.querySelector(selector);
+        if (element) element.textContent = value || 'Tidak tersedia';
+    };
+    const setValue = (selector, value) => {
+        const element = document.querySelector(selector);
+        if (element) element.value = value || '';
+    };
+    async function fetchDataAndPopulatePage() {
+        const nim = localStorage.getItem('loggedInUserNim');
+        if (!nim) {
+            console.error("NIM tidak ditemukan di localStorage. Pengguna tidak login.");
+            return;
+        }
+        try {
+            const response = await fetch(`http://localhost/siakad_api/mahasiswa.php?nim=${nim}`);
+            const apiResponse = await response.json();
+            globalMahasiswaData = apiResponse.data[0];
+            fetchIpkIpsData(nim);
+            fetchJadwalHariIni(nim);
+        } catch (error) {
+            console.error('Terjadi masalah saat mengambil data:', error);
+        }
+    }
+    async function fetchIpkIpsData(nim) {
+        const url = `http://localhost/siakad_api/ipk_ips.php?nim=${nim}`;
+        try {
+            const response = await fetch(url);
+            if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+            const apiResponse = await response.json();
+            const data = apiResponse.data;
+            if (data) {
+                const ipkValueElement = document.getElementById('main-page-ipk-value');
+                const ipkDonutElement = document.getElementById('ipk-donut');
+                if (ipkValueElement) ipkValueElement.textContent = data.ipk;
+                if (ipkDonutElement) {
+                    const percentage = (parseFloat(data.ipk) / 4.00) * 100;
+                    ipkDonutElement.style.background = `conic-gradient(#0b66a5 0% ${percentage}%, #f0b341 ${percentage}% 100%)`;
+                }
+                const totalSks = data.ips_per_semester.reduce((sum, semester) => sum + semester.total_sks, 0);
+                const sksElement = document.getElementById('main-page-sks');
+                if(sksElement) sksElement.textContent = totalSks;
+                const semesterElement = document.getElementById('main-page-semester');
+                const tahunAkademikElement = document.getElementById('main-page-tahun-akademik');
+                if (data.ips_per_semester.length > 0) {
+                    const lastSemester = data.ips_per_semester[data.ips_per_semester.length - 1];
+                    if(semesterElement) semesterElement.textContent = data.ips_per_semester.length;
+                    if(tahunAkademikElement) tahunAkademikElement.textContent = lastSemester.tahun_akademik;
+                } else {
+                    if(semesterElement) semesterElement.textContent = '0';
+                    if(tahunAkademikElement) tahunAkademikElement.textContent = '-';
+                }
+            }
+        } catch (error) {
+            console.error('Terjadi masalah saat mengambil data IPS/IPK:', error);
+            setText('#main-page-ipk-value', 'Error');
+            setText('#main-page-sks', 'Error');
+            setText('#main-page-semester', 'Error');
+            setText('#main-page-tahun-akademik', 'Error');
+        }
+    }
+    function getNamaHari() {
+        const d = new Date();
+        const hari = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
+        return hari[d.getDay()];
+    }
+    async function fetchJadwalHariIni(nim) {
+        if (!globalMahasiswaData) {
+            await fetchDataAndPopulatePage();
+        }
+        const semester = globalMahasiswaData?.semester_sekarang;
+        if (!nim || !semester) return;
+        const url = `http://localhost/siakad_api/jadwal_kuliah.php?nim=${nim}&semester=${semester}`;
+        const container = document.getElementById('jadwal-hari-ini-container');
+        const hariIni = getNamaHari();
+        try {
+            const response = await fetch(url);
+            if (!response.ok) throw new Error('Gagal memuat jadwal.');
+            const apiResponse = await response.json();
+            if (apiResponse.status === 'success' && apiResponse.data.length > 0) {
+                const jadwalHariIni = apiResponse.data.filter(jadwal => jadwal.hari === hariIni);
+                if (jadwalHariIni.length > 0) {
+                    let htmlContent = `<div class="space-y-4">`;
+                    jadwalHariIni.forEach(item => {
+                        htmlContent += `
+                            <div class="p-4 border border-gray-200 rounded-lg shadow-sm bg-gray-50">
+                                <h3 class="font-bold text-base text-gray-800">${item.matkul}</h3>
+                                <p class="text-xs text-gray-500 mt-1">
+                                    ${item.jam_mulai.substring(0, 5)} - ${item.jam_selesai.substring(0, 5)} | 
+                                    Ruang: ${item.ruang} | Dosen: ${item.dosen}
+                                </p>
+                            </div>
+                        `;
+                    });
+                    htmlContent += `</div>`;
+                    container.innerHTML = htmlContent;
+                } else {
+                    container.innerHTML = '<p class="text-sm text-gray-500 italic">Tidak ada jadwal kuliah untuk hari ini.</p>';
+                }
+            } else {
+                container.innerHTML = '<p class="text-sm text-gray-500 italic">Tidak ada jadwal kuliah yang ditemukan.</p>';
+            }
+        } catch (error) {
+            console.error('Terjadi masalah saat mengambil data jadwal:', error);
+            container.innerHTML = '<p class="text-sm text-red-500 italic">Gagal memuat jadwal kuliah.</p>';
+        }
+    }
+    document.addEventListener("DOMContentLoaded", () => {
+        fetchDataAndPopulatePage();
+    });
+</script>
