@@ -13,6 +13,8 @@ import {
   fetchKurikulumData, 
   fetchAndRenderKartuMataKuliah,
   fetchPembayaranData,
+  fetchPointBookHistory, 
+  fetchPinjamanHistory,
   globalMahasiswaData,
   currentKHSData,
   currentKehadiranSummary,
@@ -23,6 +25,8 @@ import {
   currentKRSData,
   currentDaftarNilaiKumulatif,
   currentPembayaranData,
+  currentPointBookData, 
+  currentPinjamanData, 
   currentSemesterIndex
 } from './fetch.js';
 
@@ -39,7 +43,9 @@ import {
   renderKurikulumData,
   renderKMKData,
   renderJadwalHariIni,
-  renderPembayaranData
+  renderPembayaranData,
+  renderPointBookData, 
+  renderPinjamanData 
 } from './loader.js';
 
 
@@ -124,10 +130,20 @@ async function loadContent(url) {
                     option.textContent = `Semester ${semester.semester}`;
                     semesterSelect.appendChild(option);
                 });
-                renderPembayaranData(pembayaranData, 0); // Tampilkan semester pertama secara default
+                renderPembayaranData(pembayaranData, 0);
                 semesterSelect.addEventListener('change', (e) => {
                     renderPembayaranData(pembayaranData, e.target.value);
                 });
+            }
+        } else if (url.includes('pointbook.html')) {
+            const pointBookData = await fetchPointBookHistory();
+            if (pointBookData) {
+                renderPointBookData(pointBookData);
+            }
+        } else if (url.includes('pinjaman.html')) {
+            const pinjamanData = await fetchPinjamanHistory();
+            if (pinjamanData) {
+                renderPinjamanData(pinjamanData);
             }
         }
     } catch (error) {
@@ -227,8 +243,16 @@ document.addEventListener("DOMContentLoaded", () => {
         } else if (currentUrl && currentUrl.includes('daftar_nilai_kumulatif.html')) {
             renderDaftarNilaiKumulatif(currentDaftarNilaiKumulatif);
         } else if (currentUrl && currentUrl.includes('pembayaran.html')) {
-             if (currentPembayaranData) {
-                renderPembayaranData(currentPembayaranData, 0); // Muat ulang semester pertama
+            if (currentPembayaranData) {
+                renderPembayaranData(currentPembayaranData, 0);
+            }
+        } else if (currentUrl && currentUrl.includes('pointbook.html')) {
+            if (currentPointBookData) {
+                renderPointBookData(currentPointBookData);
+            }
+        } else if (currentUrl && currentUrl.includes('pinjaman.html')) {
+            if (currentPinjamanData) {
+                renderPinjamanData(currentPinjamanData);
             }
         }
     });

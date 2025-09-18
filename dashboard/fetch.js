@@ -8,7 +8,9 @@ export let currentKurikulumData = [];
 export let currentKMKData = [];
 export let currentKRSData = { mata_kuliah_tersedia: [], krs_terisi: [] };
 export let currentDaftarNilaiKumulatif = [];
-export let currentPembayaranData = null; // Diubah untuk menyimpan seluruh objek respons
+export let currentPembayaranData = null;
+export let currentPointBookData = null; 
+export let currentPinjamanData = null; 
 export let currentSemesterIndex = 0;
 
 // Fungsi untuk mengambil data mahasiswa
@@ -280,12 +282,52 @@ export async function fetchPembayaranData() {
         if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
         const apiResponse = await response.json();
         if (apiResponse.status === 'success') {
-            currentPembayaranData = apiResponse; // Menyimpan seluruh objek respons
+            currentPembayaranData = apiResponse;
             return currentPembayaranData;
         }
         return null;
     } catch (error) {
         console.error('Terjadi masalah saat mengambil data pembayaran:', error);
+        return null;
+    }
+}
+
+// Fungsi untuk mengambil data histori Point Book
+export async function fetchPointBookHistory() {
+    const nim = localStorage.getItem('loggedInUserNim');
+    if (!nim) return null;
+    const url = `http://localhost/siakad_api/pointbook.php?nim=${nim}`;
+    try {
+        const response = await fetch(url);
+        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+        const apiResponse = await response.json();
+        if (apiResponse.status === 'success') {
+            currentPointBookData = apiResponse;
+            return currentPointBookData;
+        }
+        return null;
+    } catch (error) {
+        console.error('Terjadi masalah saat mengambil data point book:', error);
+        return null;
+    }
+}
+
+// Fungsi untuk mengambil data histori Pinjaman
+export async function fetchPinjamanHistory() {
+    const nim = localStorage.getItem('loggedInUserNim');
+    if (!nim) return null;
+    const url = `http://localhost/siakad_api/pinjaman.php?nim=${nim}`;
+    try {
+        const response = await fetch(url);
+        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+        const apiResponse = await response.json();
+        if (apiResponse.status === 'success') {
+            currentPinjamanData = apiResponse;
+            return currentPinjamanData;
+        }
+        return null;
+    } catch (error) {
+        console.error('Terjadi masalah saat mengambil data pinjaman:', error);
         return null;
     }
 }

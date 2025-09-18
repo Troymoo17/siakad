@@ -362,7 +362,7 @@ export function renderJadwalKuliah(data, mahasiswaData) {
                     <td class="py-3 px-4">${item.dosen}</td>
                     <td class="py-3 px-4">${item.jenis}</td>
                     <td class="py-3 px-4">${item.kelas}</td>
-                    <td class="py-3 px-4">${item.goggle_classroom_id}</td>
+                    <td class="py-3 px-4 rounded-tr-lg whitespace-nowrap">Goggle Classroom ID</td>
                 </tr>
             `;
         });
@@ -793,6 +793,16 @@ export function renderPembayaranData(apiResponse, semesterIndex) {
 
         const mobileContent = document.createElement('div');
         mobileContent.className = 'space-y-4';
+        
+        // Kartu Virtual Account
+        const virtualAccountCard = document.createElement('div');
+        virtualAccountCard.className = 'bg-white p-4 rounded-lg shadow-md border border-gray-200';
+        virtualAccountCard.innerHTML = `
+            <h3 class="font-bold text-base mb-2">Virtual Account</h3>
+            <p class="font-semibold text-lg text-blue-600">${apiResponse.virtual_account}</p>
+            <p class="text-xs text-gray-500 mt-1">Gunakan nomor ini untuk melakukan pembayaran.</p>
+        `;
+        mobileContent.appendChild(virtualAccountCard);
 
         const rincianTagihanCard = document.createElement('div');
         rincianTagihanCard.className = 'bg-white p-4 rounded-lg shadow-md border border-gray-200';
@@ -908,5 +918,143 @@ export function renderPembayaranData(apiResponse, semesterIndex) {
         `;
         
         container.innerHTML = tableHtml;
+    }
+}
+
+// Fungsi untuk merender data histori Point Book
+export function renderPointBookData(apiResponse) {
+    const listContainer = document.getElementById('pointbook-list-container');
+    if (!listContainer) return;
+    
+    if (!apiResponse || apiResponse.data.length === 0) {
+        listContainer.innerHTML = '<p class="text-center py-4 text-gray-500">Tidak ada data Point Book yang ditemukan.</p>';
+        return;
+    }
+
+    const totalPoinElement = document.getElementById('total-poin-value');
+    if (totalPoinElement) {
+        totalPoinElement.textContent = apiResponse.total_poin;
+    }
+
+    if (window.innerWidth < 768) {
+        // Tampilan Mobile (Kartu)
+        let cardContainer = document.createElement('div');
+        cardContainer.className = 'p-4 space-y-4';
+        apiResponse.data.forEach(item => {
+            let card = document.createElement('div');
+            card.className = 'bg-white p-4 rounded-lg shadow-md border border-gray-200 flex flex-col space-y-2';
+            card.innerHTML = `
+                <div class="flex justify-between items-center">
+                    <h3 class="font-bold text-base text-gray-800">${item.nama_kegiatan}</h3>
+                    <div class="px-2 py-1 text-xs font-semibold text-white rounded-full bg-blue-600">${item.poin} Poin</div>
+                </div>
+                <div class="flex flex-col text-sm text-gray-600">
+                    <p>Tanggal: ${item.tanggal}</p>
+                    <p>Keterangan: ${item.keterangan}</p>
+                </div>
+            `;
+            cardContainer.appendChild(card);
+        });
+        listContainer.innerHTML = '';
+        listContainer.appendChild(cardContainer);
+    } else {
+        // Tampilan Desktop (Tabel)
+        let tableRows = '';
+        apiResponse.data.forEach(item => {
+            tableRows += `
+                <tr class="bg-white border-b hover:bg-gray-50">
+                    <td class="py-3 px-6">${item.tanggal}</td>
+                    <td class="py-3 px-6">${item.nama_kegiatan}</td>
+                    <td class="py-3 px-6">${item.poin}</td>
+                    <td class="py-3 px-6">${item.keterangan}</td>
+                </tr>
+            `;
+        });
+        const tableHtml = `
+            <div class="overflow-x-auto">
+                <table class="w-full text-left text-sm text-gray-500">
+                    <thead class="text-xs text-white uppercase bg-blue-600 rounded-t-lg">
+                        <tr>
+                            <th scope="col" class="py-3 px-6 rounded-tl-lg">Tanggal</th>
+                            <th scope="col" class="py-3 px-6">Nama Kegiatan</th>
+                            <th scope="col" class="py-3 px-6">Poin</th>
+                            <th scope="col" class="py-3 px-6 rounded-tr-lg">Keterangan</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${tableRows}
+                    </tbody>
+                </table>
+            </div>
+        `;
+        listContainer.innerHTML = tableHtml;
+    }
+}
+
+// Fungsi untuk merender data histori Pinjaman
+export function renderPinjamanData(apiResponse) {
+    const listContainer = document.getElementById('pinjaman-list-container');
+    if (!listContainer) return;
+    
+    if (!apiResponse || apiResponse.data.length === 0) {
+        listContainer.innerHTML = '<p class="text-center py-4 text-gray-500">Tidak ada data Pinjaman yang ditemukan.</p>';
+        return;
+    }
+
+    if (window.innerWidth < 768) {
+        // Tampilan Mobile (Kartu)
+        let cardContainer = document.createElement('div');
+        cardContainer.className = 'p-4 space-y-4';
+        apiResponse.data.forEach(item => {
+            const statusClass = item.status_pinjaman === 'Sudah Kembali' ? 'bg-green-50' : 'bg-red-50';
+            const badgeClass = item.status_pinjaman === 'Sudah Kembali' ? 'bg-green-600' : 'bg-red-600';
+            
+            let card = document.createElement('div');
+            card.className = `bg-white p-4 rounded-lg shadow-md border border-gray-200 flex flex-col space-y-2`;
+            card.innerHTML = `
+                <div class="flex justify-between items-center">
+                    <h3 class="font-bold text-base text-gray-800">${item.nama_buku}</h3>
+                    <div class="px-2 py-1 text-xs font-semibold text-white rounded-full ${badgeClass}">${item.status_pinjaman}</div>
+                </div>
+                <div class="flex flex-col text-sm text-gray-600">
+                    <p>Tanggal Pinjam: ${item.tanggal_pinjam}</p>
+                    <p>Tanggal Kembali: ${item.tanggal_kembali || 'Belum kembali'}</p>
+                </div>
+            `;
+            cardContainer.appendChild(card);
+        });
+        listContainer.innerHTML = '';
+        listContainer.appendChild(cardContainer);
+    } else {
+        // Tampilan Desktop (Tabel)
+        let tableRows = '';
+        apiResponse.data.forEach(item => {
+            tableRows += `
+                <tr class="bg-white border-b hover:bg-gray-50">
+                    <td class="py-3 px-6">${item.tanggal_pinjam}</td>
+                    <td class="py-3 px-6">${item.tanggal_kembali || '-'}</td>
+                    <td class="py-3 px-6 text-center">${item.nama_buku}</td>
+                    <td class="py-3 px-6 text-center">${item.status_pinjaman}</td>
+                </tr>
+            `;
+        });
+        const tableHtml = `
+            <div class="overflow-x-auto">
+                <table class="w-full text-left text-sm text-gray-500">
+                    <thead class="text-xs text-white uppercase bg-blue-600 rounded-t-lg">
+                        <tr>
+                            <th scope="col" class="py-3 px-6 rounded-tl-lg">Tanggal Pinjam</th>
+                            <th scope="col" class="py-3 px-6">Tanggal Kembali</th>
+                            <th scope="col" class="py-3 px-6 text-center">Nama Buku</th>
+                            <th scope="col" class="py-3 px-6 rounded-tr-lg text-center">Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${tableRows}
+                    </tbody>
+                </table>
+            </div>
+        `;
+        listContainer.innerHTML = tableHtml;
     }
 }
