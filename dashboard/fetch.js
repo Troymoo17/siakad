@@ -8,6 +8,7 @@ export let currentKurikulumData = [];
 export let currentKMKData = [];
 export let currentKRSData = { mata_kuliah_tersedia: [], krs_terisi: [] };
 export let currentDaftarNilaiKumulatif = [];
+export let currentPembayaranData = null; // Diubah untuk menyimpan seluruh objek respons
 export let currentSemesterIndex = 0;
 
 // Fungsi untuk mengambil data mahasiswa
@@ -265,5 +266,26 @@ export async function handleKRSSubmit(e) {
     } catch (error) {
         alert('Terjadi kesalahan saat menyimpan KRS.');
         console.error('Error saving KRS:', error);
+    }
+}
+
+// Fungsi untuk mengambil data pembayaran
+export async function fetchPembayaranData() {
+    const nim = localStorage.getItem('loggedInUserNim');
+    if (!nim) return null;
+
+    const url = `http://localhost/siakad_api/pembayaran.php?nim=${nim}`;
+    try {
+        const response = await fetch(url);
+        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+        const apiResponse = await response.json();
+        if (apiResponse.status === 'success') {
+            currentPembayaranData = apiResponse; // Menyimpan seluruh objek respons
+            return currentPembayaranData;
+        }
+        return null;
+    } catch (error) {
+        console.error('Terjadi masalah saat mengambil data pembayaran:', error);
+        return null;
     }
 }

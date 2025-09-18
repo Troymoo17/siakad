@@ -229,12 +229,6 @@ export function renderKHSData(data, semesterIndex, programStudi, jenjangStudi) {
                     </tbody>
                 </table>
             </div>
-            <div class="flex justify-end text-sm">
-                <div class="text-right">
-                    <p class="font-bold">JUMLAH: ${semester.total_sks}</p>
-                    <p class="font-bold">IP SEMESTER: ${semester.ips}</p>
-                </div>
-            </div>
         `;
         container.appendChild(semesterDiv);
     }
@@ -306,25 +300,25 @@ export function renderJadwalUjianTable(jadwalData, container) {
         <div class="overflow-x-auto">
             <table class="w-full text-sm text-left text-gray-700">
                 <thead class="text-xs text-white uppercase bg-blue-600">
-                    <tr>
-                        <th scope="col" class="py-3 px-4 rounded-tl-lg whitespace-nowrap">Tanggal</th>
-                        <th scope="col" class="py-3 px-4 whitespace-nowrap">Hari</th>
-                        <th scope="col" class="py-3 px-4 whitespace-nowrap">Mulai</th>
-                        <th scope="col" class="py-3 px-4 whitespace-nowrap">Selesai</th>
-                        <th scope="col" class="py-3 px-4 whitespace-nowrap">Ruangan</th>
-                        <th scope="col" class="py-3 px-4 whitespace-nowrap">Mata Kuliah</th>
-                        <th scope="col" class="py-3 px-4 whitespace-nowrap">Kelas</th>
-                        <th scope="col" class="py-3 px-4 whitespace-nowrap">Dosen</th>
-                        <th scope="col" class="py-3 px-4 whitespace-nowrap">No. Kursi</th>
-                        <th scope="col" class="py-3 px-4 rounded-tr-lg whitespace-nowrap">Soal</th>
-                    </tr>
-                </thead>
-                <tbody id="uts-table-body">
-                    ${tableRows}
-                </tbody>
-            </table>
-        </div>
-    `;
+                        <tr>
+                            <th scope="col" class="py-3 px-4 rounded-tl-lg whitespace-nowrap">Tanggal</th>
+                            <th scope="col" class="py-3 px-4 whitespace-nowrap">Hari</th>
+                            <th scope="col" class="py-3 px-4 whitespace-nowrap">Mulai</th>
+                            <th scope="col" class="py-3 px-4 whitespace-nowrap">Selesai</th>
+                            <th scope="col" class="py-3 px-4 whitespace-nowrap">Ruangan</th>
+                            <th scope="col" class="py-3 px-4 whitespace-nowrap">Mata Kuliah</th>
+                            <th scope="col" class="py-3 px-4 whitespace-nowrap">Kelas</th>
+                            <th scope="col" class="py-3 px-4 whitespace-nowrap">Dosen</th>
+                            <th scope="col" class="py-3 px-4 whitespace-nowrap">No. Kursi</th>
+                            <th scope="col" class="py-3 px-4 rounded-tr-lg whitespace-nowrap">Soal</th>
+                        </tr>
+                    </thead>
+                    <tbody id="uts-table-body">
+                        ${tableRows}
+                    </tbody>
+                </table>
+            </div>
+        `;
     container.innerHTML += tableHtml;
 }
 
@@ -762,5 +756,157 @@ export function renderJadwalHariIni(data, container) {
         container.innerHTML = htmlContent;
     } else {
         container.innerHTML = '<p class="text-sm text-gray-500 italic">Tidak ada jadwal kuliah untuk hari ini.</p>';
+    }
+}
+
+export function renderPembayaranData(apiResponse, semesterIndex) {
+    const semesterData = apiResponse.data[semesterIndex];
+    const container = document.getElementById('semester-card-container');
+    const virtualAccountValue = document.getElementById('virtual-account-value');
+    const totalTagihanSemesterValue = document.getElementById('total-tagihan-semester-value');
+
+    if (!container || !apiResponse || !apiResponse.data || !apiResponse.virtual_account) {
+        container.innerHTML = '<p class="text-center py-4 text-gray-500">Tidak ada data tagihan yang ditemukan.</p>';
+        if (virtualAccountValue) virtualAccountValue.textContent = 'Tidak Tersedia';
+        if (totalTagihanSemesterValue) totalTagihanSemesterValue.textContent = 'Rp 0';
+        return;
+    }
+
+    // Update Virtual Account di tampilan desktop
+    if (virtualAccountValue) {
+        virtualAccountValue.textContent = apiResponse.virtual_account || 'Tidak Tersedia';
+    }
+
+    // Update total tagihan di tampilan mobile
+    const formatRupiah = (number) => new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(number);
+    if (totalTagihanSemesterValue) {
+        totalTagihanSemesterValue.textContent = formatRupiah(semesterData.tagihan);
+    }
+
+    container.innerHTML = '';
+
+    if (window.innerWidth < 768) {
+        // Tampilan Mobile (Kartu)
+        const totalTagihanKumulatif = apiResponse.data.reduce((sum, semester) => sum + semester.tagihan, 0);
+        const totalDibayarKumulatif = apiResponse.data.reduce((sum, semester) => sum + semester.dibayar, 0);
+        const totalBelumDibayar = totalTagihanKumulatif - totalDibayarKumulatif;
+
+        const mobileContent = document.createElement('div');
+        mobileContent.className = 'space-y-4';
+
+        const rincianTagihanCard = document.createElement('div');
+        rincianTagihanCard.className = 'bg-white p-4 rounded-lg shadow-md border border-gray-200';
+        rincianTagihanCard.innerHTML = `<h3 class="font-bold text-base mb-2">Rincian Tagihan Semester ${semesterData.semester}</h3>`;
+        semesterData.rincian.forEach(item => {
+            rincianTagihanCard.innerHTML += `<div class="flex justify-between items-center text-sm"><p class="text-gray-600">${item.deskripsi}</p><span class="font-semibold">${formatRupiah(item.nominal)}</span></div>`;
+        });
+        mobileContent.appendChild(rincianTagihanCard);
+
+        const rincianPembayaranCard = document.createElement('div');
+        rincianPembayaranCard.className = 'bg-white p-4 rounded-lg shadow-md border border-gray-200';
+        rincianPembayaranCard.innerHTML = `<h3 class="font-bold text-base mb-2">Rincian Pembayaran Semester ${semesterData.semester}</h3>`;
+        if (semesterData.pembayaran.length > 0) {
+            semesterData.pembayaran.forEach(item => {
+                rincianPembayaranCard.innerHTML += `<div class="flex justify-between items-center text-sm"><p class="text-gray-600">Pembayaran (${item.tanggal})</p><span class="font-semibold text-green-600">${formatRupiah(item.nominal)}</span></div>`;
+            });
+        } else {
+            rincianPembayaranCard.innerHTML += `<p class="text-sm text-gray-500 italic">Belum ada pembayaran.</p>`;
+        }
+        mobileContent.appendChild(rincianPembayaranCard);
+        
+        const summaryCard = document.createElement('div');
+        summaryCard.className = 'bg-white p-4 rounded-lg shadow-md border border-gray-200';
+        summaryCard.innerHTML = `
+            <h3 class="font-bold text-lg mb-2">Ringkasan</h3>
+            <div class="space-y-1 text-sm">
+                <div class="flex justify-between">
+                    <p class="font-medium text-gray-700">Total Tagihan</p>
+                    <span class="font-bold">${formatRupiah(semesterData.tagihan)}</span>
+                </div>
+                <div class="flex justify-between">
+                    <p class="font-medium text-gray-700">Total Sudah Dibayar</p>
+                    <span class="font-bold text-green-600">${formatRupiah(semesterData.dibayar)}</span>
+                </div>
+                <hr class="my-2 border-gray-200" />
+                <div class="flex justify-between">
+                    <p class="font-bold text-gray-800">Total Belum Dibayar</p>
+                    <span class="font-bold text-xl ${semesterData.sisa_tagihan > 0 ? 'text-red-600' : 'text-gray-500'}">${formatRupiah(semesterData.sisa_tagihan)}</span>
+                </div>
+            </div>
+        `;
+        mobileContent.appendChild(summaryCard);
+
+        container.appendChild(mobileContent);
+
+    } else { // Tampilan desktop
+        let tableRows = '';
+        
+        semesterData.rincian.forEach(item => {
+            tableRows += `
+                <tr class="bg-white hover:bg-gray-50">
+                    <td class="py-3 px-6 whitespace-nowrap">${item.deskripsi}</td>
+                    <td class="py-3 px-6 text-center">${formatRupiah(item.nominal)}</td>
+                    <td class="py-3 px-6"></td>
+                </tr>
+            `;
+        });
+        
+        const totalTagihanRow = `
+            <tr class="bg-gray-100 font-bold border-b border-gray-200">
+                <td class="py-3 px-6 text-left">Total Tagihan Semester ${semesterData.semester}</td>
+                <td class="py-3 px-6 text-center">${formatRupiah(semesterData.tagihan)}</td>
+                <td class="py-3 px-6"></td>
+            </tr>
+        `;
+        
+        let pembayaranRows = '';
+        semesterData.pembayaran.forEach(item => {
+            pembayaranRows += `
+                <tr class="bg-white hover:bg-gray-50">
+                    <td class="py-3 px-6 whitespace-nowrap">Pembayaran (${item.tanggal})</td>
+                    <td class="py-3 px-6"></td>
+                    <td class="py-3 px-6 text-center">${formatRupiah(item.nominal)}</td>
+                </tr>
+            `;
+        });
+
+        const totalPembayaranRow = `
+            <tr class="bg-gray-100 font-bold">
+                <td class="py-3 px-6 text-left">Total Sudah Dibayar</td>
+                <td class="py-3 px-6"></td>
+                <td class="py-3 px-6 text-center">${formatRupiah(semesterData.dibayar)}</td>
+            </tr>
+        `;
+
+        const sisaTagihanRow = `
+            <tr class="bg-blue-100 font-bold">
+                <td class="py-3 px-6 text-left">Total Belum Dibayar</td>
+                <td class="py-3 px-6 text-center text-red-600">${formatRupiah(semesterData.sisa_tagihan)}</td>
+                <td class="py-3 px-6"></td>
+            </tr>
+        `;
+        
+        const tableHtml = `
+            <div class="overflow-x-auto">
+                <table class="w-full text-left text-sm text-gray-700">
+                    <thead class="text-xs text-white uppercase bg-blue-600 rounded-t-lg">
+                        <tr>
+                            <th scope="col" class="py-3 px-6 rounded-tl-lg">Keterangan</th>
+                            <th scope="col" class="py-3 px-6 text-center">Nominal Tagihan</th>
+                            <th scope="col" class="py-3 px-6 text-center rounded-tr-lg">Nominal Bayar</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${tableRows}
+                        ${totalTagihanRow}
+                        ${pembayaranRows}
+                        ${totalPembayaranRow}
+                        ${sisaTagihanRow}
+                    </tbody>
+                </table>
+            </div>
+        `;
+        
+        container.innerHTML = tableHtml;
     }
 }

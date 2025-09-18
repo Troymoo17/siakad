@@ -12,6 +12,7 @@ import {
   handleKRSSubmit, 
   fetchKurikulumData, 
   fetchAndRenderKartuMataKuliah,
+  fetchPembayaranData,
   globalMahasiswaData,
   currentKHSData,
   currentKehadiranSummary,
@@ -21,6 +22,7 @@ import {
   currentKMKData,
   currentKRSData,
   currentDaftarNilaiKumulatif,
+  currentPembayaranData,
   currentSemesterIndex
 } from './fetch.js';
 
@@ -36,7 +38,8 @@ import {
   renderKRSData,
   renderKurikulumData,
   renderKMKData,
-  renderJadwalHariIni
+  renderJadwalHariIni,
+  renderPembayaranData
 } from './loader.js';
 
 
@@ -110,6 +113,22 @@ async function loadContent(url) {
         } else if (url.includes('kmk.html')) {
             const kmkData = await fetchAndRenderKartuMataKuliah();
             if (kmkData) renderKMKData(kmkData.data, kmkData.mahasiswa);
+        } else if (url.includes('pembayaran.html')) {
+            const pembayaranData = await fetchPembayaranData();
+            if (pembayaranData) {
+                 const semesterSelect = document.getElementById('semester-select');
+                 semesterSelect.innerHTML = '';
+                 pembayaranData.data.forEach((semester, index) => {
+                    const option = document.createElement('option');
+                    option.value = index;
+                    option.textContent = `Semester ${semester.semester}`;
+                    semesterSelect.appendChild(option);
+                });
+                renderPembayaranData(pembayaranData, 0); // Tampilkan semester pertama secara default
+                semesterSelect.addEventListener('change', (e) => {
+                    renderPembayaranData(pembayaranData, e.target.value);
+                });
+            }
         }
     } catch (error) {
         console.error(`Error loading content from ${url}:`, error);
@@ -207,6 +226,10 @@ document.addEventListener("DOMContentLoaded", () => {
             renderKMKData(currentKMKData, globalMahasiswaData);
         } else if (currentUrl && currentUrl.includes('daftar_nilai_kumulatif.html')) {
             renderDaftarNilaiKumulatif(currentDaftarNilaiKumulatif);
+        } else if (currentUrl && currentUrl.includes('pembayaran.html')) {
+             if (currentPembayaranData) {
+                renderPembayaranData(currentPembayaranData, 0); // Muat ulang semester pertama
+            }
         }
     });
 
