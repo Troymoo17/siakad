@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pengajuan Ujian Skripsi</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<main class="flex-1 p-4 md:p-6 lg:p-8">
+    <h1 class="text-xl md:text-2xl font-bold mb-6 text-gray-900">Pengajuan Ujian Skripsi/TA</h1>
+    <div class="bg-white p-6 md:p-8 rounded-xl shadow-lg">
+        <form id="pengajuanUjianForm" class="space-y-4">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="md:col-span-2">
+                    <label for="judul_ujian" class="block text-sm font-medium text-gray-700">Judul Skripsi/TA</label>
+                    <input type="text" id="judul_ujian" name="judul_ujian" class="mt-1 block w-full rounded-md bg-gray-100 border-gray-300 shadow-sm sm:text-sm" readonly>
+                </div>
+                <div>
+                    <label for="pembimbing1" class="block text-sm font-medium text-gray-700">Pembimbing 1</label>
+                    <input type="text" id="pembimbing1" name="pembimbing1" class="mt-1 block w-full rounded-md bg-gray-100 border-gray-300 shadow-sm sm:text-sm" readonly>
+                </div>
+                <div>
+                    <label for="pembimbing2" class="block text-sm font-medium text-gray-700">Pembimbing 2</label>
+                    <input type="text" id="pembimbing2" name="pembimbing2" class="mt-1 block w-full rounded-md bg-gray-100 border-gray-300 shadow-sm sm:text-sm" readonly>
+                </div>
+                <div>
+                    <label for="ipk_ujian" class="block text-sm font-medium text-gray-700">IPK Terakhir</label>
+                    <input type="text" id="ipk_ujian" name="ipk_ujian" class="mt-1 block w-full rounded-md bg-gray-100 border-gray-300 shadow-sm sm:text-sm" readonly>
+                </div>
+                <div>
+                    <label for="sks_ujian" class="block text-sm font-medium text-gray-700">Jumlah SKS</label>
+                    <input type="text" id="sks_ujian" name="sks_ujian" class="mt-1 block w-full rounded-md bg-gray-100 border-gray-300 shadow-sm sm:text-sm" readonly>
+                </div>
+                <div class="md:col-span-2">
+                    <label for="sertifikasi" class="block text-sm font-medium text-gray-700">Sertifikasi</label>
+                    <div class="mt-2 space-y-2">
+                        <div class="flex items-center">
+                            <input id="sertifikat_toefl" name="sertifikasi[]" type="checkbox" value="TOEFL" class="focus:ring-blue-500 h-4 w-4 text-blue-600 border-gray-300">
+                            <label for="sertifikat_toefl" class="ml-3 block text-sm font-medium text-gray-700">TOEFL</label>
+                        </div>
+                        <div class="flex items-center">
+                            <input id="sertifikat_lainnya" name="sertifikasi[]" type="checkbox" value="Lainnya" class="focus:ring-blue-500 h-4 w-4 text-blue-600 border-gray-300">
+                            <label for="sertifikat_lainnya" class="ml-3 block text-sm font-medium text-gray-700">Lainnya</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="flex justify-end mt-6">
+                <button type="submit" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                    Ajukan Ujian
+                </button>
+            </div>
+        </form>
+    </div>
+</main>
+</body>
+</html>

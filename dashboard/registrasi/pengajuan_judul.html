@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pengajuan Judul Skripsi</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+<main class="flex-1 p-4 md:p-6 lg:p-8">
+    <h1 class="text-xl md:text-2xl font-bold mb-6 text-gray-900">Formulir Pengajuan Judul Skripsi/TA</h1>
+    <div class="bg-white p-6 md:p-8 rounded-xl shadow-lg">
+        <form id="pengajuanJudulForm" class="space-y-4">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="col-span-2 md:col-span-1">
+                    <label for="baru_ulang" class="block text-sm font-medium text-gray-700">Baru/Ulang</label>
+                    <select id="baru_ulang" name="baru_ulang" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm sm:text-sm" required>
+                        <option value="Baru">Baru</option>
+                        <option value="Ulang">Ulang</option>
+                    </select>
+                </div>
+                <div class="col-span-2">
+                    <label for="judul" class="block text-sm font-medium text-gray-700">Judul Yang Diajukan</label>
+                    <input type="text" id="judul" name="judul" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm sm:text-sm" required>
+                </div>
+                <div class="col-span-2">
+                    <label for="abstrak" class="block text-sm font-medium text-gray-700">Deskripsi atau Abstrak</label>
+                    <textarea id="abstrak" name="abstrak" rows="4" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm sm:text-sm" required></textarea>
+                </div>
+                <div class="col-span-2 md:col-span-1">
+                    <label for="jalur" class="block text-sm font-medium text-gray-700">Jalur</label>
+                    <select id="jalur" name="jalur" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm sm:text-sm" required>
+                        <option value="">-- Pilih --</option>
+                        <option value="Jalur A">Jalur A</option>
+                        <option value="Jalur B">Jalur B</option>
+                    </select>
+                </div>
+                <div class="col-span-2 md:col-span-1">
+                    <label for="hp_terbaru" class="block text-sm font-medium text-gray-700">No. HP Terbaru</label>
+                    <input type="text" id="hp_terbaru" name="hp_terbaru" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm sm:text-sm" required>
+                </div>
+                <div class="col-span-2 md:col-span-1">
+                    <label for="semester_pengajuan" class="block text-sm font-medium text-gray-700">Semester</label>
+                    <input type="text" id="semester_pengajuan" name="semester_pengajuan" class="mt-1 block w-full rounded-md bg-gray-100 border-gray-300 shadow-sm sm:text-sm" readonly>
+                </div>
+                <div class="col-span-2 md:col-span-1">
+                    <label for="ipk_terakhir" class="block text-sm font-medium text-gray-700">IPK Terakhir</label>
+                    <input type="text" id="ipk_terakhir" name="ipk_terakhir" class="mt-1 block w-full rounded-md bg-gray-100 border-gray-300 shadow-sm sm:text-sm" readonly>
+                </div>
+                <div class="col-span-2 md:col-span-1">
+                    <label for="jumlah_point" class="block text-sm font-medium text-gray-700">Jumlah Point</label>
+                    <input type="text" id="jumlah_point" name="jumlah_point" class="mt-1 block w-full rounded-md bg-gray-100 border-gray-300 shadow-sm sm:text-sm" readonly>
+                </div>
+                <div class="col-span-2 md:col-span-1">
+                    <label for="nilai_magang" class="block text-sm font-medium text-gray-700">Nilai Magang</label>
+                    <input type="text" id="nilai_magang" name="nilai_magang" class="mt-1 block w-full rounded-md bg-gray-100 border-gray-300 shadow-sm sm:text-sm" readonly>
+                </div>
+                <div class="col-span-2 md:col-span-1">
+                    <label for="sks_ditempuh" class="block text-sm font-medium text-gray-700">Jumlah SKS yang Telah Ditempuh</label>
+                    <input type="text" id="sks_ditempuh" name="sks_ditempuh" class="mt-1 block w-full rounded-md bg-gray-100 border-gray-300 shadow-sm sm:text-sm" readonly>
+                </div>
+                <div class="col-span-2 md:col-span-1">
+                    <label for="jumlah_nilai_d" class="block text-sm font-medium text-gray-700">Jumlah Nilai D</label>
+                    <input type="text" id="jumlah_nilai_d" name="jumlah_nilai_d" class="mt-1 block w-full rounded-md bg-gray-100 border-gray-300 shadow-sm sm:text-sm" readonly>
+                </div>
+                <div class="col-span-2 md:col-span-1">
+                    <label for="jumlah_nilai_e" class="block text-sm font-medium text-gray-700">Jumlah Nilai E</label>
+                    <input type="text" id="jumlah_nilai_e" name="jumlah_nilai_e" class="mt-1 block w-full rounded-md bg-gray-100 border-gray-300 shadow-sm sm:text-sm" readonly>
+                </div>
+                <div class="col-span-2">
+                    <label for="mata_kuliah_d" class="block text-sm font-medium text-gray-700">Mata Kuliah D</label>
+                    <textarea id="mata_kuliah_d" name="mata_kuliah_d" rows="2" class="mt-1 block w-full rounded-md bg-gray-100 border-gray-300 shadow-sm sm:text-sm" readonly></textarea>
+                </div>
+                <div class="col-span-2">
+                    <label for="mata_kuliah_e" class="block text-sm font-medium text-gray-700">Mata Kuliah E</label>
+                    <textarea id="mata_kuliah_e" name="mata_kuliah_e" rows="2" class="mt-1 block w-full rounded-md bg-gray-100 border-gray-300 shadow-sm sm:text-sm" readonly></textarea>
+                </div>
+                <div class="col-span-2">
+                    <label for="sertifikasi" class="block text-sm font-medium text-gray-700">Sertifikasi</label>
+                    <div class="mt-2 space-y-2">
+                        <div class="flex items-center">
+                            <input id="sertifikat_toefl" name="sertifikasi[]" type="checkbox" value="TOEFL" class="focus:ring-blue-500 h-4 w-4 text-blue-600 border-gray-300">
+                            <label for="sertifikat_toefl" class="ml-3 block text-sm font-medium text-gray-700">TOEFL</label>
+                        </div>
+                        <div class="flex items-center">
+                            <input id="sertifikat_jeni" name="sertifikasi[]" type="checkbox" value="JENI" class="focus:ring-blue-500 h-4 w-4 text-blue-600 border-gray-300">
+                            <label for="sertifikat_jeni" class="ml-3 block text-sm font-medium text-gray-700">JENI</label>
+                        </div>
+                        <div class="flex items-center">
+                            <input id="sertifikat_ccna" name="sertifikasi[]" type="checkbox" value="CCNA 1" class="focus:ring-blue-500 h-4 w-4 text-blue-600 border-gray-300">
+                            <label for="sertifikat_ccna" class="ml-3 block text-sm font-medium text-gray-700">CCNA 1</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="flex justify-end mt-6">
+                <button type="submit" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                    Ajukan
+                </button>
+            </div>
+        </form>
+    </div>
+    
+    <div class="mt-8 bg-white p-6 md:p-8 rounded-xl shadow-lg">
+        <h2 class="text-xl md:text-2xl font-bold mb-4 text-gray-900">Status Permohonan Skripsi Anda</h2>
+        <div id="status-permohonan-container" class="overflow-x-auto">
+            <p class="text-center py-4 text-gray-500">Memuat status permohonan...</p>
+        </div>
+    </div>
+</main>
+</body>
+</html>

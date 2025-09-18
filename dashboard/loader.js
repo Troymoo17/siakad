@@ -82,6 +82,12 @@ export function renderIpkIpsData(data) {
 export function renderDaftarNilaiKumulatif(data) {
     const listContainer = document.getElementById('mata-kuliah-list-container');
     if (!listContainer) return;
+
+    if (!data || data.length === 0) {
+        listContainer.innerHTML = '<p class="text-center py-4 text-gray-500">Tidak ada data nilai kumulatif yang ditemukan.</p>';
+        return;
+    }
+
     let totalSks = 0;
     let totalBobotSks = 0;
     data.forEach(mk => {
@@ -200,12 +206,12 @@ export function renderKHSData(data, semesterIndex, programStudi, jenjangStudi) {
         semester.mata_kuliah.forEach(mk => {
             tableRows += `
                 <tr class="bg-white border-b hover:bg-gray-50">
-                    <td class="py-3 px-4 rounded-tl-lg whitespace-nowrap">${mk.kode_mk}</td>
-                    <td class="py-3 px-4">${mk.nama_mk}</td>
-                    <td class="py-3 px-4 text-center font-semibold">${mk.grade}</td>
-                    <td class="py-3 px-4 text-center">${mk.bobot}</td>
-                    <td class="py-3 px-4 text-center">${mk.sks}</td>
-                    <td class="py-3 px-4 text-center rounded-tr-lg">${mk.bobot_sks}</td>
+                    <td class="py-3 px-6 whitespace-nowrap">${mk.kode_mk}</td>
+                    <td class="py-3 px-6">${mk.nama_mk}</td>
+                    <td class="py-3 px-6 text-center font-semibold">${mk.grade}</td>
+                    <td class="py-3 px-6 text-center">${mk.bobot}</td>
+                    <td class="py-3 px-6 text-center">${mk.sks}</td>
+                    <td class="py-3 px-6 text-center">${mk.bobot_sks}</td>
                 </tr>
             `;
         });
@@ -216,12 +222,12 @@ export function renderKHSData(data, semesterIndex, programStudi, jenjangStudi) {
                 <table class="w-full text-sm text-left text-gray-500">
                     <thead class="text-xs text-white uppercase bg-blue-600 rounded-t-lg">
                         <tr>
-                            <th scope="col" class="py-3 px-4 rounded-tl-lg whitespace-nowrap">Kode MK</th>
-                            <th scope="col" class="py-3 px-4">Mata Kuliah</th>
-                            <th scope="col" class="py-3 px-4 text-center">Grade</th>
-                            <th scope="col" class="py-3 px-4 text-center">Bobot</th>
-                            <th scope="col" class="py-3 px-4 text-center">SKS</th>
-                            <th scope="col" class="py-3 px-4 text-center rounded-tr-lg">Bobot x SKS</th>
+                            <th scope="col" class="py-3 px-6 rounded-tl-lg">Kode MK</th>
+                            <th scope="col" class="py-3 px-6">Mata Kuliah</th>
+                            <th scope="col" class="py-3 px-6 text-center">Grade</th>
+                            <th scope="col" class="py-3 px-6 text-center">Bobot</th>
+                            <th scope="col" class="py-3 px-6 text-center">SKS</th>
+                            <th scope="col" class="py-3 px-6 text-center rounded-tr-lg">Bobot x SKS</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -281,7 +287,7 @@ export function renderJadwalUjianCards(jadwalData, container) {
 }
 
 export function renderJadwalUjianTable(jadwalData, container) {
-     if (jadwalData.length === 0) {
+     if (!jadwalData || jadwalData.length === 0) {
         container.innerHTML += '<div class="text-center py-4 text-gray-500">Tidak ada jadwal yang ditemukan.</div>';
         return;
     }
@@ -289,34 +295,34 @@ export function renderJadwalUjianTable(jadwalData, container) {
     jadwalData.forEach(item => {
         tableRows += `
             <tr class="bg-white border-b hover:bg-gray-50">
-                <td class="py-3 px-4 whitespace-nowrap">${item.tanggal}</td>
-                <td class="py-3 px-4">${item.hari}</td>
-                <td class="py-3 px-4">${item.mulai.substring(0, 5)}</td>
-                <td class="py-3 px-4">${item.selesai.substring(0, 5)}</td>
-                <td class="py-3 px-4">${item.ruangan}</td>
-                <td class="py-3 px-4">${item.mata_kuliah}</td>
-                <td class="py-3 px-4">${item.kelas}</td>
-                <td class="py-3 px-4">${item.dosen}</td>
-                <td class="py-3 px-4">${item.no_kursi}</td>
-                <td class="py-3 px-4">${item.soal}</td>
+                <td class="py-3 px-6 whitespace-nowrap">${item.tanggal}</td>
+                <td class="py-3 px-6">${item.hari}</td>
+                <td class="py-3 px-6">${item.mulai.substring(0, 5)}</td>
+                <td class="py-3 px-6">${item.selesai.substring(0, 5)}</td>
+                <td class="py-3 px-6">${item.ruangan}</td>
+                <td class="py-3 px-6">${item.mata_kuliah}</td>
+                <td class="py-3 px-6">${item.kelas}</td>
+                <td class="py-3 px-6">${item.dosen}</td>
+                <td class="py-3 px-6">${item.no_kursi}</td>
+                <td class="py-3 px-6">${item.soal}</td>
             </tr>
         `;
     });
     const tableHtml = `
         <div class="overflow-x-auto">
-            <table class="w-full text-sm text-left text-gray-700">
-                <thead class="text-xs text-white uppercase bg-blue-600">
+            <table class="w-full text-sm text-left text-gray-500">
+                <thead class="text-xs text-white uppercase bg-blue-600 rounded-t-lg">
                         <tr>
-                            <th scope="col" class="py-3 px-4 rounded-tl-lg whitespace-nowrap">Tanggal</th>
-                            <th scope="col" class="py-3 px-4 whitespace-nowrap">Hari</th>
-                            <th scope="col" class="py-3 px-4 whitespace-nowrap">Mulai</th>
-                            <th scope="col" class="py-3 px-4 whitespace-nowrap">Selesai</th>
-                            <th scope="col" class="py-3 px-4 whitespace-nowrap">Ruangan</th>
-                            <th scope="col" class="py-3 px-4 whitespace-nowrap">Mata Kuliah</th>
-                            <th scope="col" class="py-3 px-4 whitespace-nowrap">Kelas</th>
-                            <th scope="col" class="py-3 px-4 whitespace-nowrap">Dosen</th>
-                            <th scope="col" class="py-3 px-4 whitespace-nowrap">No. Kursi</th>
-                            <th scope="col" class="py-3 px-4 rounded-tr-lg whitespace-nowrap">Soal</th>
+                            <th scope="col" class="py-3 px-6 rounded-tl-lg whitespace-nowrap">Tanggal</th>
+                            <th scope="col" class="py-3 px-6 whitespace-nowrap">Hari</th>
+                            <th scope="col" class="py-3 px-6 whitespace-nowrap">Mulai</th>
+                            <th scope="col" class="py-3 px-6 whitespace-nowrap">Selesai</th>
+                            <th scope="col" class="py-3 px-6 whitespace-nowrap">Ruangan</th>
+                            <th scope="col" class="py-3 px-6 whitespace-nowrap">Mata Kuliah</th>
+                            <th scope="col" class="py-3 px-6 whitespace-nowrap">Kelas</th>
+                            <th scope="col" class="py-3 px-6 whitespace-nowrap">Dosen</th>
+                            <th scope="col" class="py-3 px-6 whitespace-nowrap">No. Kursi</th>
+                            <th scope="col" class="py-3 px-6 rounded-tr-lg whitespace-nowrap">Soal</th>
                         </tr>
                     </thead>
                     <tbody id="uts-table-body">
@@ -336,6 +342,11 @@ export function renderJadwalKuliah(data, mahasiswaData) {
     setText('#program-studi-meta', mahasiswaData?.prodi);
     setText('#jenjang-studi-meta', mahasiswaData?.jenjang_studi);
     setText('#jadwal-kuliah-meta', `Tahun: ${mahasiswaData?.tahun_masuk}/${parseInt(mahasiswaData?.tahun_masuk) + 1} - Semester: Gasal`);
+
+    if (!data || data.length === 0) {
+        container.innerHTML = '<div class="text-center py-4 text-gray-500">Tidak ada jadwal kuliah yang ditemukan.</div>';
+        return;
+    }
 
     if (window.innerWidth < 768) {
         const cardContainer = document.createElement('div');
@@ -359,34 +370,34 @@ export function renderJadwalKuliah(data, mahasiswaData) {
         data.forEach(item => {
             tableRows += `
                 <tr class="bg-white border-b hover:bg-gray-50">
-                    <td class="py-3 px-4 whitespace-nowrap">${item.hari}</td>
-                    <td class="py-3 px-4">${item.jam_mulai.substring(0, 5)}</td>
-                    <td class="py-3 px-4">${item.jam_selesai.substring(0, 5)}</td>
-                    <td class="py-3 px-4">${item.ruang}</td>
-                    <td class="py-3 px-4">${item.kode_matkul}</td>
-                    <td class="py-3 px-4">${item.matkul}</td>
-                    <td class="py-3 px-4">${item.dosen}</td>
-                    <td class="py-3 px-4">${item.jenis}</td>
-                    <td class="py-3 px-4">${item.kelas}</td>
-                    <td class="py-3 px-4 rounded-tr-lg whitespace-nowrap">Goggle Classroom ID</th>
+                    <td class="py-3 px-6 whitespace-nowrap">${item.hari}</td>
+                    <td class="py-3 px-6">${item.jam_mulai.substring(0, 5)}</td>
+                    <td class="py-3 px-6">${item.jam_selesai.substring(0, 5)}</td>
+                    <td class="py-3 px-6">${item.ruang}</td>
+                    <td class="py-3 px-6">${item.kode_matkul}</td>
+                    <td class="py-3 px-6">${item.matkul}</td>
+                    <td class="py-3 px-6">${item.dosen}</td>
+                    <td class="py-3 px-6">${item.jenis}</td>
+                    <td class="py-3 px-6">${item.kelas}</td>
+                    <td class="py-3 px-6 rounded-tr-lg whitespace-nowrap">Goggle Classroom ID</th>
                 </tr>
             `;
         });
         const tableHtml = `
             <div class="overflow-x-auto">
-                <table class="w-full text-sm text-left text-gray-700">
-                    <thead class="text-xs text-white uppercase bg-blue-600">
+                <table class="w-full text-sm text-left text-gray-500">
+                    <thead class="text-xs text-white uppercase bg-blue-600 rounded-t-lg">
                         <tr>
-                            <th scope="col" class="py-3 px-4 rounded-tl-lg whitespace-nowrap">Hari</th>
-                            <th scope="col" class="py-3 px-4 whitespace-nowrap">Jam Mulai</th>
-                            <th scope="col" class="py-3 px-4 whitespace-nowrap">Jam Selesai</th>
-                            <th scope="col" class="py-3 px-4 whitespace-nowrap">Ruang</th>
-                            <th scope="col" class="py-3 px-4 whitespace-nowrap">Kode Matkul</th>
-                            <th scope="col" class="py-3 px-4 whitespace-nowrap">Matkul</th>
-                            <th scope="col" class="py-3 px-4 whitespace-nowrap">Dosen</th>
-                            <th scope="col" class="py-3 px-4 whitespace-nowrap">Jenis</th>
-                            <th scope="col" class="py-3 px-4 whitespace-nowrap">Kelas</th>
-                            <th scope="col" class="py-3 px-4 rounded-tr-lg whitespace-nowrap">Goggle Classroom ID</th>
+                            <th scope="col" class="py-3 px-6 rounded-tl-lg whitespace-nowrap">Hari</th>
+                            <th scope="col" class="py-3 px-6 whitespace-nowrap">Jam Mulai</th>
+                            <th scope="col" class="py-3 px-6 whitespace-nowrap">Jam Selesai</th>
+                            <th scope="col" class="py-3 px-6 whitespace-nowrap">Ruang</th>
+                            <th scope="col" class="py-3 px-6 whitespace-nowrap">Kode Matkul</th>
+                            <th scope="col" class="py-3 px-6 whitespace-nowrap">Matkul</th>
+                            <th scope="col" class="py-3 px-6 whitespace-nowrap">Dosen</th>
+                            <th scope="col" class="py-3 px-6 whitespace-nowrap">Jenis</th>
+                            <th scope="col" class="py-3 px-6 whitespace-nowrap">Kelas</th>
+                            <th scope="col" class="py-3 px-6 rounded-tr-lg whitespace-nowrap">Goggle Classroom ID</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -409,6 +420,11 @@ export function renderKehadiranSummary(data) {
             <p class="text-sm text-gray-500 mt-1">Rekapitulasi total kehadiran berdasarkan status.</p>
         </div>
     `;
+
+    if (!data || data.length === 0) {
+        container.innerHTML += '<div class="text-center py-4 text-gray-500">Tidak ada rekapitulasi kehadiran yang ditemukan.</div>';
+        return;
+    }
 
     if (window.innerWidth < 768) {
          const cardContainer = document.createElement('div');
@@ -476,6 +492,11 @@ export function renderKehadiranDetail(data, mataKuliahName) {
             if (!detailContainer) return;
             detailContainer.innerHTML = '';
             
+            if (!data || data.length === 0) {
+                detailContainer.innerHTML = '<p class="text-center py-4 text-gray-500">Tidak ada detail kehadiran yang ditemukan.</p>';
+                return;
+            }
+
             if (window.innerWidth < 768) {
                 const cardContainer = document.createElement('div');
                 cardContainer.className = 'p-4 space-y-4';
@@ -528,15 +549,22 @@ export function renderKehadiranDetail(data, mataKuliahName) {
 export function renderKRSData(data, mahasiswaData) {
     const container = document.getElementById('krs-content-container');
     if (!container) return;
-    container.innerHTML = '';
 
+    if (!data || data.mata_kuliah_tersedia.length === 0) {
+        container.innerHTML = '<div class="text-center py-4 text-gray-500">Tidak ada data KRS yang ditemukan.</div>';
+        return;
+    }
+
+    // Perubahan logika rendering di sini
+    const form = document.createElement('form');
+    form.id = 'krsForm';
+    form.className = 'space-y-4';
+    const infoDiv = document.createElement('div');
+    infoDiv.className = 'p-4 border-b border-gray-200';
+    infoDiv.innerHTML = `<h2 class="font-bold text-lg">Pilih Mata Kuliah</h2><p class="text-sm text-gray-500 mt-1">Semester: <span id="krs-semester">${mahasiswaData?.semester_sekarang || 'Memuat...'}</span></p>`;
+    form.appendChild(infoDiv);
+    
     if (window.innerWidth < 768) {
-         const form = document.createElement('form');
-         form.id = 'krsForm';
-         const infoDiv = document.createElement('div');
-         infoDiv.className = 'p-4 border-b border-gray-200';
-         infoDiv.innerHTML = `<h2 class="font-bold text-lg">Pilih Mata Kuliah</h2><p class="text-sm text-gray-500 mt-1">Semester: <span id="krs-semester">${mahasiswaData?.semester_sekarang || 'Memuat...'}</span></p>`;
-         form.appendChild(infoDiv);
          const cardContainer = document.createElement('div');
          cardContainer.className = 'p-4 space-y-4';
          data.mata_kuliah_tersedia.forEach(mk => {
@@ -553,25 +581,14 @@ export function renderKRSData(data, mahasiswaData) {
             cardContainer.appendChild(card);
         });
         form.appendChild(cardContainer);
-        const buttonDiv = document.createElement('div');
-        buttonDiv.className = 'p-4 md:p-6 border-t border-gray-200 flex justify-end';
-        buttonDiv.innerHTML = `<button type="submit" class="bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg hover:bg-blue-800 transition">Simpan KRS</button>`;
-        form.appendChild(buttonDiv);
-        container.appendChild(form);
     } else {
-        const form = document.createElement('form');
-        form.id = 'krsForm';
-        const infoDiv = document.createElement('div');
-        infoDiv.className = 'p-4 md:p-6 border-b border-gray-200';
-        infoDiv.innerHTML = `<h2 class="font-bold text-lg">Pilih Mata Kuliah</h2><p id="krs-info" class="text-sm text-gray-500 mt-1">Semester: <span id="krs-semester">${mahasiswaData?.semester_sekarang || 'Memuat...'}</span></p>`;
-        form.appendChild(infoDiv);
         const tableDiv = document.createElement('div');
         tableDiv.className = 'overflow-x-auto';
         let tableRows = '';
         data.mata_kuliah_tersedia.forEach(mk => {
             const isChecked = data.krs_terisi.includes(mk.kode_mk) ? 'checked' : '';
             tableRows += `
-                <tr>
+                <tr class="bg-white border-b hover:bg-gray-50">
                     <td class="py-3 px-6 text-center">
                         <input type="checkbox" name="mata_kuliah[]" value="${mk.kode_mk}" ${isChecked}>
                     </td>
@@ -599,13 +616,15 @@ export function renderKRSData(data, mahasiswaData) {
             </table>
         `;
         form.appendChild(tableDiv);
-        const buttonDiv = document.createElement('div');
-        buttonDiv.className = 'p-4 md:p-6 border-t border-gray-200 flex justify-end';
-        buttonDiv.innerHTML = `<button type="submit" class="bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg hover:bg-blue-800 transition">Simpan KRS</button>`;
-        form.appendChild(buttonDiv);
-        container.appendChild(form);
     }
+    
+    const buttonDiv = document.createElement('div');
+    buttonDiv.className = 'p-4 md:p-6 border-t border-gray-200 flex justify-end';
+    buttonDiv.innerHTML = `<button type="submit" class="bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg hover:bg-blue-800 transition">Simpan KRS</button>`;
+    form.appendChild(buttonDiv);
+    container.appendChild(form);
 }
+
 
 export function renderKurikulumData(data, semesterSekarang) {
     const container = document.getElementById('kurikulum-content-container');
@@ -617,6 +636,11 @@ export function renderKurikulumData(data, semesterSekarang) {
     infoDiv.innerHTML = `<h2 class="font-bold text-lg">Daftar Kurikulum</h2><p id="semester-info" class="text-sm text-gray-500 mt-1">Menampilkan mata kuliah kurikulum yang tersedia untuk ${semesterText}.</p>`;
     container.appendChild(infoDiv);
     
+    if (!data || data.length === 0) {
+        container.innerHTML += '<p class="text-center py-4 text-gray-500">Tidak ada data kurikulum yang ditemukan.</p>';
+        return;
+    }
+
     if (window.innerWidth < 768) {
         const cardContainer = document.createElement('div');
         cardContainer.className = 'p-4 space-y-4';
@@ -653,7 +677,7 @@ export function renderKurikulumData(data, semesterSekarang) {
                         <th scope="col" class="py-3 px-6 rounded-tl-lg">Kode Matkul</th>
                         <th scope="col" class="py-3 px-6">Mata Kuliah</th>
                         <th scope="col" class="py-3 px-6 text-center">SKS</th>
-                        <th scope="col" class="py-3 px-6 text-center">Grade Min</th>
+                        <th scope="col" class="py-3 px-6 text-center rounded-tr-lg">Grade Min</th>
                     </tr>
                 </thead>
                 <tbody id="kurikulum-table-body">
@@ -670,19 +694,26 @@ export function renderKMKData(data, mahasiswaData) {
     if (!container) return;
     container.innerHTML = '';
     
+    const infoDiv = document.createElement('div');
+    infoDiv.className = 'p-4 md:p-8 rounded-xl shadow-lg';
+    infoDiv.innerHTML = `
+        <h2 class="text-lg md:text-xl font-semibold mb-4 border-b pb-2">Informasi Mahasiswa dan Daftar Mata Kuliah</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm text-gray-700 mb-6">
+            <p>NIM: <span id="mahasiswa-nim" class="font-semibold">${mahasiswaData?.nim || 'Memuat...'}</span></p>
+            <p>Nama: <span id="mahasiswa-nama" class="font-semibold">${mahasiswaData?.nama || 'Memuat...'}</span></p>
+            <p>Program Studi: <span class="font-semibold">${mahasiswaData?.prodi || 'Memuat...'}</span></p>
+            <p>Jenjang Studi: <span class="font-semibold">${mahasiswaData?.program || 'Memuat...'}</span></p>
+            <p class="md:col-span-2">Semester: <span id="semester-sekarang" class="font-semibold">${mahasiswaData?.semester_sekarang || 'Memuat...'}</span></p>
+        </div>
+    `;
+    container.appendChild(infoDiv);
+
+    if (!data || data.length === 0) {
+        container.innerHTML += '<p class="text-center py-4 text-gray-500">Tidak ada data mata kuliah yang ditemukan.</p>';
+        return;
+    }
+
     if (window.innerWidth < 768) {
-        const infoDiv = document.createElement('div');
-        infoDiv.className = 'p-4 md:p-8 rounded-xl shadow-lg';
-        infoDiv.innerHTML = `
-            <h2 class="text-lg md:text-xl font-semibold mb-4 border-b pb-2">Informasi Mahasiswa dan Daftar Mata Kuliah</h2>
-            <div class="grid grid-cols-1 gap-2 text-sm text-gray-700 mb-4">
-                <p>NIM: <span class="font-semibold">${mahasiswaData?.nim || 'Memuat...'}</span></p>
-                <p>Nama: <span class="font-semibold">${mahasiswaData?.nama || 'Memuat...'}</span></p>
-                <p>Program Studi: <span class="font-semibold">${mahasiswaData?.prodi || 'Memuat...'}</span></p>
-                <p>Jenjang Studi: <span class="font-semibold">${mahasiswaData?.program || 'Memuat...'}</span></p>
-                <p>Semester: <span class="font-semibold">${mahasiswaData?.semester_sekarang || 'Memuat...'}</span></p>
-            </div>
-        `;
         const cardContainer = document.createElement('div');
         cardContainer.className = 'p-4 space-y-4';
         data.forEach(mk => {
@@ -696,31 +727,18 @@ export function renderKMKData(data, mahasiswaData) {
             `;
             cardContainer.appendChild(card);
         });
-        container.appendChild(infoDiv);
         container.appendChild(cardContainer);
     } else {
-        const infoDiv = document.createElement('div');
-        infoDiv.className = 'p-4 md:p-8 rounded-xl shadow-lg';
-        infoDiv.innerHTML = `
-            <h2 class="text-lg md:text-xl font-semibold mb-4 border-b pb-2">Informasi Mahasiswa dan Daftar Mata Kuliah</h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm text-gray-700 mb-6">
-                <p>NIM: <span id="mahasiswa-nim" class="font-semibold">${mahasiswaData?.nim || 'Memuat...'}</span></p>
-                <p>Nama: <span id="mahasiswa-nama" class="font-semibold">${mahasiswaData?.nama || 'Memuat...'}</span></p>
-                <p>Program Studi: <span class="font-semibold">${mahasiswaData?.prodi || 'Memuat...'}</span></p>
-                <p>Jenjang Studi: <span class="font-semibold">${mahasiswaData?.program || 'Memuat...'}</span></p>
-                <p class="md:col-span-2">Semester: <span id="semester-sekarang" class="font-semibold">${mahasiswaData?.semester_sekarang || 'Memuat...'}</span></p>
-            </div>
-        `;
         const tableDiv = document.createElement('div');
         tableDiv.className = 'overflow-x-auto';
         let tableRows = '';
         data.forEach(mk => {
             tableRows += `
                 <tr class="bg-white border-b hover:bg-gray-50">
-                    <td class="py-3 px-4 whitespace-nowrap">${mk.kode_mk}</td>
-                    <td class="py-3 px-4 whitespace-nowrap">${mk.nama_mk}</td>
-                    <td class="py-3 px-4 text-center whitespace-nowrap">${mk.sks}</td>
-                    <td class="py-3 px-4 rounded-tr-lg text-center whitespace-nowrap">${mk.kelas}</td>
+                    <td class="py-3 px-6 whitespace-nowrap">${mk.kode_mk}</td>
+                    <td class="py-3 px-6 whitespace-nowrap">${mk.nama_mk}</td>
+                    <td class="py-3 px-6 text-center whitespace-nowrap">${mk.sks}</td>
+                    <td class="py-3 px-6 text-center whitespace-nowrap">${mk.kelas}</td>
                 </tr>
             `;
         });
@@ -728,10 +746,10 @@ export function renderKMKData(data, mahasiswaData) {
             <table class="w-full text-left text-sm text-gray-700">
                 <thead class="text-xs text-white uppercase bg-blue-600 rounded-t-lg">
                     <tr>
-                        <th scope="col" class="py-3 px-4 rounded-tl-lg whitespace-nowrap">Kode Matkul</th>
-                        <th scope="col" class="py-3 px-4 whitespace-nowrap">Mata Kuliah</th>
-                        <th scope="col" class="py-3 px-4 text-center whitespace-nowrap">SKS</th>
-                        <th scope="col" class="py-3 px-4 rounded-tr-lg text-center whitespace-nowrap">Kelas</th>
+                        <th scope="col" class="py-3 px-6 rounded-tl-lg whitespace-nowrap">Kode Matkul</th>
+                        <th scope="col" class="py-3 px-6 whitespace-nowrap">Mata Kuliah</th>
+                        <th scope="col" class="py-3 px-6 text-center whitespace-nowrap">SKS</th>
+                        <th scope="col" class="py-3 px-6 rounded-tr-lg text-center whitespace-nowrap">Kelas</th>
                     </tr>
                 </thead>
                 <tbody id="mata-kuliah-table-body">
@@ -739,7 +757,6 @@ export function renderKMKData(data, mahasiswaData) {
                 </tbody>
             </table>
         `;
-        container.appendChild(infoDiv);
         container.appendChild(tableDiv);
     }
 }
@@ -859,7 +876,7 @@ export function renderPembayaranData(apiResponse, semesterIndex) {
         
         semesterData.rincian.forEach(item => {
             tableRows += `
-                <tr class="bg-white hover:bg-gray-50">
+                <tr class="bg-white border-b hover:bg-gray-50">
                     <td class="py-3 px-6 whitespace-nowrap">${item.deskripsi}</td>
                     <td class="py-3 px-6 text-center">${formatRupiah(item.nominal)}</td>
                     <td class="py-3 px-6"></td>
@@ -878,7 +895,7 @@ export function renderPembayaranData(apiResponse, semesterIndex) {
         let pembayaranRows = '';
         semesterData.pembayaran.forEach(item => {
             pembayaranRows += `
-                <tr class="bg-white hover:bg-gray-50">
+                <tr class="bg-white border-b hover:bg-gray-50">
                     <td class="py-3 px-6 whitespace-nowrap">Pembayaran (${item.tanggal})</td>
                     <td class="py-3 px-6"></td>
                     <td class="py-3 px-6 text-center">${formatRupiah(item.nominal)}</td>
@@ -904,7 +921,7 @@ export function renderPembayaranData(apiResponse, semesterIndex) {
         
         const tableHtml = `
             <div class="overflow-x-auto">
-                <table class="w-full text-left text-sm text-gray-700">
+                <table class="w-full text-left text-sm text-gray-500">
                     <thead class="text-xs text-white uppercase bg-blue-600 rounded-t-lg">
                         <tr>
                             <th scope="col" class="py-3 px-6 rounded-tl-lg">Keterangan</th>
@@ -922,7 +939,6 @@ export function renderPembayaranData(apiResponse, semesterIndex) {
                 </table>
             </div>
         `;
-        
         container.innerHTML = tableHtml;
     }
 }
@@ -1155,4 +1171,86 @@ export function renderMagangPage(mahasiswaData, historiMagangData) {
         `;
         historiContainer.innerHTML = tableHtml;
     }
+}
+
+export function renderPengajuanJudul(data) {
+    const container = document.getElementById('status-permohonan-container');
+    if (!container) return;
+
+    if (!data || data.length === 0) {
+        container.innerHTML = '<p class="text-center py-4 text-gray-500">Tidak ada status permohonan yang ditemukan.</p>';
+        return;
+    }
+
+    let tableRows = '';
+    data.forEach(item => {
+        const statusBadgeClass = item.status === 'Disetujui' ? 'bg-green-600' : (item.status === 'Ditolak' ? 'bg-red-600' : 'bg-yellow-600');
+        const cetakFormLink = item.cetak_form ? `<a href="${item.cetak_form}" class="text-blue-600 hover:underline">Cetak</a>` : 'Tidak tersedia';
+        tableRows += `
+            <tr class="bg-white border-b hover:bg-gray-50">
+                <td class="py-3 px-6">${item.judul}</td>
+                <td class="py-3 px-6">${item.abstrak}</td>
+                <td class="py-3 px-6">${item.jalur}</td>
+                <td class="py-3 px-6">${item.tgl_pengajuan}</td>
+                <td class="py-3 px-6 text-center"><span class="px-2 py-1 text-xs font-semibold text-white rounded-full ${statusBadgeClass}">${item.status}</span></td>
+                <td class="py-3 px-6">${item.tgl_proses || '-'}</td>
+                <td class="py-3 px-6">${item.komentar_prodi || '-'}</td>
+                <td class="py-3 px-6 text-center">${cetakFormLink}</td>
+            </tr>
+        `;
+    });
+    const tableHtml = `
+        <div class="overflow-x-auto">
+            <table class="w-full text-left text-sm text-gray-500">
+                <thead class="text-xs text-white uppercase bg-blue-600 rounded-t-lg">
+                    <tr>
+                        <th scope="col" class="py-3 px-6 rounded-tl-lg">Judul</th>
+                        <th scope="col" class="py-3 px-6">Abstrak</th>
+                        <th scope="col" class="py-3 px-6">Jalur</th>
+                        <th scope="col" class="py-3 px-6">Tgl Pengajuan</th>
+                        <th scope="col" class="py-3 px-6 text-center">Status</th>
+                        <th scope="col" class="py-3 px-6">Tgl Proses</th>
+                        <th scope="col" class="py-3 px-6">Komentar Prodi</th>
+                        <th scope="col" class="py-3 px-6 rounded-tr-lg text-center">Cetak Form</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    ${tableRows}
+                </tbody>
+            </table>
+        </div>
+    `;
+    container.innerHTML = tableHtml;
+}
+
+export function renderPengajuanUjianData(apiResponse, mahasiswaData) {
+    if (!apiResponse || !mahasiswaData) return;
+    
+    const judulDisetujui = apiResponse.judul_disetujui || {};
+    const ipkSks = apiResponse.ipk_sks || {};
+    
+    setValue('#pengajuanUjianForm #judul_ujian', judulDisetujui.judul || 'Belum ada judul yang disetujui.');
+    
+    setValue('#pengajuanUjianForm #pembimbing1', judulDisetujui.pembimbing || '-');
+    setValue('#pengajuanUjianForm #pembimbing2', '-');
+    
+    setValue('#pengajuanUjianForm #ipk_ujian', ipkSks.ipk_terakhir || '-');
+    setValue('#pengajuanUjianForm #sks_ujian', ipkSks.jumlah_sks || '-');
+}
+
+export function renderPengajuanJudulFormData(apiResponse) {
+    if (!apiResponse || !apiResponse.data) return;
+
+    const data = apiResponse.data;
+    
+    setValue('#hp_terbaru', data.hp_terbaru);
+    setValue('#semester_pengajuan', data.semester_pengajuan);
+    setValue('#ipk_terakhir', data.ipk_terakhir);
+    setValue('#jumlah_point', data.jumlah_point);
+    setValue('#nilai_magang', data.nilai_magang);
+    setValue('#sks_ditempuh', data.sks_ditempuh);
+    setValue('#jumlah_nilai_d', data.jumlah_nilai_d);
+    setValue('#jumlah_nilai_e', data.jumlah_nilai_e);
+    setValue('#mata_kuliah_d', data.mata_kuliah_d);
+    setValue('#mata_kuliah_e', data.mata_kuliah_e);
 }

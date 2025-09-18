@@ -17,6 +17,11 @@ import {
   fetchPinjamanHistory,
   fetchMagangHistory, 
   handlePengajuanMagangSubmit,
+  fetchPengajuanJudulData,
+  handlePengajuanJudulSubmit,
+  fetchPengajuanUjianData,
+  handlePengajuanUjianSubmit,
+  fetchSkripsiData,
   globalMahasiswaData,
   currentKHSData,
   currentKehadiranSummary,
@@ -49,7 +54,10 @@ import {
   renderPembayaranData,
   renderPointBookData, 
   renderPinjamanData,
-  renderMagangPage
+  renderMagangPage,
+  renderPengajuanJudul,
+  renderPengajuanUjianData,
+  renderPengajuanJudulFormData
 } from './loader.js';
 
 
@@ -156,6 +164,29 @@ async function loadContent(url) {
             const formPengajuan = document.getElementById('pengajuanMagangForm');
             if (formPengajuan) {
                 formPengajuan.addEventListener('submit', handlePengajuanMagangSubmit);
+            }
+        } else if (url.includes('pengajuan_judul.html')) {
+            const skripsiData = await fetchSkripsiData();
+            if (skripsiData) {
+                renderPengajuanJudulFormData(skripsiData.data);
+            }
+            const apiResponse = await fetchPengajuanJudulData();
+            if (apiResponse) {
+                renderPengajuanJudul(apiResponse);
+            }
+            const formPengajuan = document.getElementById('pengajuanJudulForm');
+            if (formPengajuan) {
+                formPengajuan.addEventListener('submit', handlePengajuanJudulSubmit);
+            }
+        } else if (url.includes('pengajuan_ujian.html')) {
+            const apiResponse = await fetchPengajuanUjianData();
+            const mahasiswaData = await fetchDataAndPopulateForm();
+            if (apiResponse && mahasiswaData) {
+                renderPengajuanUjianData(apiResponse, mahasiswaData);
+            }
+            const formPengajuan = document.getElementById('pengajuanUjianForm');
+            if (formPengajuan) {
+                formPengajuan.addEventListener('submit', handlePengajuanUjianSubmit);
             }
         }
     } catch (error) {

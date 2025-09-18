@@ -383,3 +383,122 @@ export async function handlePengajuanMagangSubmit(e) {
     alert('Terjadi kesalahan saat mengirim pengajuan. Silakan coba lagi.');
   }
 }
+
+// Fungsi untuk mengambil data pengajuan judul skripsi
+export async function fetchPengajuanJudulData() {
+    const nim = localStorage.getItem('loggedInUserNim');
+    if (!nim) return null;
+    const url = `http://localhost/siakad_api/skripsi_judul.php?nim=${nim}`;
+    try {
+        const response = await fetch(url);
+        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+        const apiResponse = await response.json();
+        return apiResponse.data;
+    } catch (error) {
+        console.error('Terjadi masalah saat mengambil data pengajuan judul skripsi:', error);
+        return null;
+    }
+}
+
+// Fungsi untuk menangani pengajuan judul skripsi
+export async function handlePengajuanJudulSubmit(e) {
+    e.preventDefault();
+    const nim = localStorage.getItem('loggedInUserNim');
+    const form = e.target;
+    const formData = new FormData(form);
+    formData.append('nim', nim);
+    try {
+        const response = await fetch('http://localhost/siakad_api/skripsi_judul.php', {
+            method: 'POST',
+            body: formData
+        });
+        const apiResponse = await response.json();
+        if (apiResponse.status === 'success') {
+            alert(apiResponse.message);
+            loadContent('/dashboard/skripsi/pengajuan_judul.html');
+        } else {
+            alert('Pengajuan gagal: ' + apiResponse.message);
+        }
+    } catch (error) {
+        console.error('Error saat mengirim pengajuan judul:', error);
+        alert('Terjadi kesalahan saat mengirim pengajuan judul.');
+    }
+}
+
+// Fungsi untuk mengambil data ujian skripsi
+export async function fetchPengajuanUjianData() {
+    const nim = localStorage.getItem('loggedInUserNim');
+    if (!nim) return null;
+    const url = `http://localhost/siakad_api/skripsi_ujian.php?nim=${nim}`;
+    try {
+        const response = await fetch(url);
+        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+        const apiResponse = await response.json();
+        return apiResponse;
+    } catch (error) {
+        console.error('Terjadi masalah saat mengambil data ujian skripsi:', error);
+        return null;
+    }
+}
+
+// Fungsi untuk menangani pengajuan ujian skripsi
+export async function handlePengajuanUjianSubmit(e) {
+    e.preventDefault();
+    const nim = localStorage.getItem('loggedInUserNim');
+    const form = e.target;
+    const formData = new FormData(form);
+    formData.append('nim', nim);
+    try {
+        const response = await fetch('http://localhost/siakad_api/skripsi_ujian.php', {
+            method: 'POST',
+            body: formData
+        });
+        const apiResponse = await response.json();
+        if (apiResponse.status === 'success') {
+            alert(apiResponse.message);
+        } else {
+            alert('Pengajuan gagal: ' + apiResponse.message);
+        }
+    } catch (error) {
+        console.error('Error saat mengirim pengajuan ujian:', error);
+        alert('Terjadi kesalahan saat mengirim pengajuan ujian.');
+    }
+}
+
+// Fungsi untuk mengambil data form pengajuan judul skripsi
+export async function fetchSkripsiData() {
+    const nim = localStorage.getItem('loggedInUserNim');
+    if (!nim) return null;
+
+    try {
+        const mahasiswaData = await fetchDataAndPopulateForm();
+        const ipkIpsData = await fetchIpkIpsData();
+        const pointData = await fetchPointBookHistory();
+        const nilaiData = await fetchMataKuliahData();
+        
+        // Logika untuk menghitung jumlah nilai D dan E serta mata kuliahnya
+        const jumlahNilaiD = nilaiData ? nilaiData.filter(item => item.grade === 'D').length : 0;
+        const mataKuliahD = nilaiData ? nilaiData.filter(item => item.grade === 'D').map(item => item.nama_mk).join(', ') : '';
+        const jumlahNilaiE = nilaiData ? nilaiData.filter(item => item.grade === 'E').length : 0;
+        const mataKuliahE = nilaiData ? nilaiData.filter(item => item.grade === 'E').map(item => item.nama_mk).join(', ') : '';
+        
+        return {
+            status: 'success',
+            data: {
+                hp_terbaru: mahasiswaData?.handphone || '',
+                semester_pengajuan: mahasiswaData?.semester_sekarang || '',
+                ipk_terakhir: ipkIpsData?.ipk || '',
+                jumlah_point: pointData?.total_poin || '',
+                nilai_magang: 'A', // Asumsi nilai default
+                sks_ditempuh: ipkIpsData?.ips_per_semester.reduce((sum, semester) => sum + parseInt(semester.total_sks), 0) || 0,
+                jumlah_nilai_d: jumlahNilaiD,
+                jumlah_nilai_e: jumlahNilaiE,
+                mata_kuliah_d: mataKuliahD,
+                mata_kuliah_e: mataKuliahE,
+            }
+        };
+    } catch (error) {
+        console.error('Terjadi masalah saat mengambil data skripsi:', error);
+        return null;
+    }
+}
