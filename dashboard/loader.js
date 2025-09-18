@@ -229,6 +229,12 @@ export function renderKHSData(data, semesterIndex, programStudi, jenjangStudi) {
                     </tbody>
                 </table>
             </div>
+            <div class="flex justify-end text-sm">
+                <div class="text-right">
+                    <p class="font-bold">JUMLAH: ${semester.total_sks}</p>
+                    <p class="font-bold">IP SEMESTER: ${semester.ips}</p>
+                </div>
+            </div>
         `;
         container.appendChild(semesterDiv);
     }
@@ -362,7 +368,7 @@ export function renderJadwalKuliah(data, mahasiswaData) {
                     <td class="py-3 px-4">${item.dosen}</td>
                     <td class="py-3 px-4">${item.jenis}</td>
                     <td class="py-3 px-4">${item.kelas}</td>
-                    <td class="py-3 px-4 rounded-tr-lg whitespace-nowrap">Goggle Classroom ID</td>
+                    <td class="py-3 px-4 rounded-tr-lg whitespace-nowrap">Goggle Classroom ID</th>
                 </tr>
             `;
         });
@@ -666,7 +672,7 @@ export function renderKMKData(data, mahasiswaData) {
     
     if (window.innerWidth < 768) {
         const infoDiv = document.createElement('div');
-        infoDiv.className = 'p-4 md:p-6 border-b border-gray-200';
+        infoDiv.className = 'p-4 md:p-8 rounded-xl shadow-lg';
         infoDiv.innerHTML = `
             <h2 class="text-lg md:text-xl font-semibold mb-4 border-b pb-2">Informasi Mahasiswa dan Daftar Mata Kuliah</h2>
             <div class="grid grid-cols-1 gap-2 text-sm text-gray-700 mb-4">
@@ -719,8 +725,8 @@ export function renderKMKData(data, mahasiswaData) {
             `;
         });
         tableDiv.innerHTML = `
-            <table class="w-full text-sm text-left text-gray-700">
-                <thead class="text-xs text-white uppercase bg-blue-600">
+            <table class="w-full text-left text-sm text-gray-700">
+                <thead class="text-xs text-white uppercase bg-blue-600 rounded-t-lg">
                     <tr>
                         <th scope="col" class="py-3 px-4 rounded-tl-lg whitespace-nowrap">Kode Matkul</th>
                         <th scope="col" class="py-3 px-4 whitespace-nowrap">Mata Kuliah</th>
@@ -1056,5 +1062,97 @@ export function renderPinjamanData(apiResponse) {
             </div>
         `;
         listContainer.innerHTML = tableHtml;
+    }
+}
+
+// Fungsi untuk merender tampilan dan data histori magang
+export function renderMagangPage(mahasiswaData, historiMagangData) {
+    // Isi data mahasiswa ke dalam form
+    setValue('#pengajuanMagangForm #nim', mahasiswaData.nim);
+    setValue('#pengajuanMagangForm #nama_lengkap', mahasiswaData.nama);
+    setValue('#pengajuanMagangForm #nik', mahasiswaData.nik);
+    setValue('#pengajuanMagangForm #handphone', mahasiswaData.handphone);
+    setValue('#pengajuanMagangForm #alamat_mahasiswa', mahasiswaData.alamat);
+
+    // Render histori pengajuan magang
+    const historiContainer = document.getElementById('histori-magang-container');
+    if (!historiContainer) return;
+
+    if (!historiMagangData || historiMagangData.length === 0) {
+        historiContainer.innerHTML = '<p class="text-center py-4 text-gray-500">Tidak ada histori pengajuan magang.</p>';
+        return;
+    }
+    
+    if (window.innerWidth < 768) {
+        // Tampilan Mobile (Kartu)
+        let cardContainer = document.createElement('div');
+        cardContainer.className = 'p-4 space-y-4';
+        historiMagangData.forEach(item => {
+            const statusBadge = item.status_magang === 'Diterima' ? 'bg-green-600' : (item.status_magang === 'Ditolak' ? 'bg-red-600' : 'bg-yellow-600');
+            const suratPengantarLink = item.surat_pengantar ? `<a href="#" class="text-blue-600 hover:underline">Cetak Surat Pengantar</a>` : 'Tidak tersedia';
+            const komentarProdi = item.komentar_prodi || 'Tidak ada komentar';
+
+            let card = document.createElement('div');
+            card.className = `bg-white p-4 rounded-lg shadow-md border border-gray-200 flex flex-col space-y-2`;
+            card.innerHTML = `
+                <div class="flex justify-between items-center">
+                    <h3 class="font-bold text-base text-gray-800">${item.nama_tempat_magang}</h3>
+                    <div class="px-2 py-1 text-xs font-semibold text-white rounded-full ${statusBadge}">${item.status_magang}</div>
+                </div>
+                <div class="flex flex-col text-sm text-gray-600 space-y-1">
+                    <p><strong>Tanggal Pengajuan:</strong> ${item.tgl_pengajuan}</p>
+                    <p><strong>Tanggal Proses:</strong> ${item.tgl_proses || '-'}</p>
+                    <p><strong>Komentar Prodi:</strong> ${komentarProdi}</p>
+                    <p><strong>Surat Pengantar:</strong> ${suratPengantarLink}</p>
+                </div>
+            `;
+            cardContainer.appendChild(card);
+        });
+        historiContainer.innerHTML = '';
+        historiContainer.appendChild(cardContainer);
+    } else {
+        // Tampilan Desktop
+        let tableRows = '';
+        historiMagangData.forEach(item => {
+            const statusBadge = item.status_magang === 'Diterima' ? 'bg-green-500' : (item.status_magang === 'Ditolak' ? 'bg-red-500' : 'bg-yellow-500');
+            const suratPengantarLink = item.surat_pengantar ? `<a href="#" class="text-blue-600 hover:underline">${item.surat_pengantar}</a>` : '-';
+            tableRows += `
+                <tr class="bg-white border-b hover:bg-gray-50">
+                    <td class="py-3 px-6 whitespace-nowrap">${item.jenis_tempat_magang}</td>
+                    <td class="py-3 px-6">${item.nama_tempat_magang}</td>
+                    <td class="py-3 px-6">${item.alamat}</td>
+                    <td class="py-3 px-6 text-center">${item.kota_kabupaten_magang}</td>
+                    <td class="py-3 px-6 text-center">${item.rencana_mulai} sd ${item.rencana_selesai}</td>
+                    <td class="py-3 px-6 text-center">${item.tgl_pengajuan}</td>
+                    <td class="py-3 px-6 text-center"><span class="px-2 py-1 text-xs font-semibold text-white rounded-full ${statusBadge}">${item.status_magang}</span></td>
+                    <td class="py-3 px-6 text-center">${item.tgl_proses || '-'}</td>
+                    <td class="py-3 px-6">${item.komentar_prodi || '-'}</td>
+                    <td class="py-3 px-6">${suratPengantarLink}</td>
+                </tr>
+            `;
+        });
+        
+        const tableHtml = `
+            <table class="w-full text-left text-sm text-gray-500">
+                <thead class="text-xs text-white uppercase bg-blue-600 rounded-t-lg">
+                    <tr>
+                        <th scope="col" class="py-3 px-6">Jenis</th>
+                        <th scope="col" class="py-3 px-6">Tempat KP</th>
+                        <th scope="col" class="py-3 px-6">Alamat</th>
+                        <th scope="col" class="py-3 px-6">Kota</th>
+                        <th scope="col" class="py-3 px-6">Rencana Pelaksanaan</th>
+                        <th scope="col" class="py-3 px-6">Tgl. Pengajuan</th>
+                        <th scope="col" class="py-3 px-6">Status</th>
+                        <th scope="col" class="py-3 px-6">Tgl. Proses</th>
+                        <th scope="col" class="py-3 px-6">Komentar Prodi</th>
+                        <th scope="col" class="py-3 px-6">Surat Pengantar</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    ${tableRows}
+                </tbody>
+            </table>
+        `;
+        historiContainer.innerHTML = tableHtml;
     }
 }

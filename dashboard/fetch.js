@@ -11,6 +11,7 @@ export let currentDaftarNilaiKumulatif = [];
 export let currentPembayaranData = null;
 export let currentPointBookData = null; 
 export let currentPinjamanData = null; 
+export let currentMagangHistory = null;
 export let currentSemesterIndex = 0;
 
 // Fungsi untuk mengambil data mahasiswa
@@ -330,4 +331,55 @@ export async function fetchPinjamanHistory() {
         console.error('Terjadi masalah saat mengambil data pinjaman:', error);
         return null;
     }
+}
+
+// Fungsi untuk mengambil data histori pengajuan magang
+export async function fetchMagangHistory() {
+    const nim = localStorage.getItem('loggedInUserNim');
+    if (!nim) return null;
+    const url = `http://localhost/siakad_api/pengajuan_magang.php?nim=${nim}`;
+    try {
+        const response = await fetch(url);
+        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+        const apiResponse = await response.json();
+        if (apiResponse.status === 'success') {
+            currentMagangHistory = apiResponse.data;
+            return currentMagangHistory;
+        }
+        return null;
+    } catch (error) {
+        console.error('Terjadi masalah saat mengambil data histori magang:', error);
+        return null;
+    }
+}
+
+// Fungsi untuk menangani pengajuan magang
+export async function handlePengajuanMagangSubmit(e) {
+  e.preventDefault();
+  const nim = localStorage.getItem('loggedInUserNim');
+  const form = e.target;
+  const formData = new FormData(form);
+  formData.append('nim', nim);
+  
+  try {
+    const response = await fetch('http://localhost/siakad_api/pengajuan_magang.php', {
+      method: 'POST',
+      body: formData
+    });
+    
+    if (!response.ok) {
+      throw new Error('Gagal terhubung ke server.');
+    }
+    
+    const apiResponse = await response.json();
+    if (apiResponse.status === 'success') {
+      alert(apiResponse.message);
+      loadContent('/dashboard/Registrasi/pengajuan_magang.html'); // Muat ulang halaman setelah sukses
+    } else {
+      alert('Pengajuan gagal: ' + apiResponse.message);
+    }
+  } catch (error) {
+    console.error('Error saat mengirim pengajuan:', error);
+    alert('Terjadi kesalahan saat mengirim pengajuan. Silakan coba lagi.');
+  }
 }

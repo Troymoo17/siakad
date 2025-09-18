@@ -15,6 +15,8 @@ import {
   fetchPembayaranData,
   fetchPointBookHistory, 
   fetchPinjamanHistory,
+  fetchMagangHistory, 
+  handlePengajuanMagangSubmit,
   globalMahasiswaData,
   currentKHSData,
   currentKehadiranSummary,
@@ -26,7 +28,8 @@ import {
   currentDaftarNilaiKumulatif,
   currentPembayaranData,
   currentPointBookData, 
-  currentPinjamanData, 
+  currentPinjamanData,
+  currentMagangHistory,
   currentSemesterIndex
 } from './fetch.js';
 
@@ -45,7 +48,8 @@ import {
   renderJadwalHariIni,
   renderPembayaranData,
   renderPointBookData, 
-  renderPinjamanData 
+  renderPinjamanData,
+  renderMagangPage
 } from './loader.js';
 
 
@@ -140,10 +144,18 @@ async function loadContent(url) {
             if (pointBookData) {
                 renderPointBookData(pointBookData);
             }
-        } else if (url.includes('pinjaman.html')) {
+        } else if (url.includes('histori_pinjaman.html')) {
             const pinjamanData = await fetchPinjamanHistory();
             if (pinjamanData) {
                 renderPinjamanData(pinjamanData);
+            }
+        } else if (url.includes('pengajuan_magang.html')) {
+            const mahasiswaData = await fetchDataAndPopulateForm();
+            const historiMagangData = await fetchMagangHistory();
+            renderMagangPage(mahasiswaData, historiMagangData);
+            const formPengajuan = document.getElementById('pengajuanMagangForm');
+            if (formPengajuan) {
+                formPengajuan.addEventListener('submit', handlePengajuanMagangSubmit);
             }
         }
     } catch (error) {
@@ -250,9 +262,13 @@ document.addEventListener("DOMContentLoaded", () => {
             if (currentPointBookData) {
                 renderPointBookData(currentPointBookData);
             }
-        } else if (currentUrl && currentUrl.includes('pinjaman.html')) {
+        } else if (currentUrl && currentUrl.includes('histori_pinjaman.html')) {
             if (currentPinjamanData) {
                 renderPinjamanData(currentPinjamanData);
+            }
+        } else if (currentUrl && currentUrl.includes('pengajuan_magang.html')) {
+            if (globalMahasiswaData && currentMagangHistory) {
+                renderMagangPage(globalMahasiswaData, currentMagangHistory);
             }
         }
     });
