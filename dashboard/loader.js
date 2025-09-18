@@ -235,12 +235,6 @@ export function renderKHSData(data, semesterIndex, programStudi, jenjangStudi) {
                     </tbody>
                 </table>
             </div>
-            <div class="flex justify-end text-sm">
-                <div class="text-right">
-                    <p class="font-bold">JUMLAH: ${semester.total_sks}</p>
-                    <p class="font-bold">IP SEMESTER: ${semester.ips}</p>
-                </div>
-            </div>
         `;
         container.appendChild(semesterDiv);
     }
