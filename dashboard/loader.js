@@ -550,6 +550,9 @@ export function renderKRSData(data, mahasiswaData) {
     const container = document.getElementById('krs-content-container');
     if (!container) return;
 
+    // Tambahkan baris ini untuk menghapus konten yang sudah ada
+    container.innerHTML = '';
+    
     if (!data || data.mata_kuliah_tersedia.length === 0) {
         container.innerHTML = '<div class="text-center py-4 text-gray-500">Tidak ada data KRS yang ditemukan.</div>';
         return;
@@ -694,26 +697,28 @@ export function renderKMKData(data, mahasiswaData) {
     if (!container) return;
     container.innerHTML = '';
     
-    const infoDiv = document.createElement('div');
-    infoDiv.className = 'p-4 md:p-8 rounded-xl shadow-lg';
-    infoDiv.innerHTML = `
-        <h2 class="text-lg md:text-xl font-semibold mb-4 border-b pb-2">Informasi Mahasiswa dan Daftar Mata Kuliah</h2>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm text-gray-700 mb-6">
-            <p>NIM: <span id="mahasiswa-nim" class="font-semibold">${mahasiswaData?.nim || 'Memuat...'}</span></p>
-            <p>Nama: <span id="mahasiswa-nama" class="font-semibold">${mahasiswaData?.nama || 'Memuat...'}</span></p>
-            <p>Program Studi: <span class="font-semibold">${mahasiswaData?.prodi || 'Memuat...'}</span></p>
-            <p>Jenjang Studi: <span class="font-semibold">${mahasiswaData?.program || 'Memuat...'}</span></p>
-            <p class="md:col-span-2">Semester: <span id="semester-sekarang" class="font-semibold">${mahasiswaData?.semester_sekarang || 'Memuat...'}</span></p>
-        </div>
-    `;
-    container.appendChild(infoDiv);
-
-    if (!data || data.length === 0) {
-        container.innerHTML += '<p class="text-center py-4 text-gray-500">Tidak ada data mata kuliah yang ditemukan.</p>';
-        return;
-    }
-
     if (window.innerWidth < 768) {
+        // Tampilan Mobile (Header)
+        const infoDiv = document.createElement('div');
+        infoDiv.className = 'p-4 md:p-8';
+        infoDiv.innerHTML = `
+            <h2 class="font-bold text-lg text-gray-800 mb-2">Informasi Mahasiswa</h2>
+            <div class="space-y-1 text-sm text-gray-700">
+                <p><strong>NIM:</strong> ${mahasiswaData?.nim || 'Memuat...'}</p>
+                <p><strong>Nama:</strong> ${mahasiswaData?.nama || 'Memuat...'}</p>
+                <p><strong>Program Studi:</strong> ${mahasiswaData?.prodi || 'Memuat...'}</p>
+                <p><strong>Jenjang Studi:</strong> ${mahasiswaData?.program || 'Memuat...'}</p>
+                <p><strong>Semester:</strong> ${mahasiswaData?.semester_sekarang || 'Memuat...'}</p>
+            </div>
+            <hr class="my-4" />
+        `;
+        container.appendChild(infoDiv);
+
+        if (!data || data.length === 0) {
+            container.innerHTML += '<p class="text-center py-4 text-gray-500">Tidak ada data mata kuliah yang ditemukan.</p>';
+            return;
+        }
+        
         const cardContainer = document.createElement('div');
         cardContainer.className = 'p-4 space-y-4';
         data.forEach(mk => {
@@ -729,6 +734,26 @@ export function renderKMKData(data, mahasiswaData) {
         });
         container.appendChild(cardContainer);
     } else {
+        // Tampilan Desktop (Tabel)
+        const infoDiv = document.createElement('div');
+        infoDiv.className = 'p-4 md:p-8 rounded-xl shadow-lg';
+        infoDiv.innerHTML = `
+            <h2 class="text-lg md:text-xl font-semibold mb-4 border-b pb-2">Informasi Mahasiswa dan Daftar Mata Kuliah</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm text-gray-700 mb-6">
+                <p>NIM: <span id="mahasiswa-nim" class="font-semibold">${mahasiswaData?.nim || 'Memuat...'}</span></p>
+                <p>Nama: <span id="mahasiswa-nama" class="font-semibold">${mahasiswaData?.nama || 'Memuat...'}</span></p>
+                <p>Program Studi: <span class="font-semibold">${mahasiswaData?.prodi || 'Memuat...'}</span></p>
+                <p>Jenjang Studi: <span class="font-semibold">${mahasiswaData?.program || 'Memuat...'}</span></p>
+                <p class="md:col-span-2">Semester: <span id="semester-sekarang" class="font-semibold">${mahasiswaData?.semester_sekarang || 'Memuat...'}</span></p>
+            </div>
+        `;
+        container.appendChild(infoDiv);
+    
+        if (!data || data.length === 0) {
+            container.innerHTML += '<p class="text-center py-4 text-gray-500">Tidak ada data mata kuliah yang ditemukan.</p>';
+            return;
+        }
+    
         const tableDiv = document.createElement('div');
         tableDiv.className = 'overflow-x-auto';
         let tableRows = '';

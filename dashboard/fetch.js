@@ -229,8 +229,8 @@ export async function fetchAndRenderKartuMataKuliah() {
         const response = await fetch(urlMatakuliah);
         if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
         const apiResponse = await response.json();
-        if (apiResponse.status === 'success' && apiResponse.data.length > 0) {
-            currentKMKData = apiResponse.data;
+        if (apiResponse.status === 'success' && apiResponse.matakuliah && apiResponse.matakuliah.length > 0) {
+            currentKMKData = apiResponse.matakuliah;
             return { data: currentKMKData, mahasiswa: globalMahasiswaData };
         }
         return null;
