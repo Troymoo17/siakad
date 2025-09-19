@@ -103,9 +103,10 @@ async function loadContent(url) {
                     semesterSelect.appendChild(option);
                 });
                 renderKHSData(khsResult.data, 0, khsResult.program_studi, khsResult.jenjang_studi);
+                let localSemesterIndex=0;
                 semesterSelect.addEventListener('change', (e) => {
-                    currentSemesterIndex = e.target.value;
-                    renderKHSData(khsResult.data, currentSemesterIndex, khsResult.program_studi, khsResult.jenjang_studi);
+                    localSemesterIndex = e.target.value;
+                    renderKHSData(khsResult.data, localSemesterIndex, khsResult.program_studi, khsResult.jenjang_studi);
                 });
             }
         } else if (url.includes('jadwalUjian.html')) {
