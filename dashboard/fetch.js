@@ -502,3 +502,32 @@ export async function fetchSkripsiData() {
         return null;
     }
 }
+
+// Fungsi baru untuk memperbarui data profil
+export async function updateProfile(formData) {
+    const nim = localStorage.getItem('loggedInUserNim');
+    if (!nim) {
+        alert('NIM tidak ditemukan. Silakan login kembali.');
+        return;
+    }
+
+    formData.append('nim', nim);
+
+    try {
+        const response = await fetch('http://localhost/siakad_api/mahasiswa.php', {
+            method: 'POST',
+            body: formData
+        });
+        const apiResponse = await response.json();
+        if (apiResponse.status === 'success') {
+            alert(apiResponse.message);
+            // Muat ulang data profil setelah sukses
+            fetchDataAndPopulateForm();
+        } else {
+            alert('Gagal memperbarui profil: ' + apiResponse.message);
+        }
+    } catch (error) {
+        console.error('Error saat mengirim data profil:', error);
+        alert('Terjadi kesalahan saat mencoba memperbarui profil.');
+    }
+}

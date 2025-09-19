@@ -35,7 +35,8 @@ import {
   currentPointBookData, 
   currentPinjamanData,
   currentMagangHistory,
-  currentSemesterIndex
+  currentSemesterIndex,
+  updateProfile // <-- Ditambahkan: Mengimpor fungsi updateProfile
 } from './fetch.js';
 
 import {
@@ -88,6 +89,23 @@ async function loadContent(url) {
         } else if (url.includes('profile.html')) {
             const mahasiswaData = await fetchDataAndPopulateForm();
             renderProfileData(mahasiswaData);
+
+            // Ditambahkan: Event listener untuk tombol simpan profil
+            const saveProfileBtn = document.getElementById('saveProfileBtn');
+            if (saveProfileBtn) {
+                saveProfileBtn.addEventListener('click', async (e) => {
+                    e.preventDefault();
+                    
+                    const formData = new FormData();
+                    formData.append('email', document.getElementById('input-email').value);
+                    formData.append('telp', document.getElementById('input-telp').value);
+                    formData.append('handphone', document.getElementById('input-hp').value);
+                    formData.append('nik', document.getElementById('input-nik').value);
+                    
+                    await updateProfile(formData);
+                });
+            }
+
         } else if (url.includes('daftar_nilai_kumulatif.html')) {
             const nilaiData = await fetchMataKuliahData();
             renderDaftarNilaiKumulatif(nilaiData);
